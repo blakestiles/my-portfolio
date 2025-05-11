@@ -16,10 +16,11 @@ export function ThemeToggle() {
       size="icon"
       onClick={() => setTheme(theme === "light" ? "dark" : "light")}
       className="rounded-full"
+      aria-label="Toggle theme"
     >
       <motion.div
         animate={{ rotate: theme === "light" ? 0 : 180 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.5, type: "spring", stiffness: 200 }}
       >
         {theme === "light" ? (
           <Sun className="h-5 w-5 text-yellow-500" />

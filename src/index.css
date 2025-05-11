@@ -59,11 +59,14 @@
 
   html {
     @apply scroll-smooth;
+    scroll-behavior: smooth;
   }
 
   body {
     @apply bg-[#0d1117] text-[#c9d1d9] font-sans dark:bg-navy;
     color-scheme: dark;
+    font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
+    -webkit-font-smoothing: antialiased;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -129,6 +132,11 @@
   ::-webkit-scrollbar-thumb:hover {
     @apply bg-[#8b949e];
   }
+  
+  /* Focus styles for accessibility */
+  :focus-visible {
+    @apply outline-none ring-2 ring-[#1f6feb] ring-offset-2 ring-offset-[#0d1117];
+  }
 }
 
 @layer components {
@@ -162,6 +170,31 @@
   .gh-link:hover::after {
     @apply scale-x-100 origin-bottom-left;
   }
+  
+  /* Animated background */
+  .animated-bg {
+    @apply bg-gradient-to-br from-[#0d1117] via-[#161b22] to-[#21262d];
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+  }
+  
+  /* Staggered animation for child elements */
+  .stagger-children > * {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  
+  .stagger-children.in-view > * {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  
+  .stagger-children.in-view > *:nth-child(1) { transition-delay: 0.1s; }
+  .stagger-children.in-view > *:nth-child(2) { transition-delay: 0.2s; }
+  .stagger-children.in-view > *:nth-child(3) { transition-delay: 0.3s; }
+  .stagger-children.in-view > *:nth-child(4) { transition-delay: 0.4s; }
+  .stagger-children.in-view > *:nth-child(5) { transition-delay: 0.5s; }
 }
 
 @layer utilities {
@@ -178,11 +211,6 @@
     }
   }
 
-  .animated-bg {
-    background-size: 400% 400%;
-    animation: gradient 15s ease infinite;
-  }
-
   @keyframes gradient {
     0% {
       background-position: 0% 50%;
@@ -193,5 +221,89 @@
     100% {
       background-position: 0% 50%;
     }
+  }
+  
+  @keyframes marquee {
+    0% { 
+      transform: translateX(0); 
+    }
+    100% { 
+      transform: translateX(calc(-50%)); 
+    }
+  }
+  
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slide-in-left {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes slide-in-right {
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+  
+  .animate-marquee {
+    animation: marquee 30s linear infinite;
+  }
+  
+  .animate-fade-in {
+    animation: fade-in 0.5s ease-out forwards;
+  }
+  
+  .animate-slide-in-left {
+    animation: slide-in-left 0.5s ease-out forwards;
+  }
+  
+  .animate-slide-in-right {
+    animation: slide-in-right 0.5s ease-out forwards;
+  }
+  
+  .animate-pulse-subtle {
+    animation: pulse 3s ease-in-out infinite;
+  }
+  
+  /* Transition utilities */
+  .transition-transform-gpu {
+    transition-property: transform;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+    transform: translateZ(0); /* Force GPU acceleration */
+  }
+  
+  /* Custom easing functions */
+  .ease-github {
+    transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
   }
 }

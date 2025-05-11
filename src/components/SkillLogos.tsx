@@ -1,6 +1,6 @@
 
 import React, { useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useAnimation, useInView } from 'framer-motion';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 
 interface SkillLogoProps {
@@ -19,7 +19,7 @@ const SkillLogo: React.FC<SkillLogoProps> = ({ name, icon, description }) => {
           transition={{ type: 'spring', stiffness: 400, damping: 10 }}
         >
           <div className="flex items-center justify-center h-16 w-16 mb-2 rounded-lg bg-card shadow-md border border-[#30363d] hover:border-[#8b949e] transition-all duration-300">
-            <img src={icon} alt={name} className="h-10 w-10 object-contain" />
+            <img src={icon} alt={name} className="h-10 w-10 object-contain" loading="lazy" />
           </div>
           <span className="text-xs font-medium mt-1">{name}</span>
         </motion.div>
@@ -40,6 +40,8 @@ const SkillLogo: React.FC<SkillLogoProps> = ({ name, icon, description }) => {
 
 const SkillLogos = () => {
   const carouselRef = useRef<HTMLDivElement>(null);
+  const controls = useAnimation();
+  const inView = useInView(carouselRef, { once: false, amount: 0.3 });
   
   const skillsData = [
     { name: 'JavaScript', icon: '/skills/javascript.svg', description: 'Modern JavaScript ES6+ for building interactive web applications' },
@@ -58,6 +60,15 @@ const SkillLogos = () => {
 
   // Double the skills array for infinite scrolling effect
   const duplicatedSkills = [...skillsData, ...skillsData];
+
+  // Control animation based on visibility
+  useEffect(() => {
+    if (inView) {
+      controls.start("visible");
+    } else {
+      controls.start("hidden");
+    }
+  }, [controls, inView]);
 
   // Pause animation on hover
   useEffect(() => {
@@ -81,8 +92,40 @@ const SkillLogos = () => {
     };
   }, []);
 
+  // Check for reduced motion preference
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const carousel = carouselRef.current;
+    
+    if (carousel && mediaQuery.matches) {
+      carousel.style.animationPlayState = 'paused';
+    }
+  }, []);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { 
+        staggerChildren: 0.05,
+        when: "beforeChildren"
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
+  };
+
   return (
-    <div className="mt-10 overflow-hidden">
+    <motion.div 
+      className="mt-10 overflow-hidden"
+      initial="hidden"
+      animate={controls}
+      variants={containerVariants}
+      ref={carouselRef}
+    >
       <div className="relative w-full">
         {/* Gradient overlay left */}
         <div className="absolute left-0 top-0 bottom-0 w-12 z-10 bg-gradient-to-r from-background to-transparent"></div>
@@ -90,13 +133,20 @@ const SkillLogos = () => {
         <div 
           ref={carouselRef}
           className="flex animate-marquee py-4"
+          style={{
+            animationTimingFunction: 'linear',
+            animationDuration: '30s',
+            animationIterationCount: 'infinite'
+          }}
         >
           {duplicatedSkills.map((skill, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.05, duration: 0.3 }}
+              variants={itemVariants}
+              transition={{ 
+                duration: 0.3, 
+                ease: "easeOut" 
+              }}
             >
               <SkillLogo 
                 name={skill.name} 
@@ -110,7 +160,7 @@ const SkillLogos = () => {
         {/* Gradient overlay right */}
         <div className="absolute right-0 top-0 bottom-0 w-12 z-10 bg-gradient-to-l from-background to-transparent"></div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

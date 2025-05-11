@@ -5,8 +5,14 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Github, Link } from 'lucide-react';
 import { motion } from 'framer-motion';
+import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 
 const Projects = () => {
+  const [sectionRef, isInView] = useIntersectionObserver<HTMLElement>({
+    threshold: 0.1,
+    triggerOnce: false
+  });
+
   const projects = [
     {
       title: "Dynamic Web Application for Inventory Management",
@@ -55,34 +61,65 @@ const Projects = () => {
     }
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: [0.4, 0.0, 0.2, 1]
+      }
+    }
+  };
+
   return (
-    <section id="projects" className="py-20">
+    <section 
+      id="projects" 
+      className="py-20" 
+      ref={sectionRef}
+    >
       <div className="section-container">
         <motion.h2 
           className="section-heading"
           initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
           transition={{ duration: 0.5 }}
         >
           Featured <span className="gradient-text">Projects</span>
         </motion.h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+        >
           {projects.map((project, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 0.5 }}
+              variants={cardVariants}
+              className="h-full"
             >
               <Card className="repo-card h-full flex flex-col">
                 <div className="h-48 overflow-hidden rounded-t-md">
-                  <img 
+                  <motion.img 
                     src={project.image} 
                     alt={project.title}
-                    className="w-full h-full object-cover transition-transform hover:scale-105 duration-300"
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.4 }}
                   />
                 </div>
                 <CardHeader className="pb-2">
@@ -98,14 +135,29 @@ const Projects = () => {
                   </CardTitle>
                   <div className="flex flex-wrap gap-2 my-2">
                     {project.tech.slice(0, 3).map((tech, i) => (
-                      <Badge key={i} variant="outline" className="text-xs bg-[#21262d] text-[#c9d1d9] border-[#30363d]">
-                        {tech}
-                      </Badge>
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: i * 0.05 }}
+                      >
+                        <Badge variant="outline" className="text-xs bg-[#21262d] text-[#c9d1d9] border-[#30363d]">
+                          {tech}
+                        </Badge>
+                      </motion.div>
                     ))}
                     {project.tech.length > 3 && (
-                      <Badge variant="outline" className="text-xs bg-[#21262d] text-[#c9d1d9] border-[#30363d]">
-                        +{project.tech.length - 3}
-                      </Badge>
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.15 }}
+                      >
+                        <Badge variant="outline" className="text-xs bg-[#21262d] text-[#c9d1d9] border-[#30363d]">
+                          +{project.tech.length - 3}
+                        </Badge>
+                      </motion.div>
                     )}
                   </div>
                 </CardHeader>
@@ -113,15 +165,15 @@ const Projects = () => {
                   <p className="text-[#8b949e] text-sm">{project.description}</p>
                 </CardContent>
                 <CardFooter className="flex gap-4">
-                  <Button variant="outline" size="sm" asChild className="gh-button flex-1">
+                  <Button variant="outline" size="sm" asChild className="gh-button flex-1 group">
                     <a href={project.github} target="_blank" rel="noopener noreferrer">
-                      <Github className="h-4 w-4 mr-2" /> 
+                      <Github className="h-4 w-4 mr-2 group-hover:rotate-12 transition-transform" /> 
                       Repository
                     </a>
                   </Button>
-                  <Button size="sm" asChild className="gh-button-primary flex-1">
+                  <Button size="sm" asChild className="gh-button-primary flex-1 group">
                     <a href={project.liveDemo} target="_blank" rel="noopener noreferrer">
-                      <Link className="h-4 w-4 mr-2" />
+                      <Link className="h-4 w-4 mr-2 group-hover:rotate-12 transition-transform" />
                       Live Demo
                     </a>
                   </Button>
@@ -129,7 +181,7 @@ const Projects = () => {
               </Card>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
