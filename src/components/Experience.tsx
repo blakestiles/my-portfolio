@@ -3,6 +3,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Briefcase } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const Experience = () => {
   const experiences = [
@@ -62,42 +63,75 @@ const Experience = () => {
   ];
 
   return (
-    <section id="experience" className="py-20 bg-secondary/30">
+    <section id="experience" className="py-20 bg-[#161b22]">
       <div className="section-container">
-        <h2 className="section-heading">
+        <motion.h2 
+          className="section-heading"
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
           Work <span className="gradient-text">Experience</span>
-        </h2>
+        </motion.h2>
         
-        <div className="space-y-12">
-          {experiences.map((exp, index) => (
-            <Card key={index} className="relative overflow-hidden border-l-4 border-l-primary">
-              <div className="absolute top-0 right-0 h-20 w-20 bg-primary/5 rounded-full transform translate-x-1/3 -translate-y-1/3"></div>
-              
-              <CardHeader>
-                <div className="flex items-center gap-2 mb-1">
-                  <Briefcase className="h-4 w-4 text-primary" />
-                  <span className="text-sm text-muted-foreground">{exp.period}</span>
-                </div>
-                <CardTitle className="text-xl md:text-2xl">
-                  {exp.role} @ <span className="text-primary">{exp.company}</span>
-                </CardTitle>
-              </CardHeader>
-              
-              <CardContent>
-                <ul className="list-disc list-inside space-y-2 mb-4 text-muted-foreground">
-                  {exp.highlights.map((highlight, i) => (
-                    <li key={i}>{highlight}</li>
-                  ))}
-                </ul>
+        <div className="relative">
+          {/* Timeline center line */}
+          <div className="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 top-0 bottom-0 w-0.5 bg-[#30363d] z-0"></div>
+          
+          <div className="space-y-16">
+            {experiences.map((exp, index) => (
+              <motion.div 
+                key={index}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className={`relative flex flex-col md:flex-row ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}
+              >
+                {/* Timeline dot */}
+                <div className="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 -translate-y-4 timeline-dot"></div>
                 
-                <div className="flex flex-wrap gap-2 mt-4">
-                  {exp.technologies.map((tech, i) => (
-                    <Badge key={i} variant="outline">{tech}</Badge>
-                  ))}
+                {/* Date indicator */}
+                <div className="md:w-1/2 py-2 px-4 md:px-8 flex items-center">
+                  <div className={`bg-[#21262d] text-[#c9d1d9] py-1 px-3 rounded-full text-sm inline-block ${index % 2 === 0 ? 'md:ml-auto' : ''}`}>
+                    {exp.period}
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
+                
+                {/* Content card */}
+                <div className="md:w-1/2 py-2 px-4 md:px-8">
+                  <Card className="repo-card border border-l-[#238636] border-l-4">
+                    <CardHeader>
+                      <div className="flex items-center gap-2 mb-1">
+                        <Briefcase className="h-4 w-4 text-[#238636]" />
+                        <span className="text-[#8b949e]">{exp.company}</span>
+                      </div>
+                      <CardTitle className="text-xl">
+                        {exp.role}
+                      </CardTitle>
+                    </CardHeader>
+                    
+                    <CardContent>
+                      <ul className="list-disc list-inside space-y-2 mb-4 text-[#8b949e]">
+                        {exp.highlights.map((highlight, i) => (
+                          <li key={i} className="text-sm">{highlight}</li>
+                        ))}
+                      </ul>
+                      
+                      <div className="flex flex-wrap gap-2 mt-4">
+                        {exp.technologies.map((tech, i) => (
+                          <Badge key={i} className="bg-[#21262d] text-[#c9d1d9] border border-[#30363d]">
+                            {tech}
+                          </Badge>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

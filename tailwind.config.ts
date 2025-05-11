@@ -63,11 +63,14 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-                navy: "#1A1F2C",
-                deepBlue: "#2A3C65",
+                navy: "#0d1117",
+                deepBlue: "#161b22",
+                githubGreen: "#238636",
+                githubBlue: "#1f6feb",
+                borderGray: "#30363d",
+                hoverGray: "#8b949e",
                 lightBlue: "#6E8AD2",
                 teal: "#3F8B8F",
-                accent: "#8B5CF6"
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -126,6 +129,10 @@ export default {
                     '100%': {
                         transform: 'rotate(360deg)'
                     }
+                },
+                'marquee': {
+                    '0%': { transform: 'translateX(0)' },
+                    '100%': { transform: 'translateX(-50%)' }
                 }
 			},
 			animation: {
@@ -134,16 +141,19 @@ export default {
                 'fade-in': 'fade-in 0.5s ease-out',
                 'slide-in': 'slide-in 0.5s ease-out',
                 'float': 'float 3s ease-in-out infinite',
-                'spin-slow': 'spin-slow 8s linear infinite'
+                'spin-slow': 'spin-slow 8s linear infinite',
+                'marquee': 'marquee 30s linear infinite',
 			},
             fontFamily: {
                 'sans': ['Inter', 'sans-serif'],
-                'heading': ['Poppins', 'sans-serif']
+                'heading': ['Poppins', 'sans-serif'],
+                'mono': ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', 'monospace'],
             },
             backgroundImage: {
                 'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
                 'gradient-conic': 'conic-gradient(var(--tw-gradient-stops))',
                 'gradient-diagonal': 'linear-gradient(45deg, var(--tw-gradient-stops))',
+                'github-gradient': 'linear-gradient(180deg, #0d1117 0%, #161b22 100%)',
             }
 		}
 	},

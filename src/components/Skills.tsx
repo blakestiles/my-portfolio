@@ -49,7 +49,7 @@ const Skills = () => {
   };
 
   return (
-    <section id="skills" className="py-20">
+    <section id="skills" className="py-20 bg-[#161b22]">
       <div className="section-container">
         <motion.h2 
           className="section-heading"
@@ -72,14 +72,17 @@ const Skills = () => {
         >
           {skillCategories.map((category, index) => (
             <motion.div key={index} variants={itemVariants}>
-              <Card className="transition-all hover:shadow-lg hover:-translate-y-1 backdrop-blur-sm bg-card/80 border border-muted/50">
+              <Card className="repo-card">
                 <CardHeader className="pb-2">
-                  <CardTitle>{category.title}</CardTitle>
+                  <CardTitle className="text-xl text-white">{category.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-wrap gap-2">
                     {category.skills.map((skill, skillIndex) => (
-                      <Badge key={skillIndex} variant="secondary" className="text-sm px-3 py-1 transition-all hover:bg-primary hover:text-primary-foreground">
+                      <Badge 
+                        key={skillIndex} 
+                        className="bg-[#21262d] text-white hover:bg-[#30363d] border border-[#30363d]"
+                      >
                         {skill}
                       </Badge>
                     ))}

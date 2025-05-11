@@ -7,48 +7,7 @@
 
 @layer base {
   :root {
-    --background: 240 10% 97%;
-    --foreground: 222.2 84% 4.9%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 246 80% 60%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 262 83% 63%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 246 80% 60%;
-
-    --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 223 47% 11%;
+    --background: 220 13% 18%;
     --foreground: 210 40% 98%;
 
     --card: 222.2 84% 4.9%;
@@ -57,7 +16,7 @@
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 246 80% 60%;
+    --primary: 210 40% 98%;
     --primary-foreground: 222.2 47.4% 11.2%;
 
     --secondary: 217.2 32.6% 17.5%;
@@ -85,28 +44,30 @@
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
 
-    --navy: #1A1F2C;
-    --deepBlue: #2A3C65;
-    --lightBlue: #6E8AD2;
+    --radius: 0.5rem;
+
+    /* GitHub-inspired colors */
+    --github-dark: #0d1117;
+    --github-dark-2: #161b22;
+    --github-border: #30363d;
+    --github-text: #c9d1d9;
+    --github-muted: #8b949e;
+    --github-green: #238636;
+    --github-blue: #1f6feb;
+    --github-red: #f85149;
   }
 
   html {
     @apply scroll-smooth;
   }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
 
   body {
-    @apply bg-background text-foreground font-sans dark:bg-navy;
-    color-scheme: light dark;
+    @apply bg-[#0d1117] text-[#c9d1d9] font-sans dark:bg-navy;
+    color-scheme: dark;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading font-bold;
+    @apply font-heading font-bold text-white;
   }
 
   h1 {
@@ -130,12 +91,26 @@
   }
 
   .gradient-text {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-lightBlue to-accent;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#1f6feb] to-[#6E8AD2];
+  }
+
+  /* GitHub-inspired card */
+  .gh-card {
+    @apply bg-[#161b22] border border-[#30363d] rounded-md p-4 transition-all hover:border-[#8b949e] hover:shadow-md;
+  }
+
+  /* GitHub-inspired button */
+  .gh-button {
+    @apply bg-[#21262d] border border-[#30363d] text-white font-medium px-4 py-2 rounded-md transition-all hover:bg-[#30363d];
+  }
+
+  .gh-button-primary {
+    @apply bg-[#238636] border border-[#238636] text-white hover:bg-[#2ea043] hover:border-[#2ea043];
   }
 
   /* Glass effect for cards */
   .glass {
-    @apply backdrop-blur-md bg-white/10 border border-white/20 dark:bg-black/30 dark:border-white/10;
+    @apply backdrop-blur-md bg-[#161b22]/80 border border-[#30363d] dark:bg-black/30 dark:border-white/10;
   }
 
   /* Custom scrollbar */
@@ -148,17 +123,44 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-primary/30 rounded-full;
+    @apply bg-[#30363d] rounded-full;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-primary/50;
+    @apply bg-[#8b949e];
   }
 }
 
 @layer components {
   .animate-float {
     animation: floating 3s ease-in-out infinite;
+  }
+  
+  /* GitHub-inspired repository card */
+  .repo-card {
+    @apply bg-[#161b22] border border-[#30363d] rounded-md p-5 transition-all duration-300;
+  }
+  
+  .repo-card:hover {
+    @apply border-[#8b949e] transform -translate-y-1 shadow-md;
+  }
+  
+  /* GitHub-inspired timeline dot */
+  .timeline-dot {
+    @apply h-4 w-4 rounded-full bg-[#238636] border-4 border-[#0d1117] z-10;
+  }
+  
+  /* GitHub-inspired link with underline animation */
+  .gh-link {
+    @apply text-[#1f6feb] relative;
+  }
+  
+  .gh-link::after {
+    @apply content-[''] absolute w-full scale-x-0 h-0.5 bottom-0 left-0 bg-[#1f6feb] origin-bottom-right transition-transform duration-300;
+  }
+  
+  .gh-link:hover::after {
+    @apply scale-x-100 origin-bottom-left;
   }
 }
 
