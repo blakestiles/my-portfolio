@@ -95,17 +95,25 @@ const Experience = () => {
     })
   };
 
-  // Helper function to extract and format gradient colors safely
+  // Improved helper function to extract and format gradient colors safely
   const extractColors = (colorString) => {
-    if (!colorString) return { start: '#238636', end: '#238636' };
+    // Default colors if extraction fails
+    const defaultColors = { start: '#238636', end: '#238636' };
     
-    const fromMatch = colorString.match(/from-\[(.*?)\]/);
-    const toMatch = colorString.match(/to-\[(.*?)\]/);
+    if (!colorString) return defaultColors;
     
-    return {
-      start: fromMatch ? fromMatch[1] : '#238636',
-      end: toMatch ? toMatch[1] : '#238636'
-    };
+    try {
+      const fromMatch = colorString.match(/from-\[(.*?)\]/);
+      const toMatch = colorString.match(/to-\[(.*?)\]/);
+      
+      return {
+        start: fromMatch ? fromMatch[1] : defaultColors.start,
+        end: toMatch ? toMatch[1] : defaultColors.end
+      };
+    } catch (error) {
+      console.error("Error extracting colors:", error);
+      return defaultColors;
+    }
   };
 
   return (
@@ -135,7 +143,7 @@ const Experience = () => {
             animate={isInView ? "show" : "hidden"}
           >
             {experiences.map((exp, index) => {
-              // Safely extract colors
+              // Safely extract colors with error handling
               const colors = extractColors(exp.color);
               
               return (
