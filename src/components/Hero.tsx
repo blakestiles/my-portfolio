@@ -92,7 +92,7 @@ const Hero = () => {
                 <div className="absolute inset-0 bg-gradient-to-r from-[#238636] to-[#1f6feb] rounded-full blur-md opacity-30 animate-pulse-subtle"></div>
                 <div className="h-32 w-32 rounded-full border-2 border-[#30363d] p-1 bg-[#161b22] overflow-hidden relative z-10">
                   <img 
-                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                    src="/lovable-uploads/d3a1f598-cc0f-4e00-a81a-17ee978bd9ca.png" 
                     alt="Profile"
                     className="w-full h-full object-cover rounded-full"
                     loading="eager"
@@ -114,15 +114,6 @@ const Hero = () => {
             >
               Hi, I'm <span className="gradient-text">Sainath Gandhe</span>
             </motion.h1>
-            
-            <motion.p 
-              variants={itemVariants}
-              className="text-lg md:text-xl mb-8 text-[#8b949e] leading-relaxed text-center lg:text-left"
-            >
-              A passionate software engineering student with expertise in distributed systems, 
-              cloud computing, and full-stack development. I build scalable and efficient 
-              solutions to complex problems.
-            </motion.p>
             
             <motion.div 
               variants={itemVariants}

@@ -132,20 +132,28 @@ const Skills = () => {
                 } : { opacity: 0, y: 50 }}
                 className="relative"
               >
-                {/* Advanced 3D Card with hover effects */}
+                {/* Enhanced 3D Card with glass morphism and neon effects */}
                 <div className="perspective-1000">
-                  <Card className="repo-card h-full overflow-hidden relative group transform transition-all duration-500 hover:shadow-2xl">
-                    {/* Glowing border effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r rounded-lg p-[1px] -m-[1px] z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-glow" 
-                         style={{backgroundImage: `linear-gradient(45deg, ${colors.start}, ${colors.end}, ${colors.start})`}}></div>
+                  <Card className="repo-card h-full overflow-hidden relative group transform transition-all duration-500 hover:shadow-2xl backdrop-blur-sm bg-[#161b22]/80 border border-[#30363d] hover:border-opacity-0">
+                    {/* Animated gradient border */}
+                    <div 
+                      className="absolute inset-0 p-[2px] rounded-lg bg-gradient-to-r opacity-0 group-hover:opacity-100 transition-opacity duration-700 animate-pulse-slow z-0"
+                      style={{backgroundImage: `linear-gradient(45deg, ${colors.start}, ${colors.end}, ${colors.start})`}}
+                    ></div>
                     
-                    {/* Card top glow effect */}
-                    <div className="absolute -top-10 -left-10 w-32 h-32 bg-gradient-to-r opacity-0 group-hover:opacity-30 blur-2xl transition-opacity duration-700"
-                         style={{backgroundImage: `linear-gradient(45deg, ${colors.start}, ${colors.end})`}}></div>
+                    {/* Animated spotlight effect */}
+                    <div 
+                      className="absolute -inset-[150px] opacity-0 group-hover:opacity-40 group-hover:blur-xl transition-all duration-700 z-0"
+                      style={{
+                        background: `radial-gradient(circle, ${colors.start}50 0%, transparent 70%)`,
+                        transform: 'translateZ(0)',
+                        animation: 'spotlight-effect 4s ease infinite'
+                      }}
+                    ></div>
                     
-                    <CardHeader className="pb-2 relative z-10">
+                    <CardHeader className="pb-2 relative z-10 bg-[#161b22]/90">
                       <div className="flex items-center justify-between">
-                        <CardTitle className="text-xl text-white group-hover:bg-gradient-to-r group-hover:text-transparent group-hover:bg-clip-text transition-all duration-300" 
+                        <CardTitle className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r transition-all duration-300" 
                                 style={{backgroundImage: `linear-gradient(to right, ${colors.start}, ${colors.end})`}}>
                           <motion.span
                             initial={{ backgroundSize: '100% 0%' }}
@@ -156,7 +164,7 @@ const Skills = () => {
                           </motion.span>
                         </CardTitle>
                         <motion.span 
-                          className="text-2xl"
+                          className="text-3xl"
                           whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.2 }}
                           transition={{ duration: 0.5 }}
                         >
@@ -165,7 +173,7 @@ const Skills = () => {
                       </div>
                     </CardHeader>
                     
-                    <CardContent className="relative z-10">
+                    <CardContent className="relative z-10 bg-[#161b22]/90">
                       <motion.div 
                         className="flex flex-wrap gap-2"
                         initial="hidden"
@@ -196,33 +204,52 @@ const Skills = () => {
                             whileHover={{ 
                               scale: 1.1, 
                               rotate: [-1, 1, -1, 0], 
-                              boxShadow: `0 0 8px ${colors.start}`,
                               transition: { duration: 0.3 } 
                             }}
                           >
                             <Badge 
-                              className="bg-[#21262d] text-white hover:bg-gradient-to-r border border-[#30363d] transition-all duration-300 group-hover:shadow-glow"
+                              className="bg-[#21262d] text-white border border-[#30363d] transition-all duration-300 group-hover:shadow-[0_0_10px_rgba(0,0,0,0.1)] relative overflow-hidden"
                               style={{
-                                // Fixed: Removed the invalid TypeScript property '--hover-gradient'
-                                // Instead we'll manage the hover effect differently through classes
                                 '--glow-color': colors.start
                               } as React.CSSProperties}
                               onMouseOver={(e) => {
                                 e.currentTarget.style.backgroundImage = `linear-gradient(to right, ${colors.start}, ${colors.end})`;
+                                e.currentTarget.style.boxShadow = `0 0 10px ${colors.start}`;
                               }}
                               onMouseOut={(e) => {
                                 e.currentTarget.style.backgroundImage = '';
+                                e.currentTarget.style.boxShadow = '';
                               }}
                             >
+                              {/* Animated shine effect */}
+                              <span className="absolute inset-0 w-full h-full shine-effect"></span>
                               {skill}
                             </Badge>
                           </motion.div>
                         ))}
                       </motion.div>
 
-                      {/* Background spotlight effect */}
-                      <div className="absolute h-40 w-40 bg-gradient-to-r rounded-full opacity-0 group-hover:opacity-20 blur-xl transition-all duration-700 spotlight"
-                           style={{backgroundImage: `radial-gradient(circle, ${colors.start} 0%, transparent 70%)`}}></div>
+                      {/* Interactive particle background */}
+                      <div className="absolute bottom-0 left-0 w-full h-16 overflow-hidden opacity-30 pointer-events-none z-0">
+                        <div className="absolute w-full h-full">
+                          {Array.from({length: 5}).map((_, i) => (
+                            <div 
+                              key={i} 
+                              className="absolute rounded-full" 
+                              style={{
+                                width: `${Math.random() * 8 + 4}px`,
+                                height: `${Math.random() * 8 + 4}px`,
+                                left: `${Math.random() * 100}%`,
+                                bottom: `-20px`,
+                                background: `linear-gradient(to top, ${colors.start}, transparent)`,
+                                animation: `floatParticle ${Math.random() * 3 + 2}s linear infinite`,
+                                animationDelay: `${Math.random() * 2}s`,
+                                opacity: Math.random() * 0.5 + 0.3
+                              }}
+                            />
+                          ))}
+                        </div>
+                      </div>
                     </CardContent>
                   </Card>
                 </div>

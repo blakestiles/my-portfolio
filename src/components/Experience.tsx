@@ -14,7 +14,7 @@ const Experience = () => {
 
   const experiences = [
     {
-      company: "Boeing",
+      company: "BOEING",
       role: "Software Developer",
       period: "Aug 2023 - Aug 2024",
       highlights: [
@@ -29,7 +29,7 @@ const Experience = () => {
       color: "from-[#3FB27F] to-[#77E1B3]" // Green gradient
     },
     {
-      company: "Blocmatrix IT Solutions",
+      company: "BLOCMATRIX IT SOLUTIONS",
       role: "Software Developer Intern",
       period: "Feb 2023 - Jun 2023",
       highlights: [
@@ -43,7 +43,7 @@ const Experience = () => {
       color: "from-[#1F6FEB] to-[#58A6FF]" // Blue gradient
     },
     {
-      company: "Nullclass",
+      company: "NULLCLASS",
       role: "Web Developer Intern",
       period: "Oct 2022 - Dec 2022",
       highlights: [
@@ -57,7 +57,7 @@ const Experience = () => {
       color: "from-[#8957E5] to-[#D2A8FF]" // Purple gradient
     },
     {
-      company: "Deloitte",
+      company: "DELOITTE",
       role: "Virtual Experience Intern",
       period: "Aug 2022 - Sep 2022",
       highlights: [
@@ -197,7 +197,7 @@ const Experience = () => {
                         <CardHeader>
                           <div className="flex items-center gap-2 mb-1">
                             <Briefcase className="h-4 w-4" style={{color: colors.start}} />
-                            <span className="text-[#8b949e]">{exp.company}</span>
+                            <span className="text-[#8b949e] font-semibold">{exp.company}</span>
                           </div>
                           <CardTitle className="text-xl group-hover:bg-clip-text group-hover:text-transparent" 
                                      style={{backgroundImage: `linear-gradient(to right, ${colors.start}, ${colors.end})`}}>
