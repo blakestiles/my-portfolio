@@ -2,12 +2,14 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { motion } from 'framer-motion';
+import { School, Calendar, BookOpen, Award } from 'lucide-react';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 
 const About = () => {
   const [sectionRef, isInView] = useIntersectionObserver<HTMLElement>({
     threshold: 0.2,
-    triggerOnce: false
+    triggerOnce: false,
+    reappear: true
   });
 
   // Animation variants
@@ -42,6 +44,59 @@ const About = () => {
       } 
     })
   };
+  
+  const educationVariants = {
+    hidden: { opacity: 0, scale: 0.95 },
+    visible: (i: number) => ({ 
+      opacity: 1, 
+      scale: 1,
+      transition: { 
+        duration: 0.6, 
+        delay: i * 0.2,
+        ease: [0.4, 0.0, 0.2, 1] 
+      } 
+    })
+  };
+
+  const education = [
+    {
+      degree: "Master of Science in Computer Science",
+      institution: "California State University, Fullerton",
+      period: "Aug 2024 - Aug 2026",
+      details: [
+        "GPA: 3.9/4.0",
+        "Relevant Coursework: Artificial Intelligence, Database Management Systems, Algorithms, Advance Computer Networking."
+      ],
+      color: "from-[#1f6feb] to-[#58a6ff]" // Blue gradient
+    },
+    {
+      degree: "Bachelor of Engineering in Computer Science",
+      institution: "The National Institute of Engineering, Mysuru",
+      period: "Aug 2019 - Aug 2023",
+      details: [
+        "GPA: 3.5/4.0",
+        "Relevant Coursework: Operating Systems, Cloud Computing, Computer Networks, System Design, Software Engineering."
+      ],
+      color: "from-[#238636] to-[#3fb950]" // Green gradient
+    }
+  ];
+
+  const extractColors = (colorString) => {
+    if (!colorString) return { start: '#1f6feb', end: '#58a6ff' };
+    
+    try {
+      const fromMatch = colorString.match(/from-\[(.*?)\]/);
+      const toMatch = colorString.match(/to-\[(.*?)\]/);
+      
+      return {
+        start: fromMatch ? fromMatch[1] : '#1f6feb',
+        end: toMatch ? toMatch[1] : '#58a6ff'
+      };
+    } catch (error) {
+      console.error("Error extracting colors:", error);
+      return { start: '#1f6feb', end: '#58a6ff' };
+    }
+  };
 
   return (
     <section 
@@ -67,7 +122,13 @@ const About = () => {
           >
             <div className="relative">
               <div className="p-1 rounded-lg bg-gradient-to-r from-[#1f6feb] to-[#238636] shadow-xl">
-                <div className="aspect-square bg-[url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80')] bg-cover bg-center rounded-lg border border-[#30363d]"></div>
+                <div className="aspect-square bg-cover bg-center rounded-lg border border-[#30363d] overflow-hidden">
+                  <img 
+                    src="/lovable-uploads/a03692e5-c82d-4a3d-9867-8ccfcc8d132f.png" 
+                    alt="Profile" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
               </div>
               <motion.div 
                 className="absolute -bottom-4 -right-4 w-24 h-24 bg-[#238636]/10 rounded-full z-0"
@@ -114,16 +175,6 @@ const About = () => {
               animate={isInView ? "visible" : "hidden"}
               transition={{ delay: 0.1 }}
             >
-              I am a highly adaptable software engineering student pursuing a Master's degree in Computer Science at California State University, Fullerton, with strong fundamentals in distributed systems, cloud computing, data structures, and algorithms.
-            </motion.p>
-            
-            <motion.p 
-              className="text-[#8b949e] leading-relaxed"
-              variants={textVariants}
-              initial="hidden"
-              animate={isInView ? "visible" : "hidden"}
-              transition={{ delay: 0.2 }}
-            >
               My passion lies in contributing to large-scale, real-time systems by solving scalability bottlenecks, optimizing services, and deploying impactful features. I thrive in dynamic environments where collaboration and continuous learning are emphasized.
             </motion.p>
             
@@ -166,6 +217,111 @@ const About = () => {
             </div>
           </div>
         </div>
+        
+        {/* Education Section */}
+        <motion.div 
+          className="mt-16"
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ duration: 0.7 }}
+        >
+          <motion.h3 
+            className="text-2xl font-bold mb-8 text-center text-white"
+            variants={textVariants}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+          >
+            <span className="bg-gradient-to-r from-[#1f6feb] to-[#58a6ff] text-transparent bg-clip-text">Education</span>
+          </motion.h3>
+          
+          <div className="grid md:grid-cols-2 gap-6">
+            {education.map((edu, index) => {
+              const colors = extractColors(edu.color);
+              
+              return (
+                <motion.div 
+                  key={index}
+                  custom={index}
+                  variants={educationVariants}
+                  initial="hidden"
+                  animate={isInView ? "visible" : "hidden"}
+                  whileHover={{ y: -5 }}
+                  className="group"
+                >
+                  <Card className="repo-card h-full bg-[#0d1117] border-l-4 overflow-hidden relative hover:shadow-xl transition-all duration-500"
+                         style={{ borderLeftColor: colors.start }}>
+                    {/* Animated spotlight effect */}
+                    <div 
+                      className="absolute -inset-[150px] opacity-0 group-hover:opacity-40 group-hover:blur-xl transition-all duration-700 z-0"
+                      style={{
+                        background: `radial-gradient(circle, ${colors.start}50 0%, transparent 70%)`,
+                        transform: 'translateZ(0)',
+                        animation: 'spotlight-effect 4s ease infinite'
+                      }}
+                    />
+                    
+                    {/* Card Content */}
+                    <div className="p-6 relative z-10">
+                      <div className="flex items-center mb-4">
+                        <div className={`h-10 w-10 rounded-full bg-gradient-to-r ${edu.color} flex items-center justify-center text-white shadow-lg`}>
+                          <School className="h-5 w-5" />
+                        </div>
+                        <div className="ml-4">
+                          <h4 className="text-lg font-semibold text-transparent bg-clip-text bg-gradient-to-r transition-all duration-300"
+                              style={{backgroundImage: `linear-gradient(to right, ${colors.start}, ${colors.end})`}}>
+                            {edu.degree}
+                          </h4>
+                          <p className="text-[#8b949e]">{edu.institution}</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center mb-3 text-sm text-[#8b949e]">
+                        <Calendar className="h-4 w-4 mr-2 inline" />
+                        {edu.period}
+                      </div>
+                      
+                      <div className="space-y-2">
+                        {edu.details.map((detail, i) => (
+                          <motion.div 
+                            key={i}
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={isInView ? { opacity: 1, x: 0, transition: { delay: 0.5 + (index * 0.2) + (i * 0.1) } } : {}}
+                            className="flex items-start"
+                          >
+                            <BookOpen className="h-4 w-4 mr-2 text-[#8b949e] mt-1 shrink-0" />
+                            <p className="text-[#8b949e]">{detail}</p>
+                          </motion.div>
+                        ))}
+                      </div>
+                      
+                      {/* Achievement Badge */}
+                      <motion.div 
+                        className="absolute top-4 right-4"
+                        whileHover={{ scale: 1.2, rotate: [0, -10, 10, -10, 0] }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        <Award className="h-6 w-6" style={{color: colors.start}} />
+                      </motion.div>
+                      
+                      {/* Animated border glow on hover */}
+                      <motion.div 
+                        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                        animate={{ 
+                          boxShadow: [`0 0 0 1px ${colors.start}30`, `0 0 0 2px ${colors.start}40`, `0 0 0 1px ${colors.start}30`]
+                        }}
+                        transition={{ 
+                          duration: 2, 
+                          repeat: Infinity,
+                          repeatType: "reverse"
+                        }}
+                      />
+                    </div>
+                  </Card>
+                </motion.div>
+              );
+            })}
+          </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -30,13 +30,22 @@ export function ThemeProvider({
   storageKey = "vite-ui-theme",
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
-  );
+  // Get initial theme from localStorage or use defaultTheme
+  const [theme, setTheme] = useState<Theme>(() => {
+    try {
+      const storedTheme = localStorage.getItem(storageKey) as Theme | null;
+      return storedTheme || defaultTheme;
+    } catch (error) {
+      console.error("Error accessing localStorage:", error);
+      return defaultTheme;
+    }
+  });
 
+  // Apply theme class to root element
   useEffect(() => {
     const root = window.document.documentElement;
-
+    
+    // Remove existing theme classes
     root.classList.remove("light", "dark");
 
     if (theme === "system") {
@@ -44,18 +53,36 @@ export function ThemeProvider({
         .matches
         ? "dark"
         : "light";
-
+      
       root.classList.add(systemTheme);
-      return;
+      
+      // Listen for changes in system preferences
+      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      const handleChange = (e: MediaQueryListEvent) => {
+        const newTheme = e.matches ? "dark" : "light";
+        root.classList.remove("light", "dark");
+        root.classList.add(newTheme);
+      };
+      
+      mediaQuery.addEventListener("change", handleChange);
+      return () => mediaQuery.removeEventListener("change", handleChange);
+    } else {
+      root.classList.add(theme);
     }
-
-    root.classList.add(theme);
   }, [theme]);
+
+  // Save theme to localStorage when it changes
+  useEffect(() => {
+    try {
+      localStorage.setItem(storageKey, theme);
+    } catch (error) {
+      console.error("Error setting localStorage:", error);
+    }
+  }, [theme, storageKey]);
 
   const value = {
     theme,
     setTheme: (theme: Theme) => {
-      localStorage.setItem(storageKey, theme);
       setTheme(theme);
     },
   };

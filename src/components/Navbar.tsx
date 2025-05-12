@@ -1,228 +1,152 @@
 
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Menu, X, Github, Linkedin, Mail, Code } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
+import { Button } from './ui/button';
+import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useMediaQuery } from '@/hooks/use-mobile';
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState('hero');
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
-  // Handle smooth scrolling for navigation links
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
-    e.preventDefault();
-    const element = document.getElementById(sectionId);
-    if (element) {
-      // Close mobile menu if open
-      setIsOpen(false);
-      
-      // Scroll to the section with smooth behavior
-      window.scrollTo({
-        top: element.offsetTop - 70, // Adjust for navbar height
-        behavior: 'smooth'
-      });
-
-      // Update URL without page reload
-      window.history.pushState(null, '', `#${sectionId}`);
-      
-      // Update active section
-      setActiveSection(sectionId);
-    }
-  };
-
+  // Check if the page is scrolled
   useEffect(() => {
     const handleScroll = () => {
-      // Detect if page is scrolled for navbar styling
       if (window.scrollY > 10) {
-        setScrolled(true);
+        setIsScrolled(true);
       } else {
-        setScrolled(false);
-      }
-
-      // Update active section based on scroll position using Intersection Observer pattern
-      const sections = ['hero', 'about', 'experience', 'projects', 'skills', 'contact'];
-      for (const section of sections.reverse()) {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          if (rect.top <= 100) {
-            setActiveSection(section);
-            break;
-          }
-        }
+        setIsScrolled(false);
       }
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
-  // Check if there's a hash in URL on initial load and scroll to that section
+  // Close mobile menu when switching to desktop
   useEffect(() => {
-    const hash = window.location.hash.substring(1);
-    if (hash) {
-      const element = document.getElementById(hash);
-      if (element) {
-        setTimeout(() => {
-          window.scrollTo({
-            top: element.offsetTop - 70,
-            behavior: 'smooth'
-          });
-          setActiveSection(hash);
-        }, 100);
-      }
+    if (!isMobile && mobileMenuOpen) {
+      setMobileMenuOpen(false);
     }
-  }, []);
+  }, [isMobile, mobileMenuOpen]);
 
   const navLinks = [
-    { name: 'About', href: '#about', id: 'about' },
-    { name: 'Experience', href: '#experience', id: 'experience' },
-    { name: 'Projects', href: '#projects', id: 'projects' },
-    { name: 'Skills', href: '#skills', id: 'skills' },
-    { name: 'Contact', href: '#contact', id: 'contact' }
+    { name: 'About', href: '#about' },
+    { name: 'Experience', href: '#experience' },
+    { name: 'Projects', href: '#projects' },
+    { name: 'Skills', href: '#skills' },
+    { name: 'Contact', href: '#contact' },
   ];
 
   return (
-    <motion.nav 
-      className={`fixed w-full z-50 transition-all duration-300 ${
-        scrolled 
-          ? 'bg-[#0d1117]/95 backdrop-blur-md border-b border-[#30363d] shadow-md' 
-          : 'bg-transparent'
+    <header
+      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+        isScrolled ? 'bg-[#0d1117]/90 backdrop-blur-md shadow-md' : 'bg-transparent'
       }`}
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5, type: "spring", stiffness: 100 }}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <motion.div 
-            className="flex-shrink-0"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-          >
-            <Link to="/" className="flex items-center space-x-2">
-              <Code className="h-6 w-6 text-[#238636]" />
-              <span className="text-xl font-heading font-bold text-white">Sainath Gandhe</span>
-            </Link>
-          </motion.div>
-          
-          {/* Desktop menu */}
-          <div className="hidden md:flex md:items-center md:space-x-6">
-            {navLinks.map((link, i) => (
-              <motion.div 
-                key={link.name}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 * i }}
-              >
-                <a 
-                  href={link.href} 
-                  onClick={(e) => handleNavClick(e, link.id)}
-                  className={`transition-colors relative group text-sm ${
-                    activeSection === link.id 
-                      ? 'text-white font-medium' 
-                      : 'text-[#8b949e] hover:text-white'
-                  }`}
+      <nav className="container mx-auto px-6 py-4 flex justify-between items-center">
+        <a href="/" className="text-white font-bold text-xl relative group">
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#1f6feb] to-[#58a6ff] py-1">Portfolio</span>
+          <motion.span
+            className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#1f6feb] to-[#58a6ff]"
+            animate={{ width: ['0%', '100%', '0%'] }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              repeatDelay: 3
+            }}
+          />
+        </a>
+
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center space-x-1">
+          <ul className="flex space-x-1">
+            {navLinks.map((link) => (
+              <li key={link.name}>
+                <a
+                  href={link.href}
+                  className="px-3 py-2 text-[#c9d1d9] hover:text-white transition-colors relative group"
                 >
                   {link.name}
-                  <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-[#1f6feb] group-hover:w-full transition-all duration-300 ${
-                    activeSection === link.id ? 'w-full' : 'w-0'
-                  }`}></span>
+                  <span className="absolute left-0 bottom-0 w-full h-0.5 bg-[#1f6feb] transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
                 </a>
-              </motion.div>
+              </li>
             ))}
-          </div>
-
-          <motion.div 
-            className="hidden md:flex items-center space-x-3"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-          >
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub" 
-               className="text-[#8b949e] hover:text-white transition-transform hover:scale-110">
-              <Github className="h-5 w-5" />
-            </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" 
-               className="text-[#8b949e] hover:text-white transition-transform hover:scale-110">
-              <Linkedin className="h-5 w-5" />
-            </a>
-            <a href="mailto:gandhe.sainath@csu.fullerton.edu" aria-label="Email" 
-               className="text-[#8b949e] hover:text-white transition-transform hover:scale-110">
-              <Mail className="h-5 w-5" />
-            </a>
+          </ul>
+          
+          <div className="ml-2">
             <ThemeToggle />
-          </motion.div>
-
-          {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="ml-2 inline-flex items-center justify-center p-2 rounded-md text-[#8b949e] hover:text-white transition-colors"
-              aria-expanded="false"
-              aria-label="Toggle navigation menu"
-            >
-              <span className="sr-only">Open main menu</span>
-              {isOpen ? <X className="block h-6 w-6" /> : <Menu className="block h-6 w-6" />}
-            </button>
           </div>
-        </div>
-      </div>
 
-      {/* Mobile menu */}
+          <Button asChild className="ml-4 gh-button-primary">
+            <a href="#contact">Get In Touch</a>
+          </Button>
+        </div>
+
+        {/* Mobile Menu Button */}
+        <div className="md:hidden flex items-center">
+          <ThemeToggle />
+          
+          <Button
+            variant="ghost"
+            size="icon"
+            className="ml-2 text-white"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+          >
+            {mobileMenuOpen ? <X /> : <Menu />}
+          </Button>
+        </div>
+      </nav>
+
+      {/* Mobile Menu */}
       <AnimatePresence>
-        {isOpen && (
-          <motion.div 
-            className="md:hidden"
+        {mobileMenuOpen && (
+          <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
+            className="md:hidden bg-[#0d1117] border-t border-[#30363d]"
           >
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-[#30363d] bg-[#161b22]">
-              {navLinks.map((link, i) => (
-                <motion.div
-                  key={link.name}
+            <div className="container mx-auto px-6 py-4">
+              <ul className="space-y-3">
+                {navLinks.map((link) => (
+                  <motion.li
+                    key={link.name}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <a
+                      href={link.href}
+                      className="block py-2 text-[#c9d1d9] hover:text-white transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {link.name}
+                    </a>
+                  </motion.li>
+                ))}
+                <motion.li
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.1 * i }}
+                  transition={{ duration: 0.2, delay: 0.5 }}
                 >
-                  <a 
-                    href={link.href} 
-                    onClick={(e) => handleNavClick(e, link.id)} 
-                    className={`block px-3 py-2 rounded-md hover:bg-[#30363d] transition-colors ${
-                      activeSection === link.id 
-                        ? 'text-white bg-[#21262d]' 
-                        : 'text-[#8b949e]'
-                    }`}
-                  >
-                    {link.name}
-                  </a>
-                </motion.div>
-              ))}
-            </div>
-            <div className="flex justify-center space-x-6 py-4 bg-[#161b22] border-t border-[#30363d]">
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub" 
-                 className="text-[#8b949e] hover:text-white transition-transform hover:scale-110">
-                <Github className="h-5 w-5" />
-              </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" 
-                 className="text-[#8b949e] hover:text-white transition-transform hover:scale-110">
-                <Linkedin className="h-5 w-5" />
-              </a>
-              <a href="mailto:gandhe.sainath@csu.fullerton.edu" aria-label="Email" 
-                 className="text-[#8b949e] hover:text-white transition-transform hover:scale-110">
-                <Mail className="h-5 w-5" />
-              </a>
-              <ThemeToggle />
+                  <Button asChild className="w-full gh-button-primary mt-2">
+                    <a href="#contact" onClick={() => setMobileMenuOpen(false)}>
+                      Get In Touch
+                    </a>
+                  </Button>
+                </motion.li>
+              </ul>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.nav>
+    </header>
   );
 };
 

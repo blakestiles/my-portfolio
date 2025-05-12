@@ -92,7 +92,7 @@ const Hero = () => {
                 <div className="absolute inset-0 bg-gradient-to-r from-[#238636] to-[#1f6feb] rounded-full blur-md opacity-30 animate-pulse-subtle"></div>
                 <div className="h-32 w-32 rounded-full border-2 border-[#30363d] p-1 bg-[#161b22] overflow-hidden relative z-10">
                   <img 
-                    src="/lovable-uploads/d3a1f598-cc0f-4e00-a81a-17ee978bd9ca.png" 
+                    src="/lovable-uploads/a03692e5-c82d-4a3d-9867-8ccfcc8d132f.png" 
                     alt="Profile"
                     className="w-full h-full object-cover rounded-full"
                     loading="eager"

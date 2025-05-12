@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef, RefObject } from 'react';
 
 interface IntersectionObserverOptions {
@@ -21,9 +20,18 @@ export function useIntersectionObserver<T extends Element>({
   const ref = useRef<T>(null);
   const [isIntersecting, setIsIntersecting] = useState(false);
   const [wasIntersected, setWasIntersected] = useState(false);
+  
+  // Store observer reference to be able to disconnect it
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
+    // Disconnect any existing observer
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+    }
+    
+    // Create a new observer
+    observerRef.current = new IntersectionObserver(
       ([entry]) => {
         // Update state when element intersects viewport
         setIsIntersecting(entry.isIntersecting);
@@ -31,18 +39,21 @@ export function useIntersectionObserver<T extends Element>({
         // If element is intersecting, mark it as having been intersected
         if (entry.isIntersecting) {
           setWasIntersected(true);
-        }
-        
-        // If triggerOnce is true and element is intersecting, unobserve
-        if (triggerOnce && entry.isIntersecting && ref.current) {
-          observer.unobserve(ref.current);
-        }
-        
-        // If we don't want animations to reappear and the element was already intersected,
-        // unobserve after it leaves the viewport
-        if (!reappear && wasIntersected && !entry.isIntersecting && ref.current) {
-          observer.unobserve(ref.current);
-          setIsIntersecting(true); // Keep the state as "intersecting" to prevent re-animations
+          
+          // If triggerOnce is true and element is intersecting, unobserve
+          if (triggerOnce && ref.current) {
+            observerRef.current?.unobserve(ref.current);
+          }
+        } else {
+          // If reappear is false and element was already intersected, keep it as "intersecting"
+          // This prevents re-animations when the element is not in view
+          if (!reappear && wasIntersected) {
+            setIsIntersecting(true);
+          } else if (reappear) {
+            // If reappear is true, update isIntersecting to false when element leaves viewport
+            // This allows animations to trigger again when scrolling back to the element
+            setIsIntersecting(false);
+          }
         }
       },
       { threshold, rootMargin }
@@ -50,12 +61,12 @@ export function useIntersectionObserver<T extends Element>({
 
     const currentRef = ref.current;
     if (currentRef) {
-      observer.observe(currentRef);
+      observerRef.current.observe(currentRef);
     }
 
     return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
+      if (observerRef.current) {
+        observerRef.current.disconnect();
       }
     };
   }, [threshold, rootMargin, triggerOnce, reappear, wasIntersected]);

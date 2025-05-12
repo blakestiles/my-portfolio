@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -119,7 +120,7 @@ const Experience = () => {
   return (
     <section 
       id="experience" 
-      className="py-20 bg-[#161b22]"
+      className="py-20 bg-[#161b22] dark:bg-[#161b22] light:bg-[#f6f8fa]"
       ref={sectionRef}
     >
       <div className="section-container">
