@@ -5,6 +5,7 @@ interface IntersectionObserverOptions {
   threshold?: number;
   rootMargin?: string;
   triggerOnce?: boolean;
+  reappear?: boolean; // New option to control if animation should be retriggered
 }
 
 /**
@@ -14,20 +15,33 @@ interface IntersectionObserverOptions {
 export function useIntersectionObserver<T extends Element>({
   threshold = 0.1,
   rootMargin = '0px',
-  triggerOnce = false
+  triggerOnce = false,
+  reappear = true // By default, animations will retrigger when scrolling back into view
 }: IntersectionObserverOptions = {}): [RefObject<T>, boolean] {
   const ref = useRef<T>(null);
   const [isIntersecting, setIsIntersecting] = useState(false);
+  const wasIntersecting = useRef(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         // Update state when element intersects viewport
-        setIsIntersecting(entry.isIntersecting);
-        
-        // If triggerOnce is true and element is intersecting, unobserve
-        if (entry.isIntersecting && triggerOnce && ref.current) {
-          observer.unobserve(ref.current);
+        if (entry.isIntersecting) {
+          setIsIntersecting(true);
+          wasIntersecting.current = true;
+          
+          // If triggerOnce is true and element is intersecting, unobserve
+          if (triggerOnce && ref.current) {
+            observer.unobserve(ref.current);
+          }
+        } else {
+          // Element is no longer intersecting
+          if (reappear) {
+            setIsIntersecting(false);
+          } else if (!reappear && !wasIntersecting.current) {
+            // Only set to false if it hasn't been intersecting before and reappear is false
+            setIsIntersecting(false);
+          }
         }
       },
       { threshold, rootMargin }
@@ -43,7 +57,7 @@ export function useIntersectionObserver<T extends Element>({
         observer.unobserve(currentRef);
       }
     };
-  }, [threshold, rootMargin, triggerOnce]);
+  }, [threshold, rootMargin, triggerOnce, reappear]);
 
   return [ref, isIntersecting];
 }

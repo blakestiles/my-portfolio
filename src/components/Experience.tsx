@@ -25,7 +25,8 @@ const Experience = () => {
         "Implemented real-time data synchronization features in WBMS, allowing business teams to monitor wireless systems efficiently.",
         "Actively participated in Agile Scrum ceremonies to ensure continuous delivery of value."
       ],
-      technologies: ["SpringBoot", "Angular", "React", "Agile", "Testing"]
+      technologies: ["SpringBoot", "Angular", "React", "Agile", "Testing"],
+      color: "from-[#3FB27F] to-[#77E1B3]" // Green gradient
     },
     {
       company: "Blocmatrix IT Solutions",
@@ -38,7 +39,8 @@ const Experience = () => {
         "Participated in Agile ceremonies to drive team productivity and deliverables.",
         "Enhanced cross-functional collaboration by designing and implementing RESTful APIs."
       ],
-      technologies: ["AWS", "Kubernetes", "Python", "RESTful APIs", "DynamoDB", "Lambda"]
+      technologies: ["AWS", "Kubernetes", "Python", "RESTful APIs", "DynamoDB", "Lambda"],
+      color: "from-[#1F6FEB] to-[#58A6FF]" // Blue gradient
     },
     {
       company: "Nullclass",
@@ -51,7 +53,8 @@ const Experience = () => {
         "Utilized property-based testing tools such as QuickCheck to identify edge-case failures.",
         "Collaborated with UX teams to refine the user interface, increasing usability scores by 25%."
       ],
-      technologies: ["React", "Node.js", "Cloud Services", "UX Design", "Testing"]
+      technologies: ["React", "Node.js", "Cloud Services", "UX Design", "Testing"],
+      color: "from-[#8957E5] to-[#D2A8FF]" // Purple gradient
     },
     {
       company: "Deloitte",
@@ -64,7 +67,8 @@ const Experience = () => {
         "Documented intricate processes and developed a comprehensive knowledge base for team-wide use.",
         "Participated in Agile project workflows, contributing to sprint reviews and planning."
       ],
-      technologies: ["Python", "Blockchain", "Agile", "Documentation", "Financial Modeling"]
+      technologies: ["Python", "Blockchain", "Agile", "Documentation", "Financial Modeling"],
+      color: "from-[#F85149] to-[#FF7B72]" // Red gradient
     }
   ];
 
@@ -123,11 +127,13 @@ const Experience = () => {
                 custom={index}
                 variants={itemVariants}
                 className={`relative flex flex-col md:flex-row ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}
+                whileHover={{ scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 300 }}
               >
                 {/* Timeline dot with pulse animation */}
                 <div className="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 -translate-y-4">
                   <motion.div 
-                    className="h-4 w-4 rounded-full bg-[#238636] border-4 border-[#0d1117] z-10 relative"
+                    className={`h-4 w-4 rounded-full bg-gradient-to-r ${exp.color} border-4 border-[#0d1117] z-10 relative`}
                     animate={{ 
                       boxShadow: ['0 0 0 0 rgba(35, 134, 54, 0)', '0 0 0 8px rgba(35, 134, 54, 0.3)', '0 0 0 0 rgba(35, 134, 54, 0)']
                     }}
@@ -142,7 +148,7 @@ const Experience = () => {
                 {/* Date indicator */}
                 <div className="md:w-1/2 py-2 px-4 md:px-8 flex items-center">
                   <motion.div 
-                    className={`bg-[#21262d] text-[#c9d1d9] py-1 px-3 rounded-full text-sm inline-block ${index % 2 === 0 ? 'md:ml-auto' : ''}`}
+                    className={`bg-[#21262d] text-[#c9d1d9] py-1 px-3 rounded-full text-sm inline-block ${index % 2 === 0 ? 'md:ml-auto' : ''} shadow-lg`}
                     whileHover={{ scale: 1.05 }}
                     transition={{ type: 'spring', stiffness: 300 }}
                   >
@@ -155,14 +161,25 @@ const Experience = () => {
                   <motion.div
                     whileHover={{ y: -5 }}
                     transition={{ type: 'spring', stiffness: 300 }}
+                    className="group"
                   >
-                    <Card className="repo-card border border-l-[#238636] border-l-4">
+                    <Card className={`repo-card border-l-4 bg-gradient-to-br from-[#161b22] to-[#1c2129] hover:shadow-xl transition-all duration-300`}
+                         style={{ borderLeftColor: `var(--border-color, #238636)` }}
+                         onMouseEnter={(e) => e.currentTarget.style.setProperty('--border-color', `url(#gradient-${index})`)}
+                         onMouseLeave={(e) => e.currentTarget.style.setProperty('--border-color', '#238636')}>
+                      <svg width="0" height="0" className="absolute">
+                        <linearGradient id={`gradient-${index}`} x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" className={`text-${exp.color.split(' ')[1].split('-')[1]}`} />
+                          <stop offset="100%" className={`text-${exp.color.split(' ')[2].split('-')[1]}`} />
+                        </linearGradient>
+                      </svg>
                       <CardHeader>
                         <div className="flex items-center gap-2 mb-1">
-                          <Briefcase className="h-4 w-4 text-[#238636]" />
+                          <Briefcase className={`h-4 w-4 text-gradient-to-r ${exp.color}`} />
                           <span className="text-[#8b949e]">{exp.company}</span>
                         </div>
-                        <CardTitle className="text-xl">
+                        <CardTitle className="text-xl group-hover:text-gradient-to-r group-hover:bg-clip-text group-hover:text-transparent" 
+                                  style={{backgroundImage: `linear-gradient(to right, ${exp.color.replace('from-', '').replace('to-', '')})`}}>
                           {exp.role}
                         </CardTitle>
                       </CardHeader>
@@ -192,7 +209,7 @@ const Experience = () => {
                               viewport={{ once: true }}
                               transition={{ delay: i * 0.05 }}
                             >
-                              <Badge className="bg-[#21262d] text-[#c9d1d9] border border-[#30363d]">
+                              <Badge className={`bg-gradient-to-r ${exp.color} bg-opacity-10 text-white border border-[#30363d] hover:bg-opacity-30 transition-all duration-300`}>
                                 {tech}
                               </Badge>
                             </motion.div>
