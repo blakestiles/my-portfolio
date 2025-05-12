@@ -1,8 +1,9 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowDown, Github } from 'lucide-react';
+import { ArrowDown, Github, Terminal } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { TypeAnimation } from 'react-type-animation';
 
 const Hero = () => {
   const scrollToContact = () => {
@@ -76,85 +77,159 @@ const Hero = () => {
       />
       
       <div className="section-container">
-        <motion.div 
-          className="max-w-3xl mx-auto text-center"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <motion.div
-            className="mb-8 flex justify-center"
-            variants={itemVariants}
+        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-12">
+          <motion.div 
+            className="flex-1"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
           >
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-[#238636] to-[#1f6feb] rounded-full blur-md opacity-30 animate-pulse-subtle"></div>
-              <div className="h-32 w-32 rounded-full border-2 border-[#30363d] p-1 bg-[#161b22] overflow-hidden relative z-10">
-                <img 
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
-                  alt="Profile"
-                  className="w-full h-full object-cover rounded-full"
-                  loading="eager"
+            <motion.div
+              className="mb-8 flex justify-center lg:justify-start"
+              variants={itemVariants}
+            >
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-[#238636] to-[#1f6feb] rounded-full blur-md opacity-30 animate-pulse-subtle"></div>
+                <div className="h-32 w-32 rounded-full border-2 border-[#30363d] p-1 bg-[#161b22] overflow-hidden relative z-10">
+                  <img 
+                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                    alt="Profile"
+                    className="w-full h-full object-cover rounded-full"
+                    loading="eager"
+                  />
+                </div>
+              </div>
+            </motion.div>
+            
+            <motion.p 
+              variants={itemVariants}
+              className="inline-block bg-[#1f6feb]/10 text-[#1f6feb] px-3 py-1 rounded-full font-medium text-sm mb-4 lg:ml-0 mx-auto text-center lg:text-left"
+            >
+              Software Developer
+            </motion.p>
+            
+            <motion.h1 
+              variants={itemVariants}
+              className="mb-6 text-white text-center lg:text-left"
+            >
+              Hi, I'm <span className="gradient-text">Sainath Gandhe</span>
+            </motion.h1>
+            
+            <motion.p 
+              variants={itemVariants}
+              className="text-lg md:text-xl mb-8 text-[#8b949e] leading-relaxed text-center lg:text-left"
+            >
+              A passionate software engineering student with expertise in distributed systems, 
+              cloud computing, and full-stack development. I build scalable and efficient 
+              solutions to complex problems.
+            </motion.p>
+            
+            <motion.div 
+              variants={itemVariants}
+              className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4"
+            >
+              <Button 
+                size="lg" 
+                onClick={scrollToContact}
+                className="gh-button-primary transition-all duration-300 hover:scale-105 group"
+              >
+                <span className="flex items-center">
+                  <span>Get In Touch</span>
+                  <motion.span 
+                    className="ml-1 inline-block"
+                    animate={{ x: [0, 3, 0] }}
+                    transition={{ repeat: Infinity, repeatDelay: 1.5, duration: 0.5 }}
+                  >
+                    →
+                  </motion.span>
+                </span>
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline" 
+                asChild
+                className="gh-button transition-all duration-300 hover:scale-105 group"
+              >
+                <a href="#projects">
+                  <Github className="mr-2 h-4 w-4 group-hover:rotate-12 transition-transform" />
+                  <span>View My Work</span>
+                </a>
+              </Button>
+            </motion.div>
+          </motion.div>
+
+          {/* Code Editor Style Profile */}
+          <motion.div
+            className="flex-1"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.7 }}
+          >
+            <div className="bg-[#0d1117] rounded-lg border border-[#30363d] shadow-xl overflow-hidden">
+              <div className="flex items-center px-4 py-2 bg-[#161b22] border-b border-[#30363d]">
+                <div className="flex space-x-2">
+                  <div className="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
+                  <div className="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
+                  <div className="w-3 h-3 rounded-full bg-[#27c93f]"></div>
+                </div>
+                <div className="ml-2 flex items-center space-x-1 text-sm text-[#8b949e]">
+                  <Terminal size={14} />
+                  <span>developer.js</span>
+                </div>
+              </div>
+              <div className="font-mono text-sm p-5 overflow-hidden">
+                <div className="text-[#e34c26] mb-2">
+                  <span className="text-[#8b949e]">// Welcome to my portfolio</span>
+                </div>
+                
+                <TypeAnimation
+                  sequence={[
+                    `const profile = {
+  name: 'Sainath Gandhe',
+  title: 'Software Developer | Cloud Enthusiast | Problem Solver',
+  skills: [
+    'Java', 'Python', 'JavaScript', 'TypeScript',
+    'React', 'Node.js', 'Spring Boot', 'AWS', 'Azure'
+  ],
+  attributes: {
+    hardworker: true,
+    quickLearner: true,
+    problemSolver: true,
+    yearsOfExperience: 2
+  },
+  hireable: function() {
+    return (
+      this.hardworker &&
+      this.problemSolver &&
+      this.skills.length >= 5
+    );
+  }
+};`,
+                    1000
+                  ]}
+                  wrapper="div"
+                  cursor={true}
+                  repeat={0}
+                  style={{ 
+                    display: 'block',
+                    color: '#c9d1d9',
+                    whiteSpace: 'pre-wrap',
+                    lineHeight: '1.5' 
+                  }}
+                  className="language-javascript"
                 />
+                <div className="mt-4">
+                  <span className="text-[#1f6feb]">console</span>
+                  <span className="text-white">.</span>
+                  <span className="text-[#d2a8ff]">log</span>
+                  <span className="text-white">(</span>
+                  <span className="text-[#a5d6ff]">'Ready to collaborate?'</span>
+                  <span className="text-white">);</span>
+                </div>
               </div>
             </div>
           </motion.div>
-          
-          <motion.p 
-            variants={itemVariants}
-            className="inline-block bg-[#1f6feb]/10 text-[#1f6feb] px-3 py-1 rounded-full font-medium text-sm mb-4"
-          >
-            Software Developer
-          </motion.p>
-          
-          <motion.h1 
-            variants={itemVariants}
-            className="mb-6 text-white"
-          >
-            Hi, I'm <span className="gradient-text">Sainath Gandhe</span>
-          </motion.h1>
-          
-          <motion.p 
-            variants={itemVariants}
-            className="text-lg md:text-xl mb-8 text-[#8b949e] leading-relaxed"
-          >
-            A passionate software engineering student with expertise in distributed systems, 
-            cloud computing, and full-stack development. I build scalable and efficient 
-            solutions to complex problems.
-          </motion.p>
-          
-          <motion.div 
-            variants={itemVariants}
-            className="flex flex-col sm:flex-row justify-center gap-4"
-          >
-            <Button 
-              size="lg" 
-              onClick={scrollToContact}
-              className="gh-button-primary transition-all duration-300 hover:scale-105 group"
-            >
-              <span className="flex items-center">
-                <span>Get In Touch</span>
-                <motion.span 
-                  className="ml-1 inline-block"
-                  animate={{ x: [0, 3, 0] }}
-                  transition={{ repeat: Infinity, repeatDelay: 1.5, duration: 0.5 }}
-                >
-                  →
-                </motion.span>
-              </span>
-            </Button>
-            <Button 
-              size="lg" 
-              variant="outline" 
-              asChild
-              className="gh-button transition-all duration-300 hover:scale-105 group"
-            >
-              <a href="#projects">
-                <Github className="mr-2 h-4 w-4 group-hover:rotate-12 transition-transform" />
-                <span>View My Work</span>
-              </a>
-            </Button>
-          </motion.div>
-        </motion.div>
+        </div>
 
         <motion.div 
           className="absolute bottom-6 left-1/2 transform -translate-x-1/2"

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -9,7 +8,8 @@ import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 const Experience = () => {
   const [sectionRef, isInView] = useIntersectionObserver<HTMLElement>({
     threshold: 0.1,
-    triggerOnce: false
+    triggerOnce: false,
+    reappear: true
   });
 
   const experiences = [
@@ -103,12 +103,12 @@ const Experience = () => {
     if (!colorString) return defaultColors;
     
     try {
-      const fromMatch = colorString.match(/from-\[(.*?)\]/);
-      const toMatch = colorString.match(/to-\[(.*?)\]/);
+      const fromMatch = colorString && colorString.match(/from-\[(.*?)\]/);
+      const toMatch = colorString && colorString.match(/to-\[(.*?)\]/);
       
       return {
-        start: fromMatch ? fromMatch[1] : defaultColors.start,
-        end: toMatch ? toMatch[1] : defaultColors.end
+        start: fromMatch && fromMatch[1] ? fromMatch[1] : defaultColors.start,
+        end: toMatch && toMatch[1] ? toMatch[1] : defaultColors.end
       };
     } catch (error) {
       console.error("Error extracting colors:", error);
@@ -141,6 +141,7 @@ const Experience = () => {
             variants={containerVariants}
             initial="hidden"
             animate={isInView ? "show" : "hidden"}
+            key={isInView ? "view" : "hidden"}
           >
             {experiences.map((exp, index) => {
               // Safely extract colors with error handling
@@ -189,22 +190,17 @@ const Experience = () => {
                       className="group"
                     >
                       <Card className={`repo-card border-l-4 bg-gradient-to-br from-[#161b22] to-[#1c2129] hover:shadow-xl transition-all duration-300`}
-                          style={{ borderLeftColor: `var(--border-color, #238636)` }}
-                          onMouseEnter={(e) => e.currentTarget.style.setProperty('--border-color', `url(#gradient-${index})`)}
-                          onMouseLeave={(e) => e.currentTarget.style.setProperty('--border-color', '#238636')}>
-                        <svg width="0" height="0" className="absolute">
-                          <linearGradient id={`gradient-${index}`} x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" style={{ stopColor: colors.start }} />
-                            <stop offset="100%" style={{ stopColor: colors.end }} />
-                          </linearGradient>
-                        </svg>
+                          style={{ borderLeftColor: colors.start }}
+                          onMouseEnter={(e) => e.currentTarget.style.setProperty('--border-color', `linear-gradient(to bottom, ${colors.start}, ${colors.end})`)}
+                          onMouseLeave={(e) => e.currentTarget.style.setProperty('--border-color', colors.start)}>
+                        
                         <CardHeader>
                           <div className="flex items-center gap-2 mb-1">
-                            <Briefcase className={`h-4 w-4 text-gradient-to-r ${exp.color}`} />
+                            <Briefcase className="h-4 w-4" style={{color: colors.start}} />
                             <span className="text-[#8b949e]">{exp.company}</span>
                           </div>
-                          <CardTitle className="text-xl group-hover:text-gradient-to-r group-hover:bg-clip-text group-hover:text-transparent" 
-                                    style={{backgroundImage: `linear-gradient(to right, ${colors.start}, ${colors.end})`}}>
+                          <CardTitle className="text-xl group-hover:bg-clip-text group-hover:text-transparent" 
+                                     style={{backgroundImage: `linear-gradient(to right, ${colors.start}, ${colors.end})`}}>
                             {exp.role}
                           </CardTitle>
                         </CardHeader>
