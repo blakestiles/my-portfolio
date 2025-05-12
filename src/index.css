@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap');
 
 @tailwind base;
@@ -232,6 +233,11 @@
   .stagger-children.in-view > *:nth-child(3) { transition-delay: 0.3s; }
   .stagger-children.in-view > *:nth-child(4) { transition-delay: 0.4s; }
   .stagger-children.in-view > *:nth-child(5) { transition-delay: 0.5s; }
+  
+  /* Badge hover effect */
+  .badge-hover-gradient:hover {
+    background-image: var(--gradient-color);
+  }
 }
 
 @layer utilities {

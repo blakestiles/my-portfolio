@@ -20,6 +20,7 @@ export function useIntersectionObserver<T extends Element>({
 }: IntersectionObserverOptions = {}): [RefObject<T>, boolean] {
   const ref = useRef<T>(null);
   const [isIntersecting, setIsIntersecting] = useState(false);
+  const [wasIntersected, setWasIntersected] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -27,9 +28,21 @@ export function useIntersectionObserver<T extends Element>({
         // Update state when element intersects viewport
         setIsIntersecting(entry.isIntersecting);
         
+        // If element is intersecting, mark it as having been intersected
+        if (entry.isIntersecting) {
+          setWasIntersected(true);
+        }
+        
         // If triggerOnce is true and element is intersecting, unobserve
         if (triggerOnce && entry.isIntersecting && ref.current) {
           observer.unobserve(ref.current);
+        }
+        
+        // If we don't want animations to reappear and the element was already intersected,
+        // unobserve after it leaves the viewport
+        if (!reappear && wasIntersected && !entry.isIntersecting && ref.current) {
+          observer.unobserve(ref.current);
+          setIsIntersecting(true); // Keep the state as "intersecting" to prevent re-animations
         }
       },
       { threshold, rootMargin }
@@ -45,7 +58,7 @@ export function useIntersectionObserver<T extends Element>({
         observer.unobserve(currentRef);
       }
     };
-  }, [threshold, rootMargin, triggerOnce, reappear]);
+  }, [threshold, rootMargin, triggerOnce, reappear, wasIntersected]);
 
   return [ref, isIntersecting];
 }

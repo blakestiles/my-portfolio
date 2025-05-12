@@ -9,7 +9,7 @@ import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 const Skills = () => {
   const [sectionRef, isInView] = useIntersectionObserver<HTMLElement>({ 
     threshold: 0.1,
-    triggerOnce: false, // Set to false to allow re-triggering
+    triggerOnce: false,
     reappear: true
   });
 
@@ -203,9 +203,10 @@ const Skills = () => {
                             <Badge 
                               className="bg-[#21262d] text-white hover:bg-gradient-to-r border border-[#30363d] transition-all duration-300 group-hover:shadow-glow"
                               style={{
-                                '--hover-gradient': `linear-gradient(to right, ${colors.start}, ${colors.end})`,
+                                // Fixed: Removed the invalid TypeScript property '--hover-gradient'
+                                // Instead we'll manage the hover effect differently through classes
                                 '--glow-color': colors.start
-                              }}
+                              } as React.CSSProperties}
                               onMouseOver={(e) => {
                                 e.currentTarget.style.backgroundImage = `linear-gradient(to right, ${colors.start}, ${colors.end})`;
                               }}
