@@ -84,7 +84,7 @@ const Experience = () => {
 
   const itemVariants = {
     hidden: { opacity: 0, y: 50 },
-    show: (i: number) => ({
+    show: (i) => ({
       opacity: 1, 
       y: 0,
       transition: { 
@@ -93,6 +93,19 @@ const Experience = () => {
         delay: i * 0.1
       }
     })
+  };
+
+  // Helper function to extract and format gradient colors safely
+  const extractColors = (colorString) => {
+    if (!colorString) return { start: '#238636', end: '#238636' };
+    
+    const fromMatch = colorString.match(/from-\[(.*?)\]/);
+    const toMatch = colorString.match(/to-\[(.*?)\]/);
+    
+    return {
+      start: fromMatch ? fromMatch[1] : '#238636',
+      end: toMatch ? toMatch[1] : '#238636'
+    };
   };
 
   return (
@@ -121,106 +134,111 @@ const Experience = () => {
             initial="hidden"
             animate={isInView ? "show" : "hidden"}
           >
-            {experiences.map((exp, index) => (
-              <motion.div 
-                key={index}
-                custom={index}
-                variants={itemVariants}
-                className={`relative flex flex-col md:flex-row ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}
-                whileHover={{ scale: 1.02 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                {/* Timeline dot with pulse animation */}
-                <div className="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 -translate-y-4">
-                  <motion.div 
-                    className={`h-4 w-4 rounded-full bg-gradient-to-r ${exp.color} border-4 border-[#0d1117] z-10 relative`}
-                    animate={{ 
-                      boxShadow: ['0 0 0 0 rgba(35, 134, 54, 0)', '0 0 0 8px rgba(35, 134, 54, 0.3)', '0 0 0 0 rgba(35, 134, 54, 0)']
-                    }}
-                    transition={{ 
-                      duration: 2, 
-                      repeat: Infinity,
-                      repeatDelay: 1
-                    }}
-                  />
-                </div>
-                
-                {/* Date indicator */}
-                <div className="md:w-1/2 py-2 px-4 md:px-8 flex items-center">
-                  <motion.div 
-                    className={`bg-[#21262d] text-[#c9d1d9] py-1 px-3 rounded-full text-sm inline-block ${index % 2 === 0 ? 'md:ml-auto' : ''} shadow-lg`}
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ type: 'spring', stiffness: 300 }}
-                  >
-                    {exp.period}
-                  </motion.div>
-                </div>
-                
-                {/* Content card */}
-                <div className="md:w-1/2 py-2 px-4 md:px-8">
-                  <motion.div
-                    whileHover={{ y: -5 }}
-                    transition={{ type: 'spring', stiffness: 300 }}
-                    className="group"
-                  >
-                    <Card className={`repo-card border-l-4 bg-gradient-to-br from-[#161b22] to-[#1c2129] hover:shadow-xl transition-all duration-300`}
-                         style={{ borderLeftColor: `var(--border-color, #238636)` }}
-                         onMouseEnter={(e) => e.currentTarget.style.setProperty('--border-color', `url(#gradient-${index})`)}
-                         onMouseLeave={(e) => e.currentTarget.style.setProperty('--border-color', '#238636')}>
-                      <svg width="0" height="0" className="absolute">
-                        <linearGradient id={`gradient-${index}`} x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" className={`text-${exp.color.split(' ')[1].split('-')[1]}`} />
-                          <stop offset="100%" className={`text-${exp.color.split(' ')[2].split('-')[1]}`} />
-                        </linearGradient>
-                      </svg>
-                      <CardHeader>
-                        <div className="flex items-center gap-2 mb-1">
-                          <Briefcase className={`h-4 w-4 text-gradient-to-r ${exp.color}`} />
-                          <span className="text-[#8b949e]">{exp.company}</span>
-                        </div>
-                        <CardTitle className="text-xl group-hover:text-gradient-to-r group-hover:bg-clip-text group-hover:text-transparent" 
-                                  style={{backgroundImage: `linear-gradient(to right, ${exp.color.replace('from-', '').replace('to-', '')})`}}>
-                          {exp.role}
-                        </CardTitle>
-                      </CardHeader>
-                      
-                      <CardContent>
-                        <ul className="list-disc list-inside space-y-2 mb-4 text-[#8b949e]">
-                          {exp.highlights.map((highlight, i) => (
-                            <motion.li 
-                              key={i} 
-                              className="text-sm"
-                              initial={{ opacity: 0, x: -5 }}
-                              whileInView={{ opacity: 1, x: 0 }}
-                              viewport={{ once: true }}
-                              transition={{ delay: i * 0.1 }}
-                            >
-                              {highlight}
-                            </motion.li>
-                          ))}
-                        </ul>
+            {experiences.map((exp, index) => {
+              // Safely extract colors
+              const colors = extractColors(exp.color);
+              
+              return (
+                <motion.div 
+                  key={index}
+                  custom={index}
+                  variants={itemVariants}
+                  className={`relative flex flex-col md:flex-row ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  {/* Timeline dot with pulse animation */}
+                  <div className="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 -translate-y-4">
+                    <motion.div 
+                      className={`h-4 w-4 rounded-full bg-gradient-to-r ${exp.color} border-4 border-[#0d1117] z-10 relative`}
+                      animate={{ 
+                        boxShadow: ['0 0 0 0 rgba(35, 134, 54, 0)', '0 0 0 8px rgba(35, 134, 54, 0.3)', '0 0 0 0 rgba(35, 134, 54, 0)']
+                      }}
+                      transition={{ 
+                        duration: 2, 
+                        repeat: Infinity,
+                        repeatDelay: 1
+                      }}
+                    />
+                  </div>
+                  
+                  {/* Date indicator */}
+                  <div className="md:w-1/2 py-2 px-4 md:px-8 flex items-center">
+                    <motion.div 
+                      className={`bg-[#21262d] text-[#c9d1d9] py-1 px-3 rounded-full text-sm inline-block ${index % 2 === 0 ? 'md:ml-auto' : ''} shadow-lg`}
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ type: 'spring', stiffness: 300 }}
+                    >
+                      {exp.period}
+                    </motion.div>
+                  </div>
+                  
+                  {/* Content card */}
+                  <div className="md:w-1/2 py-2 px-4 md:px-8">
+                    <motion.div
+                      whileHover={{ y: -5 }}
+                      transition={{ type: 'spring', stiffness: 300 }}
+                      className="group"
+                    >
+                      <Card className={`repo-card border-l-4 bg-gradient-to-br from-[#161b22] to-[#1c2129] hover:shadow-xl transition-all duration-300`}
+                          style={{ borderLeftColor: `var(--border-color, #238636)` }}
+                          onMouseEnter={(e) => e.currentTarget.style.setProperty('--border-color', `url(#gradient-${index})`)}
+                          onMouseLeave={(e) => e.currentTarget.style.setProperty('--border-color', '#238636')}>
+                        <svg width="0" height="0" className="absolute">
+                          <linearGradient id={`gradient-${index}`} x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style={{ stopColor: colors.start }} />
+                            <stop offset="100%" style={{ stopColor: colors.end }} />
+                          </linearGradient>
+                        </svg>
+                        <CardHeader>
+                          <div className="flex items-center gap-2 mb-1">
+                            <Briefcase className={`h-4 w-4 text-gradient-to-r ${exp.color}`} />
+                            <span className="text-[#8b949e]">{exp.company}</span>
+                          </div>
+                          <CardTitle className="text-xl group-hover:text-gradient-to-r group-hover:bg-clip-text group-hover:text-transparent" 
+                                    style={{backgroundImage: `linear-gradient(to right, ${colors.start}, ${colors.end})`}}>
+                            {exp.role}
+                          </CardTitle>
+                        </CardHeader>
                         
-                        <div className="flex flex-wrap gap-2 mt-4">
-                          {exp.technologies.map((tech, i) => (
-                            <motion.div
-                              key={i}
-                              initial={{ opacity: 0, scale: 0.8 }}
-                              whileInView={{ opacity: 1, scale: 1 }}
-                              viewport={{ once: true }}
-                              transition={{ delay: i * 0.05 }}
-                            >
-                              <Badge className={`bg-gradient-to-r ${exp.color} bg-opacity-10 text-white border border-[#30363d] hover:bg-opacity-30 transition-all duration-300`}>
-                                {tech}
-                              </Badge>
-                            </motion.div>
-                          ))}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                </div>
-              </motion.div>
-            ))}
+                        <CardContent>
+                          <ul className="list-disc list-inside space-y-2 mb-4 text-[#8b949e]">
+                            {exp.highlights.map((highlight, i) => (
+                              <motion.li 
+                                key={i} 
+                                className="text-sm"
+                                initial={{ opacity: 0, x: -5 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: i * 0.1 }}
+                              >
+                                {highlight}
+                              </motion.li>
+                            ))}
+                          </ul>
+                          
+                          <div className="flex flex-wrap gap-2 mt-4">
+                            {exp.technologies.map((tech, i) => (
+                              <motion.div
+                                key={i}
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: i * 0.05 }}
+                              >
+                                <Badge className={`bg-gradient-to-r ${exp.color} bg-opacity-10 text-white border border-[#30363d] hover:bg-opacity-30 transition-all duration-300`}>
+                                  {tech}
+                                </Badge>
+                              </motion.div>
+                            ))}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  </div>
+                </motion.div>
+              );
+            })}
           </motion.div>
         </div>
       </div>
