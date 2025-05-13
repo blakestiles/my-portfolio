@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -154,8 +153,25 @@ export default {
                 'gradient-conic': 'conic-gradient(var(--tw-gradient-stops))',
                 'gradient-diagonal': 'linear-gradient(45deg, var(--tw-gradient-stops))',
                 'github-gradient': 'linear-gradient(180deg, #0d1117 0%, #161b22 100%)',
+            },
+            backfaceVisibility: {
+                hidden: 'hidden',
+                visible: 'visible',
             }
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [
+        require("tailwindcss-animate"),
+        function({ addUtilities }) {
+            const newUtilities = {
+                '.backface-visibility-hidden': {
+                    'backface-visibility': 'hidden',
+                },
+                '.backface-visibility-visible': {
+                    'backface-visibility': 'visible',
+                }
+            }
+            addUtilities(newUtilities)
+        }
+    ],
 } satisfies Config;
