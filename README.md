@@ -1,9 +1,9 @@
-Developer Portfolio
+💼 Blake Stiles – Developer Portfolio
 Welcome to my personal portfolio website, crafted to highlight my projects, skills, and experience as a developer. This site serves as a central hub for my professional presence online.
 
-Live Site: my-portfolio-xi-orcin-48.vercel.app
+🔗 Live Site: my-portfolio-xi-orcin-48.vercel.app
 
-Tech Stack
+🚀 Tech Stack
 This project leverages modern web development technologies to ensure a responsive and dynamic user experience:
 
 Framework: Vite for rapid development and optimized builds
@@ -14,7 +14,7 @@ Styling: Tailwind CSS for utility-first, responsive design
 
 Build Tools: Bun for fast JavaScript runtime and package management
 
-Project Structure
+📁 Project Structure
 The repository is organized as follows:
 
 perl
@@ -45,16 +45,16 @@ bun install
 Start the development server:
 
 bun run dev
+
 Build for production:
 
 bun run build
-
-Deployment
+🌐 Deployment
 The portfolio is deployed using Vercel, which provides seamless integration with GitHub for continuous deployment.
 
-License
+📄 License
 This project is licensed under the MIT License.
 
-Acknowledgments
+🙌 Acknowledgments
 Special thanks to the open-source community and the developers of the tools and libraries that made this project possible.
 
