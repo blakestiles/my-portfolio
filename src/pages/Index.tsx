@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { motion, useAnimationControls } from 'framer-motion';
 import Navbar from '@/components/Navbar';

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { Menu, X, FileText } from 'lucide-react';
@@ -81,10 +80,6 @@ const Navbar = () => {
               </li>
             ))}
           </ul>
-
-          <Button asChild className="ml-4 gh-button-primary">
-            <a href="#contact">Get In Touch</a>
-          </Button>
           
           <Button 
             variant="outline" 
@@ -137,17 +132,6 @@ const Navbar = () => {
                     </a>
                   </motion.li>
                 ))}
-                <motion.li
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.2, delay: 0.5 }}
-                >
-                  <Button asChild className="w-full gh-button-primary mt-2">
-                    <a href="#contact" onClick={() => setMobileMenuOpen(false)}>
-                      Get In Touch
-                    </a>
-                  </Button>
-                </motion.li>
                 <motion.li
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}

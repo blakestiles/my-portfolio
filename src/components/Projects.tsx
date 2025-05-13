@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -16,51 +15,51 @@ const Projects = () => {
   const projects = [
     {
       title: "Dynamic Web Application for Inventory Management",
-      description: "A full-stack inventory management application using Node.js and React that streamlines inventory tracking processes for small businesses, improving operational efficiency by 25%.",
+      description: "Engineered a full-stack inventory management app with Node.js and React, enabling secure, real-time inventory tracking, user authentication, and role-based access. Improved efficiency by 25% and user satisfaction by 20% for small businesses.",
       tech: ["Node.js", "React", "RESTful API", "Authentication", "CRUD"],
       image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
       liveDemo: "#",
-      github: "#",
+      github: "https://github.com/blakestiles",
       languageColor: "#f1e05a", // JavaScript color
       stars: 24
     },
     {
       title: "Personalized Recommendation Engine for E-Commerce",
-      description: "A recommendation engine using Python and collaborative filtering algorithms to deliver personalized user experiences. Enhanced recommendation accuracy by 15% through GenAI models.",
+      description: "Developed a Python-based recommendation engine with collaborative filtering and GenAI, boosting accuracy by 15%. Integrated deep learning, RESTful API, and AWS Lambda for scalable, personalized e-commerce experiences.",
       tech: ["Python", "Deep Learning", "AWS Lambda", "GenAI", "RESTful API"],
       image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
       liveDemo: "#",
-      github: "#",
+      github: "https://github.com/blakestiles",
       languageColor: "#3572A5", // Python color
       stars: 42
     },
     {
       title: "Automated Code Analysis Tool",
-      description: "A static code analysis tool using Python and abstract syntax trees, identifying vulnerabilities and ensuring adherence to best coding practices in distributed systems.",
+      description: "Built a Python static code analysis tool with advanced type-checking and D3.js dashboard, reducing runtime errors by 40%. Integrated with Jenkins for automated CI and real-time code quality insights.",
       tech: ["Python", "AST", "D3.js", "Jenkins", "CI/CD"],
       image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
       liveDemo: "#",
-      github: "#",
+      github: "https://github.com/blakestiles",
       languageColor: "#3572A5", // Python color
       stars: 31
     },
     {
       title: "Stock Price Prediction using Machine Learning",
-      description: "Applied LSTM and CNN to predict stock price movements, aiming to improve financial decision-making by forecasting stock trends based on historical data.",
+      description: "Applied LSTM and CNN to predict stock prices, integrating economic indicators for improved accuracy. Demonstrated that ML models and external data can enhance financial forecasting for investors.",
       tech: ["Machine Learning", "LSTM", "CNN", "Financial Analysis", "Data Science"],
       image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
-      liveDemo: "#",
-      github: "#",
+      liveDemo: "https://ijsrem.com/download/stock-price-prediction-using-machine-learning-an-unprecedented-approach/",
+      github: "https://github.com/blakestiles",
       languageColor: "#DA5B0B", // Jupyter Notebook color
       stars: 56
     },
     {
       title: "G-Notify - A Personalized Mass Emailer",
-      description: "A scalable mass mailing system enabling personalized content delivery to large audiences, optimizing email engagement through tailored messaging.",
+      description: "Created G-Notify, a scalable mass emailer for personalized, segmented content delivery. Increased engagement by 40% and ensured high-volume, cost-effective communication for organizations.",
       tech: ["Email Systems", "Personalization", "Scalable Architecture", "UX/UI"],
       image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
-      liveDemo: "#",
-      github: "#",
+      liveDemo: "https://www.irjmets.com/uploadedfiles/paper//issue_6_june_2023/42238/final/fin_irjmets1687027562.pdf",
+      github: "https://github.com/blakestiles",
       languageColor: "#2b7489", // TypeScript color
       stars: 19
     }
@@ -141,12 +140,6 @@ const Projects = () => {
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.4 }}
                   />
-                  
-                  {/* Star indicator */}
-                  <div className="absolute top-3 right-3 z-20 flex items-center gap-1 bg-black/50 px-2 py-1 rounded-full backdrop-blur-sm">
-                    <Star className="h-3 w-3 text-yellow-400 fill-yellow-400" />
-                    <span className="text-xs font-medium text-white">{project.stars}</span>
-                  </div>
                 </div>
                 
                 <CardHeader className="pb-2 relative">
@@ -198,31 +191,8 @@ const Projects = () => {
                 </CardHeader>
                 
                 <CardContent className="flex-grow">
-                  <p className="text-[#8b949e] dark:text-[#8b949e] light:text-[#57606a] text-sm line-clamp-3">{project.description}</p>
+                  <p className="text-[#8b949e] dark:text-[#8b949e] light:text-[#57606a] text-sm">{project.description}</p>
                 </CardContent>
-                
-                <CardFooter className="flex gap-4">
-                  <Button variant="outline" size="sm" asChild className="gh-button flex-1 group">
-                    <a href={project.github} target="_blank" rel="noopener noreferrer">
-                      <Github className="h-4 w-4 mr-2 group-hover:rotate-12 transition-transform" /> 
-                      Repository
-                    </a>
-                  </Button>
-                  <Button size="sm" asChild className="gh-button-primary flex-1 group relative overflow-hidden">
-                    <a href={project.liveDemo} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center">
-                      <span className="relative z-10 flex items-center">
-                        <Link className="h-4 w-4 mr-2 group-hover:rotate-12 transition-transform" />
-                        Live Demo
-                      </span>
-                      <motion.span 
-                        className="absolute inset-0 bg-white/20 -z-0"
-                        initial={{ x: "-100%", opacity: 0.5 }}
-                        whileHover={{ x: "100%", opacity: 0.2 }}
-                        transition={{ duration: 0.6 }}
-                      />
-                    </a>
-                  </Button>
-                </CardFooter>
               </Card>
             </motion.div>
           ))}

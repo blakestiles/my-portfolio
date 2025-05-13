@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowDown, Github, Terminal } from 'lucide-react';
@@ -141,7 +140,7 @@ const Hero = () => {
                 asChild
                 className="gh-button transition-all duration-300 hover:scale-105 group"
               >
-                <a href="#projects">
+                <a href="https://github.com/blakestiles" target="_blank" rel="noopener noreferrer">
                   <Github className="mr-2 h-4 w-4 group-hover:rotate-12 transition-transform" />
                   <span>View My Work</span>
                 </a>

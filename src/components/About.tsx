@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { motion } from 'framer-motion';
@@ -133,60 +132,13 @@ const About = () => {
             className="perspective-1000"
           >
             <div className="relative transform-3d hover:rotate-y-15 transition-all duration-700">
-              <motion.div 
-                className="p-1 rounded-lg bg-gradient-to-r from-[#1f6feb] to-[#238636] shadow-xl"
-                whileHover={{ 
-                  boxShadow: "0 0 25px rgba(31, 111, 235, 0.6), 0 0 25px rgba(35, 134, 54, 0.6)"
-                }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="aspect-square bg-cover bg-center rounded-lg border border-[#30363d] overflow-hidden">
-                  <img 
-                    src="/lovable-uploads/52b0acc4-5c41-4817-9737-874d9163cf63.png" 
-                    alt="Profile" 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </motion.div>
-              
-              {/* Animated orbs and particles */}
-              <motion.div 
-                className="absolute -bottom-4 -right-4 w-24 h-24 bg-[#238636]/10 rounded-full z-0"
-                variants={orbVariants}
-                animate="animate"
-              />
-              <motion.div 
-                className="absolute -top-4 -left-4 w-12 h-12 bg-[#1f6feb]/10 rounded-full z-0"
-                variants={orbVariants}
-                animate="animate"
-              />
-              <motion.div 
-                className="absolute top-1/4 right-0 w-3 h-3 bg-[#1f6feb] rounded-full"
-                animate={{
-                  y: [0, 30, 0],
-                  opacity: [0.2, 1, 0.2],
-                  scale: [1, 1.2, 1]
-                }}
-                transition={{
-                  duration: 5,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              />
-              <motion.div 
-                className="absolute bottom-1/3 left-0 w-2 h-2 bg-[#238636] rounded-full"
-                animate={{
-                  y: [0, -20, 0],
-                  opacity: [0.3, 1, 0.3],
-                  scale: [1, 1.3, 1]
-                }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: 1
-                }}
-              />
+              <div className="aspect-square bg-contain bg-top rounded-lg border border-[#30363d] overflow-hidden">
+                <img 
+                  src="/lovable-uploads/52b0acc4-5c41-4817-9737-874d9163cf63.png" 
+                  alt="Profile" 
+                  className="w-full h-full object-contain object-top"
+                />
+              </div>
             </div>
           </motion.div>
           
