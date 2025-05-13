@@ -3,7 +3,7 @@ import React from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Github, Link } from 'lucide-react';
+import { Github, Link, ArrowUpRight, Star } from 'lucide-react';
 import { motion } from 'framer-motion';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 
@@ -21,7 +21,8 @@ const Projects = () => {
       image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
       liveDemo: "#",
       github: "#",
-      languageColor: "#f1e05a" // JavaScript color
+      languageColor: "#f1e05a", // JavaScript color
+      stars: 24
     },
     {
       title: "Personalized Recommendation Engine for E-Commerce",
@@ -30,7 +31,8 @@ const Projects = () => {
       image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
       liveDemo: "#",
       github: "#",
-      languageColor: "#3572A5" // Python color
+      languageColor: "#3572A5", // Python color
+      stars: 42
     },
     {
       title: "Automated Code Analysis Tool",
@@ -39,7 +41,8 @@ const Projects = () => {
       image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
       liveDemo: "#",
       github: "#",
-      languageColor: "#3572A5" // Python color
+      languageColor: "#3572A5", // Python color
+      stars: 31
     },
     {
       title: "Stock Price Prediction using Machine Learning",
@@ -48,7 +51,8 @@ const Projects = () => {
       image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
       liveDemo: "#",
       github: "#",
-      languageColor: "#DA5B0B" // Jupyter Notebook color
+      languageColor: "#DA5B0B", // Jupyter Notebook color
+      stars: 56
     },
     {
       title: "G-Notify - A Personalized Mass Emailer",
@@ -57,7 +61,8 @@ const Projects = () => {
       image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
       liveDemo: "#",
       github: "#",
-      languageColor: "#2b7489" // TypeScript color
+      languageColor: "#2b7489", // TypeScript color
+      stars: 19
     }
   ];
 
@@ -86,7 +91,7 @@ const Projects = () => {
   return (
     <section 
       id="projects" 
-      className="py-20" 
+      className="py-20 dark:bg-[#0d1117] light:bg-white" 
       ref={sectionRef}
     >
       <div className="section-container">
@@ -109,30 +114,60 @@ const Projects = () => {
             <motion.div
               key={index}
               variants={cardVariants}
-              className="h-full"
+              className="h-full transform-gpu"
+              whileHover={{ 
+                y: -10,
+                transition: { duration: 0.3, ease: "easeOut" }
+              }}
             >
-              <Card className="repo-card h-full flex flex-col">
-                <div className="h-48 overflow-hidden rounded-t-md">
+              <Card className="repo-card h-full flex flex-col overflow-hidden border-b-4 relative"
+                    style={{ borderBottomColor: project.languageColor }}>
+                {/* Glow effect on hover */}
+                <div 
+                  className="absolute inset-0 opacity-0 group-hover:opacity-10 bg-gradient-to-tr"
+                  style={{ backgroundImage: `linear-gradient(to top right, ${project.languageColor}, transparent)` }}
+                />
+                
+                <div className="h-48 overflow-hidden relative group">
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 opacity-60 group-hover:opacity-40 transition-opacity"
+                  />
+                  
                   <motion.img 
                     src={project.image} 
                     alt={project.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-transform duration-700 ease-in-out"
                     loading="lazy"
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.4 }}
                   />
+                  
+                  {/* Star indicator */}
+                  <div className="absolute top-3 right-3 z-20 flex items-center gap-1 bg-black/50 px-2 py-1 rounded-full backdrop-blur-sm">
+                    <Star className="h-3 w-3 text-yellow-400 fill-yellow-400" />
+                    <span className="text-xs font-medium text-white">{project.stars}</span>
+                  </div>
                 </div>
-                <CardHeader className="pb-2">
+                
+                <CardHeader className="pb-2 relative">
                   <div className="flex items-center mb-2">
                     <div 
                       className="w-3 h-3 rounded-full mr-2" 
                       style={{ backgroundColor: project.languageColor }}
                     ></div>
-                    <span className="text-[#8b949e] text-xs">{project.tech[0]}</span>
+                    <span className="text-[#8b949e] dark:text-[#8b949e] light:text-[#57606a] text-xs">{project.tech[0]}</span>
                   </div>
-                  <CardTitle className="text-xl hover:text-[#1f6feb] transition-colors">
+                  <CardTitle className="text-xl hover:text-[#1f6feb] transition-colors flex items-start gap-1">
                     {project.title}
+                    <motion.div
+                      initial={{ scale: 0, rotate: -45 }}
+                      animate={{ scale: 1, rotate: 0 }}
+                      transition={{ delay: 0.5 + index * 0.1, duration: 0.3, type: "spring" }}
+                    >
+                      <ArrowUpRight className="h-4 w-4 mt-1 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </motion.div>
                   </CardTitle>
+                  
                   <div className="flex flex-wrap gap-2 my-2">
                     {project.tech.slice(0, 3).map((tech, i) => (
                       <motion.div
@@ -142,7 +177,7 @@ const Projects = () => {
                         viewport={{ once: true }}
                         transition={{ delay: i * 0.05 }}
                       >
-                        <Badge variant="outline" className="text-xs bg-[#21262d] text-[#c9d1d9] border-[#30363d]">
+                        <Badge variant="outline" className="text-xs dark:bg-[#21262d] dark:text-[#c9d1d9] dark:border-[#30363d] light:bg-[#f6f8fa] light:text-[#24292f] light:border-[#d0d7de] transition-colors duration-300 hover:bg-[#30363d]">
                           {tech}
                         </Badge>
                       </motion.div>
@@ -154,16 +189,18 @@ const Projects = () => {
                         viewport={{ once: true }}
                         transition={{ delay: 0.15 }}
                       >
-                        <Badge variant="outline" className="text-xs bg-[#21262d] text-[#c9d1d9] border-[#30363d]">
+                        <Badge variant="outline" className="text-xs dark:bg-[#21262d] dark:text-[#c9d1d9] dark:border-[#30363d] light:bg-[#f6f8fa] light:text-[#24292f] light:border-[#d0d7de]">
                           +{project.tech.length - 3}
                         </Badge>
                       </motion.div>
                     )}
                   </div>
                 </CardHeader>
+                
                 <CardContent className="flex-grow">
-                  <p className="text-[#8b949e] text-sm">{project.description}</p>
+                  <p className="text-[#8b949e] dark:text-[#8b949e] light:text-[#57606a] text-sm line-clamp-3">{project.description}</p>
                 </CardContent>
+                
                 <CardFooter className="flex gap-4">
                   <Button variant="outline" size="sm" asChild className="gh-button flex-1 group">
                     <a href={project.github} target="_blank" rel="noopener noreferrer">
@@ -171,10 +208,18 @@ const Projects = () => {
                       Repository
                     </a>
                   </Button>
-                  <Button size="sm" asChild className="gh-button-primary flex-1 group">
-                    <a href={project.liveDemo} target="_blank" rel="noopener noreferrer">
-                      <Link className="h-4 w-4 mr-2 group-hover:rotate-12 transition-transform" />
-                      Live Demo
+                  <Button size="sm" asChild className="gh-button-primary flex-1 group relative overflow-hidden">
+                    <a href={project.liveDemo} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center">
+                      <span className="relative z-10 flex items-center">
+                        <Link className="h-4 w-4 mr-2 group-hover:rotate-12 transition-transform" />
+                        Live Demo
+                      </span>
+                      <motion.span 
+                        className="absolute inset-0 bg-white/20 -z-0"
+                        initial={{ x: "-100%", opacity: 0.5 }}
+                        whileHover={{ x: "100%", opacity: 0.2 }}
+                        transition={{ duration: 0.6 }}
+                      />
                     </a>
                   </Button>
                 </CardFooter>

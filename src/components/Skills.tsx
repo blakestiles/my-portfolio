@@ -16,43 +16,79 @@ const Skills = () => {
   const skillCategories = [
     {
       title: "Programming Languages",
-      skills: ["Java", "Python", "C++", "TypeScript", "JavaScript", "HTML5", "CSS3", "C#"],
-      icon: "🧠",
+      skills: [
+        { name: "JavaScript", icon: "/skills/javascript.svg" },
+        { name: "TypeScript", icon: "/skills/typescript.svg" },
+        { name: "Python", icon: "/skills/python.svg" },
+        { name: "Java", icon: "/skills/java.svg" },
+        { name: "C++", icon: "/skills/cpp.svg" },
+        { name: "HTML5", icon: "/skills/html.svg" },
+        { name: "CSS3", icon: "/skills/css.svg" },
+        { name: "C#", icon: "/skills/csharp.svg" }
+      ],
       color: "from-[#8957E5] to-[#D2A8FF]", // Purple gradient
       delay: 0
     },
     {
       title: "Frameworks & Libraries",
-      skills: ["React", ".NET", "Node.js", "Express.js", "Spring Boot", "Angular", "Flask"],
+      skills: [
+        { name: "React", icon: "/skills/react.svg" },
+        { name: ".NET", icon: "/skills/dotnet.svg" },
+        { name: "Node.js", icon: "/skills/nodejs.svg" },
+        { name: "Express.js", icon: "/skills/express.svg" },
+        { name: "Spring Boot", icon: "/skills/spring.svg" },
+        { name: "Angular", icon: "/skills/angular.svg" },
+        { name: "Flask", icon: "/skills/flask.svg" }
+      ],
       icon: "🛠️",
       color: "from-[#1F6FEB] to-[#58A6FF]", // Blue gradient
       delay: 0.1
     },
     {
       title: "Database Management",
-      skills: ["SQL", "PostgreSQL", "MongoDB"],
-      icon: "💾",
+      skills: [
+        { name: "SQL", icon: "/skills/sql.svg" },
+        { name: "PostgreSQL", icon: "/skills/postgresql.svg" },
+        { name: "MongoDB", icon: "/skills/mongodb.svg" }
+      ],
       color: "from-[#3FB27F] to-[#77E1B3]", // Green gradient
       delay: 0.2
     },
     {
       title: "Software Development",
-      skills: ["RESTful APIs", "OOP", "Data Structures & Algorithms", "Agile/Scrum", "Unit Testing", "TDD", "API Development"],
-      icon: "🔄",
+      skills: [
+        { name: "RESTful APIs", icon: "/skills/api.svg" },
+        { name: "OOP", icon: "/skills/oop.svg" },
+        { name: "Data Structures", icon: "/skills/data-structure.svg" },
+        { name: "Agile/Scrum", icon: "/skills/agile.svg" },
+        { name: "Unit Testing", icon: "/skills/testing.svg" },
+        { name: "TDD", icon: "/skills/tdd.svg" },
+        { name: "API Development", icon: "/skills/api-dev.svg" }
+      ],
       color: "from-[#F85149] to-[#FF7B72]", // Red gradient
       delay: 0.3
     },
     {
       title: "Cloud Platforms",
-      skills: ["AWS (Lambda, EC2, S3)", "Azure"],
-      icon: "☁️",
+      skills: [
+        { name: "AWS", icon: "/skills/aws.svg" },
+        { name: "Azure", icon: "/skills/azure.svg" }
+      ],
       color: "from-[#F97316] to-[#FDBA74]", // Orange gradient
       delay: 0.4
     },
     {
       title: "Tools",
-      skills: ["CI/CD", "JIRA", "Microsoft Office", "Jenkins", "Linux/Unix", "Docker", "Kubernetes", "Git"],
-      icon: "🔧",
+      skills: [
+        { name: "CI/CD", icon: "/skills/cicd.svg" },
+        { name: "JIRA", icon: "/skills/jira.svg" },
+        { name: "Office", icon: "/skills/office.svg" },
+        { name: "Jenkins", icon: "/skills/jenkins.svg" },
+        { name: "Linux", icon: "/skills/linux.svg" },
+        { name: "Docker", icon: "/skills/docker.svg" },
+        { name: "Kubernetes", icon: "/skills/kubernetes.svg" },
+        { name: "Git", icon: "/skills/git.svg" }
+      ],
       color: "from-[#6E7681] to-[#AFB8C1]", // Gray gradient
       delay: 0.5
     }
@@ -88,7 +124,7 @@ const Skills = () => {
   return (
     <section 
       id="skills" 
-      className="py-20 bg-[#161b22]"
+      className="py-20 bg-[#161b22] dark:bg-[#161b22] light:bg-[#f6f8fa]"
       ref={sectionRef}
     >
       <div className="section-container">
@@ -132,9 +168,8 @@ const Skills = () => {
                 } : { opacity: 0, y: 50 }}
                 className="relative"
               >
-                {/* Enhanced 3D Card with glass morphism and neon effects */}
                 <div className="perspective-1000">
-                  <Card className="repo-card h-full overflow-hidden relative group transform transition-all duration-500 hover:shadow-2xl backdrop-blur-sm bg-[#161b22]/80 border border-[#30363d] hover:border-opacity-0">
+                  <Card className="repo-card dark:bg-[#0d1117] light:bg-white h-full overflow-hidden relative group transform transition-all duration-500 hover:shadow-2xl backdrop-blur-sm bg-opacity-80 border border-[#30363d] hover:border-opacity-0">
                     {/* Animated gradient border */}
                     <div 
                       className="absolute inset-0 p-[2px] rounded-lg bg-gradient-to-r opacity-0 group-hover:opacity-100 transition-opacity duration-700 animate-pulse-slow z-0"
@@ -151,7 +186,7 @@ const Skills = () => {
                       }}
                     ></div>
                     
-                    <CardHeader className="pb-2 relative z-10 bg-[#161b22]/90">
+                    <CardHeader className="pb-2 relative z-10 dark:bg-[#0d1117]/90 light:bg-white">
                       <div className="flex items-center justify-between">
                         <CardTitle className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r transition-all duration-300" 
                                 style={{backgroundImage: `linear-gradient(to right, ${colors.start}, ${colors.end})`}}>
@@ -163,19 +198,21 @@ const Skills = () => {
                             {category.title}
                           </motion.span>
                         </CardTitle>
-                        <motion.span 
-                          className="text-3xl"
-                          whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.2 }}
-                          transition={{ duration: 0.5 }}
-                        >
-                          {category.icon}
-                        </motion.span>
+                        {category.icon && (
+                          <motion.span 
+                            className="text-3xl"
+                            whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.2 }}
+                            transition={{ duration: 0.5 }}
+                          >
+                            {category.icon}
+                          </motion.span>
+                        )}
                       </div>
                     </CardHeader>
                     
-                    <CardContent className="relative z-10 bg-[#161b22]/90">
+                    <CardContent className="relative z-10 dark:bg-[#0d1117]/90 light:bg-white">
                       <motion.div 
-                        className="flex flex-wrap gap-2"
+                        className="flex flex-wrap gap-3"
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: false, amount: 0.3 }}
@@ -208,7 +245,7 @@ const Skills = () => {
                             }}
                           >
                             <Badge 
-                              className="bg-[#21262d] text-white border border-[#30363d] transition-all duration-300 group-hover:shadow-[0_0_10px_rgba(0,0,0,0.1)] relative overflow-hidden"
+                              className="bg-[#21262d] dark:text-white light:text-white border border-[#30363d] transition-all duration-300 group-hover:shadow-md flex items-center gap-1.5 px-3 py-1.5"
                               style={{
                                 '--glow-color': colors.start
                               } as React.CSSProperties}
@@ -221,9 +258,18 @@ const Skills = () => {
                                 e.currentTarget.style.boxShadow = '';
                               }}
                             >
+                              {/* Icon for the skill */}
+                              {skill.icon && (
+                                <img 
+                                  src={skill.icon} 
+                                  alt={skill.name} 
+                                  className="w-4 h-4 object-contain"
+                                  loading="lazy"
+                                />
+                              )}
+                              {skill.name}
                               {/* Animated shine effect */}
                               <span className="absolute inset-0 w-full h-full shine-effect"></span>
-                              {skill}
                             </Badge>
                           </motion.div>
                         ))}

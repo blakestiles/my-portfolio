@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { motion } from 'framer-motion';
-import { School, Calendar, BookOpen, Award } from 'lucide-react';
+import { School, Calendar, BookOpen, Award, Bookmark } from 'lucide-react';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 
 const About = () => {
@@ -98,10 +98,21 @@ const About = () => {
     }
   };
 
+  const orbVariants = {
+    animate: {
+      x: [0, 10, 0, -10, 0],
+      y: [0, 10, 0, -10, 0],
+      transition: {
+        x: { repeat: Infinity, duration: 20, ease: "easeInOut" },
+        y: { repeat: Infinity, duration: 20, ease: "easeInOut", delay: 0.5 }
+      }
+    }
+  };
+
   return (
     <section 
       id="about" 
-      className="py-20 bg-[#161b22]"
+      className="py-20 dark:bg-[#161b22] light:bg-[#f6f8fa]"
       ref={sectionRef}
     >
       <div className="section-container">
@@ -124,35 +135,49 @@ const About = () => {
               <div className="p-1 rounded-lg bg-gradient-to-r from-[#1f6feb] to-[#238636] shadow-xl">
                 <div className="aspect-square bg-cover bg-center rounded-lg border border-[#30363d] overflow-hidden">
                   <img 
-                    src="/lovable-uploads/a03692e5-c82d-4a3d-9867-8ccfcc8d132f.png" 
+                    src="/lovable-uploads/6957552e-bed6-435e-bb53-990b43a9fd42.png" 
                     alt="Profile" 
                     className="w-full h-full object-cover"
                   />
                 </div>
               </div>
+              
+              {/* Animated orbs and particles */}
               <motion.div 
                 className="absolute -bottom-4 -right-4 w-24 h-24 bg-[#238636]/10 rounded-full z-0"
-                animate={{ 
-                  scale: [1, 1.1, 1],
-                  opacity: [0.7, 0.9, 0.7]
-                }}
-                transition={{ 
-                  duration: 6, 
-                  repeat: Infinity,
-                  repeatType: "reverse"
-                }}
+                variants={orbVariants}
+                animate="animate"
               />
               <motion.div 
                 className="absolute -top-4 -left-4 w-12 h-12 bg-[#1f6feb]/10 rounded-full z-0"
-                animate={{ 
-                  scale: [1, 1.15, 1],
-                  opacity: [0.6, 0.8, 0.6]
+                variants={orbVariants}
+                animate="animate"
+              />
+              <motion.div 
+                className="absolute top-1/4 right-0 w-3 h-3 bg-[#1f6feb] rounded-full"
+                animate={{
+                  y: [0, 30, 0],
+                  opacity: [0.2, 1, 0.2],
+                  scale: [1, 1.2, 1]
                 }}
-                transition={{ 
-                  duration: 5, 
+                transition={{
+                  duration: 5,
                   repeat: Infinity,
-                  repeatType: "reverse",
-                  delay: 0.5
+                  ease: "easeInOut"
+                }}
+              />
+              <motion.div 
+                className="absolute bottom-1/3 left-0 w-2 h-2 bg-[#238636] rounded-full"
+                animate={{
+                  y: [0, -20, 0],
+                  opacity: [0.3, 1, 0.3],
+                  scale: [1, 1.3, 1]
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 1
                 }}
               />
             </div>
@@ -160,7 +185,7 @@ const About = () => {
           
           <div className="space-y-5">
             <motion.h3 
-              className="text-2xl font-bold text-white"
+              className="text-2xl font-bold dark:text-white light:text-[#24292f]"
               variants={textVariants}
               initial="hidden"
               animate={isInView ? "visible" : "hidden"}
@@ -169,7 +194,7 @@ const About = () => {
             </motion.h3>
             
             <motion.p 
-              className="text-[#8b949e] leading-relaxed"
+              className="dark:text-[#8b949e] light:text-[#57606a] leading-relaxed"
               variants={textVariants}
               initial="hidden"
               animate={isInView ? "visible" : "hidden"}
@@ -192,7 +217,7 @@ const About = () => {
                       <span className="text-3xl font-bold text-[#238636]">1</span>
                       <span className="text-xl font-bold text-[#238636]">+</span>
                     </div>
-                    <div className="font-medium text-white mt-1">Years of Experience</div>
+                    <div className="font-medium dark:text-white light:text-[#24292f] mt-1">Years of Experience</div>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -210,7 +235,7 @@ const About = () => {
                       <span className="text-3xl font-bold text-[#1f6feb]">5</span>
                       <span className="text-xl font-bold text-[#1f6feb]">+</span>
                     </div>
-                    <div className="font-medium text-white mt-1">Completed Projects</div>
+                    <div className="font-medium dark:text-white light:text-[#24292f] mt-1">Completed Projects</div>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -226,7 +251,7 @@ const About = () => {
           transition={{ duration: 0.7 }}
         >
           <motion.h3 
-            className="text-2xl font-bold mb-8 text-center text-white"
+            className="text-2xl font-bold mb-8 text-center dark:text-white light:text-[#24292f]"
             variants={textVariants}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
@@ -245,10 +270,10 @@ const About = () => {
                   variants={educationVariants}
                   initial="hidden"
                   animate={isInView ? "visible" : "hidden"}
-                  whileHover={{ y: -5 }}
+                  whileHover={{ y: -8, transition: { duration: 0.3 } }}
                   className="group"
                 >
-                  <Card className="repo-card h-full bg-[#0d1117] border-l-4 overflow-hidden relative hover:shadow-xl transition-all duration-500"
+                  <Card className="repo-card h-full dark:bg-[#0d1117] light:bg-white border-l-4 overflow-hidden relative hover:shadow-xl transition-all duration-500"
                          style={{ borderLeftColor: colors.start }}>
                     {/* Animated spotlight effect */}
                     <div 
@@ -271,11 +296,11 @@ const About = () => {
                               style={{backgroundImage: `linear-gradient(to right, ${colors.start}, ${colors.end})`}}>
                             {edu.degree}
                           </h4>
-                          <p className="text-[#8b949e]">{edu.institution}</p>
+                          <p className="dark:text-[#8b949e] light:text-[#57606a]">{edu.institution}</p>
                         </div>
                       </div>
                       
-                      <div className="flex items-center mb-3 text-sm text-[#8b949e]">
+                      <div className="flex items-center mb-3 text-sm dark:text-[#8b949e] light:text-[#57606a]">
                         <Calendar className="h-4 w-4 mr-2 inline" />
                         {edu.period}
                       </div>
@@ -288,8 +313,12 @@ const About = () => {
                             animate={isInView ? { opacity: 1, x: 0, transition: { delay: 0.5 + (index * 0.2) + (i * 0.1) } } : {}}
                             className="flex items-start"
                           >
-                            <BookOpen className="h-4 w-4 mr-2 text-[#8b949e] mt-1 shrink-0" />
-                            <p className="text-[#8b949e]">{detail}</p>
+                            {i === 0 ? (
+                              <Award className="h-4 w-4 mr-2 dark:text-[#8b949e] light:text-[#57606a] mt-1 shrink-0" />
+                            ) : (
+                              <BookOpen className="h-4 w-4 mr-2 dark:text-[#8b949e] light:text-[#57606a] mt-1 shrink-0" />
+                            )}
+                            <p className="dark:text-[#8b949e] light:text-[#57606a]">{detail}</p>
                           </motion.div>
                         ))}
                       </div>
@@ -300,7 +329,7 @@ const About = () => {
                         whileHover={{ scale: 1.2, rotate: [0, -10, 10, -10, 0] }}
                         transition={{ duration: 0.5 }}
                       >
-                        <Award className="h-6 w-6" style={{color: colors.start}} />
+                        <Bookmark className="h-6 w-6" style={{color: colors.start}} />
                       </motion.div>
                       
                       {/* Animated border glow on hover */}
@@ -315,6 +344,31 @@ const About = () => {
                           repeatType: "reverse"
                         }}
                       />
+                      
+                      {/* Flying particles animation */}
+                      {isInView && [...Array(5)].map((_, i) => (
+                        <motion.div
+                          key={i}
+                          className="absolute w-1 h-1 rounded-full"
+                          style={{
+                            background: i % 2 === 0 ? colors.start : colors.end,
+                            left: `${Math.random() * 100}%`,
+                            bottom: "10%"
+                          }}
+                          animate={{
+                            y: [0, -40 - (Math.random() * 60)],
+                            x: [0, (Math.random() * 40) - 20],
+                            opacity: [0.7, 0],
+                            scale: [1, 0]
+                          }}
+                          transition={{
+                            duration: 2 + Math.random() * 3,
+                            repeat: Infinity,
+                            delay: Math.random() * 5,
+                            ease: "easeOut"
+                          }}
+                        />
+                      ))}
                     </div>
                   </Card>
                 </motion.div>
