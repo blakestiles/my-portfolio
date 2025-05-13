@@ -197,15 +197,6 @@ const Skills = () => {
                             {category.title}
                           </motion.span>
                         </CardTitle>
-                        {category.icon && (
-                          <motion.span 
-                            className="text-3xl"
-                            whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.2 }}
-                            transition={{ duration: 0.5 }}
-                          >
-                            {category.icon}
-                          </motion.span>
-                        )}
                       </div>
                     </CardHeader>
                     

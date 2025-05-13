@@ -1,8 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
-import { ThemeToggle } from './ThemeToggle';
 import { Button } from './ui/button';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, FileText } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -42,6 +41,11 @@ const Navbar = () => {
     { name: 'Contact', href: '#contact' },
   ];
 
+  const openResume = () => {
+    // In a real environment, this would point to a PDF file
+    window.open('/resume.pdf', '_blank');
+  };
+
   return (
     <header
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
@@ -77,20 +81,23 @@ const Navbar = () => {
               </li>
             ))}
           </ul>
-          
-          <div className="ml-2">
-            <ThemeToggle />
-          </div>
 
           <Button asChild className="ml-4 gh-button-primary">
             <a href="#contact">Get In Touch</a>
+          </Button>
+          
+          <Button 
+            variant="outline" 
+            onClick={openResume} 
+            className="ml-2 border-[#30363d] hover:bg-[#1f6feb]/10 hover:text-white hover:border-[#1f6feb]"
+          >
+            <FileText className="mr-2 h-4 w-4" />
+            Resume
           </Button>
         </div>
 
         {/* Mobile Menu Button */}
         <div className="md:hidden flex items-center">
-          <ThemeToggle />
-          
           <Button
             variant="ghost"
             size="icon"
@@ -139,6 +146,20 @@ const Navbar = () => {
                     <a href="#contact" onClick={() => setMobileMenuOpen(false)}>
                       Get In Touch
                     </a>
+                  </Button>
+                </motion.li>
+                <motion.li
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.2, delay: 0.6 }}
+                >
+                  <Button 
+                    variant="outline" 
+                    onClick={openResume} 
+                    className="w-full mt-2 border-[#30363d] hover:bg-[#1f6feb]/10 hover:text-white hover:border-[#1f6feb]"
+                  >
+                    <FileText className="mr-2 h-4 w-4" />
+                    Resume
                   </Button>
                 </motion.li>
               </ul>

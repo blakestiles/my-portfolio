@@ -71,12 +71,45 @@ const config = {
         "marquee": {
           '0%': { transform: 'translateX(0)' },
           '100%': { transform: 'translateX(-50%)' }
+        },
+        "floatParticle": {
+          '0%': { transform: 'translateY(0)' },
+          '100%': { transform: 'translateY(-100px)', opacity: '0' }
+        },
+        "pulse-slow": {
+          '0%, 100%': { opacity: '0.6' },
+          '50%': { opacity: '0.8' }
+        },
+        "spotlight-effect": {
+          '0%, 100%': { transform: 'translateX(-50%)' },
+          '50%': { transform: 'translateX(50%)' }
+        },
+        "shine": {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' }
+        },
+        "blink": {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0' }
+        },
+        "fade-in": {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' }
+        },
+        "slide-up": {
+          '0%': { transform: 'translateY(20px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' }
         }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "marquee": "marquee 30s linear infinite",
+        "pulse-slow": "pulse-slow 3s ease-in-out infinite",
+        "shine": "shine 1.5s ease-in-out infinite",
+        "blink": "blink 1s ease-in-out infinite",
+        "fade-in": "fade-in 0.5s ease-out",
+        "slide-up": "slide-up 0.5s ease-out"
       },
       backgroundImage: {
         "github-gradient": "radial-gradient(circle at top, #161b22, #0d1117 50%)",
@@ -102,6 +135,18 @@ const config = {
           'backface-visibility': 'visible',
           '-webkit-backface-visibility': 'visible',
         },
+        '.shine-effect': {
+          'position': 'absolute',
+          'top': '0',
+          'left': '0',
+          'width': '100%',
+          'height': '100%',
+          'background': 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent)',
+          'animation': 'shine 3s ease-in-out infinite'
+        },
+        '.perspective-1000': {
+          'perspective': '1000px'
+        }
       });
     },
   ],

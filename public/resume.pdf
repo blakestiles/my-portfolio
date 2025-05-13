@@ -1,0 +1,61 @@
+
+%PDF-1.7
+1 0 obj
+<< /Type /Catalog
+/Outlines 2 0 R
+/Pages 3 0 R >>
+endobj
+2 0 obj
+<< /Type /Outlines /Count 0 >>
+endobj
+3 0 obj
+<< /Type /Pages
+/Kids [6 0 R]
+/Count 1
+>>
+endobj
+6 0 obj
+<< /Type /Page
+/Parent 3 0 R
+/Resources <<
+/Font << /F1 9 0 R >>
+/ProcSet 8 0 R
+>>
+/MediaBox [0 0 612 792]
+/Contents 7 0 R
+>>
+endobj
+7 0 obj
+<< /Length 178 >>
+stream
+BT
+/F1 24 Tf
+50 700 TD
+(Sainath Gandhe) Tj
+/F1 16 Tf
+0 -30 TD
+(Software Developer) Tj
+/F1 12 Tf
+0 -30 TD
+(This is a sample resume PDF placeholder.) Tj
+ET
+endstream
+endobj
+8 0 obj
+[/PDF /Text]
+endobj
+9 0 obj
+<< /Type /Font
+/Subtype /Type1
+/Name /F1
+/BaseFont /Helvetica
+/Encoding /MacRomanEncoding
+>>
+endobj
+trailer
+<< /Size 10
+/Root 1 0 R
+>>
+startxref
+976
+%%EOF
