@@ -18,10 +18,10 @@ const SkillLogo: React.FC<SkillLogoProps> = ({ name, icon, description }) => {
           whileHover={{ scale: 1.05 }}
           transition={{ type: 'spring', stiffness: 400, damping: 10 }}
         >
-          <div className="flex items-center justify-center h-16 w-16 mb-2 rounded-lg bg-card shadow-md border border-[#30363d] hover:border-[#8b949e] transition-all duration-300">
+          <div className="flex items-center justify-center h-16 w-16 mb-2 rounded-lg bg-[#161b22] shadow-md border border-[#30363d] hover:border-[#8b949e] transition-all duration-300">
             <img src={icon} alt={name} className="h-10 w-10 object-contain" loading="lazy" />
           </div>
-          <span className="text-xs font-medium mt-1">{name}</span>
+          <span className="text-xs font-medium mt-1 text-[#c9d1d9]">{name}</span>
         </motion.div>
       </HoverCardTrigger>
       {description && (
@@ -29,7 +29,7 @@ const SkillLogo: React.FC<SkillLogoProps> = ({ name, icon, description }) => {
           <div className="flex justify-between space-x-4">
             <div className="space-y-1">
               <h4 className="text-sm font-semibold">{name}</h4>
-              <p className="text-xs text-muted-foreground">{description}</p>
+              <p className="text-xs text-[#8b949e]">{description}</p>
             </div>
           </div>
         </HoverCardContent>
@@ -124,20 +124,14 @@ const SkillLogos = () => {
       initial="hidden"
       animate={controls}
       variants={containerVariants}
-      ref={carouselRef}
     >
       <div className="relative w-full">
         {/* Gradient overlay left */}
-        <div className="absolute left-0 top-0 bottom-0 w-12 z-10 bg-gradient-to-r from-background to-transparent"></div>
+        <div className="absolute left-0 top-0 bottom-0 w-12 z-10 bg-gradient-to-r from-[#0d1117] to-transparent"></div>
         
         <div 
           ref={carouselRef}
           className="flex animate-marquee py-4"
-          style={{
-            animationTimingFunction: 'linear',
-            animationDuration: '30s',
-            animationIterationCount: 'infinite'
-          }}
         >
           {duplicatedSkills.map((skill, index) => (
             <motion.div
@@ -158,7 +152,7 @@ const SkillLogos = () => {
         </div>
         
         {/* Gradient overlay right */}
-        <div className="absolute right-0 top-0 bottom-0 w-12 z-10 bg-gradient-to-l from-background to-transparent"></div>
+        <div className="absolute right-0 top-0 bottom-0 w-12 z-10 bg-gradient-to-l from-[#0d1117] to-transparent"></div>
       </div>
     </motion.div>
   );

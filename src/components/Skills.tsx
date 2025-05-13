@@ -40,7 +40,6 @@ const Skills = () => {
         { name: "Angular", icon: "/skills/angular.svg" },
         { name: "Flask", icon: "/skills/flask.svg" }
       ],
-      icon: "🛠️",
       color: "from-[#1F6FEB] to-[#58A6FF]", // Blue gradient
       delay: 0.1
     },
@@ -124,7 +123,7 @@ const Skills = () => {
   return (
     <section 
       id="skills" 
-      className="py-20 bg-[#161b22] dark:bg-[#161b22] light:bg-[#f6f8fa]"
+      className="py-20 bg-[#161b22]"
       ref={sectionRef}
     >
       <div className="section-container">
@@ -169,7 +168,7 @@ const Skills = () => {
                 className="relative"
               >
                 <div className="perspective-1000">
-                  <Card className="repo-card dark:bg-[#0d1117] light:bg-white h-full overflow-hidden relative group transform transition-all duration-500 hover:shadow-2xl backdrop-blur-sm bg-opacity-80 border border-[#30363d] hover:border-opacity-0">
+                  <Card className="bg-[#0d1117] h-full overflow-hidden relative group transform transition-all duration-500 hover:shadow-2xl backdrop-blur-sm bg-opacity-80 border border-[#30363d] hover:border-opacity-0">
                     {/* Animated gradient border */}
                     <div 
                       className="absolute inset-0 p-[2px] rounded-lg bg-gradient-to-r opacity-0 group-hover:opacity-100 transition-opacity duration-700 animate-pulse-slow z-0"
@@ -186,7 +185,7 @@ const Skills = () => {
                       }}
                     ></div>
                     
-                    <CardHeader className="pb-2 relative z-10 dark:bg-[#0d1117]/90 light:bg-white">
+                    <CardHeader className="pb-2 relative z-10 bg-[#0d1117]/90">
                       <div className="flex items-center justify-between">
                         <CardTitle className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r transition-all duration-300" 
                                 style={{backgroundImage: `linear-gradient(to right, ${colors.start}, ${colors.end})`}}>
@@ -210,7 +209,7 @@ const Skills = () => {
                       </div>
                     </CardHeader>
                     
-                    <CardContent className="relative z-10 dark:bg-[#0d1117]/90 light:bg-white">
+                    <CardContent className="relative z-10 bg-[#0d1117]/90">
                       <motion.div 
                         className="flex flex-wrap gap-3"
                         initial="hidden"
@@ -245,7 +244,7 @@ const Skills = () => {
                             }}
                           >
                             <Badge 
-                              className="bg-[#21262d] dark:text-white light:text-white border border-[#30363d] transition-all duration-300 group-hover:shadow-md flex items-center gap-1.5 px-3 py-1.5"
+                              className="bg-[#21262d] text-white border border-[#30363d] transition-all duration-300 group-hover:shadow-md flex items-center gap-1.5 px-3 py-1.5"
                               style={{
                                 '--glow-color': colors.start
                               } as React.CSSProperties}

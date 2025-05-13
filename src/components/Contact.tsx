@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { Mail, Phone, User, Send, Github, Linkedin, ExternalLink, MessageSquare } from 'lucide-react';
+import { Mail, Phone, Send, Github, Linkedin, ExternalLink, MessageSquare } from 'lucide-react';
 import { motion } from 'framer-motion';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 
@@ -343,7 +343,7 @@ const Contact = () => {
             animate={isInView ? "visible" : "hidden"}
             key={isInView ? "visible-form" : "hidden-form"}
           >
-            <Card className="repo-card overflow-hidden relative group">
+            <Card className="bg-[#0d1117] border-[#30363d] overflow-hidden relative group">
               {/* Animated border and spotlight */}
               <div className="absolute inset-0 p-[1px] rounded-lg bg-gradient-to-r from-[#238636] via-[#1f6feb] to-[#8957e5] opacity-0 group-hover:opacity-50 transition-opacity duration-700"></div>
               
@@ -376,7 +376,6 @@ const Contact = () => {
                         required
                         className="bg-[#0d1117] border-[#30363d] text-white focus:border-[#1f6feb] focus:ring-[#1f6feb] pl-10 transition-all duration-300 group-hover:border-[#8b949e]"
                       />
-                      <User className="absolute top-1/2 left-3 transform -translate-y-1/2 h-4 w-4 text-[#8b949e] group-hover:text-[#1f6feb] transition-colors" />
                     </div>
                   </motion.div>
                   
@@ -396,7 +395,6 @@ const Contact = () => {
                         required
                         className="bg-[#0d1117] border-[#30363d] text-white focus:border-[#1f6feb] focus:ring-[#1f6feb] pl-10 transition-all duration-300 group-hover:border-[#8b949e]"
                       />
-                      <Mail className="absolute top-1/2 left-3 transform -translate-y-1/2 h-4 w-4 text-[#8b949e] group-hover:text-[#1f6feb] transition-colors" />
                     </div>
                   </motion.div>
                   
@@ -428,7 +426,7 @@ const Contact = () => {
                   >
                     <Button 
                       type="submit" 
-                      className="gh-button-primary w-full group relative overflow-hidden" 
+                      className="bg-[#238636] text-white border border-[#238636] hover:bg-[#2ea043] hover:border-[#3fb950] w-full group relative overflow-hidden" 
                       disabled={isSubmitting}
                     >
                       <motion.div 

@@ -382,8 +382,8 @@
   .card-3d-face {
     @apply absolute inset-0;
     transform-style: preserve-3d;
-    -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
   
   /* Neural network visualization */
@@ -479,8 +479,13 @@
   }
   
   /* Backface visibility utilities */
-  .backface-hidden {
+  .backface-visibility-hidden {
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
+  }
+  
+  .backface-visibility-visible {
+    -webkit-backface-visibility: visible;
+    backface-visibility: visible;
   }
 }
