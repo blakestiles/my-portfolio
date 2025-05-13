@@ -144,14 +144,10 @@ const Contact = () => {
     }
   ];
 
-  // Animation for particle effects
-  const particleCount = 20;
-  const particles = Array.from({ length: particleCount });
-
   return (
     <section 
       id="contact" 
-      className="py-20 relative"
+      className="py-20 relative bg-[#0d1117]"
       ref={sectionRef}
     >
       {/* Background elements */}
@@ -182,29 +178,6 @@ const Contact = () => {
             delay: 1
           }}
         />
-        
-        {/* Animated particles */}
-        {particles.map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute h-1 w-1 rounded-full bg-[#1f6feb]"
-            initial={{
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
-              opacity: Math.random() * 0.5 + 0.1,
-              scale: Math.random() * 0.5 + 0.5
-            }}
-            animate={{
-              y: [null, Math.random() * -200 - 50],
-              opacity: [null, 0],
-              transition: {
-                duration: Math.random() * 10 + 10,
-                repeat: Infinity,
-                ease: "linear"
-              }
-            }}
-          />
-        ))}
       </div>
 
       <div className="section-container relative z-10">
@@ -218,7 +191,7 @@ const Contact = () => {
         </motion.h2>
         
         <div className="grid md:grid-cols-2 gap-10">
-          {/* Contact Methods Section */}
+          {/* Contact Details Section */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -226,22 +199,35 @@ const Contact = () => {
             key={isInView ? "visible" : "hidden"}
             className="relative"
           >
-            <motion.h3 
-              className="text-2xl font-bold mb-6 text-white bg-gradient-to-r from-[#1f6feb] to-[#58a6ff] text-transparent bg-clip-text"
-              variants={itemVariants}
-            >
-              Let's Connect
-            </motion.h3>
-            <motion.p 
-              className="text-[#8b949e] mb-8 leading-relaxed"
-              variants={itemVariants}
-            >
-              I'm currently looking for new opportunities. Whether you have a question, project idea, or just want to say hi, feel free to reach out!
-            </motion.p>
+            <motion.div className="mb-8" variants={itemVariants}>
+              <motion.div 
+                className="p-6 bg-[#161b22] border border-[#30363d] rounded-lg shadow-lg transition-all mb-6"
+                whileHover={{ y: -5, boxShadow: "0 10px 25px rgba(0,0,0,0.5)" }}
+              >
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="h-16 w-16 rounded-full bg-gradient-to-r from-[#238636] to-[#1f6feb] p-0.5">
+                    <div className="h-full w-full rounded-full overflow-hidden border-2 border-[#0d1117] bg-[#161b22]">
+                      <img 
+                        src="/lovable-uploads/a03692e5-c82d-4a3d-9867-8ccfcc8d132f.png" 
+                        alt="Profile" 
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-white">Sainath Gandhe</h3>
+                    <p className="text-[#1f6feb]">Software Developer</p>
+                  </div>
+                </div>
+                <p className="text-[#8b949e] mb-6">
+                  I'm currently looking for new opportunities. Whether you have a question, project idea, or just want to say hi, feel free to reach out!
+                </p>
+              </motion.div>
+            </motion.div>
             
-            {/* Contact Cards with Neural Connection Animation */}
+            {/* Contact Cards */}
             <motion.div 
-              className="space-y-6 neural-container"
+              className="space-y-4"
               variants={containerVariants}
             >
               {contactMethods.map((method, index) => (
@@ -255,17 +241,10 @@ const Contact = () => {
                   whileHover={{ scale: 1.03 }}
                 >
                   <Card className="bg-[#161b22]/80 backdrop-blur-md border border-[#30363d] hover:border-[#8b949e]/50 overflow-hidden group">
-                    {/* Gradient border animation */}
-                    <div 
-                      className="absolute inset-0 p-[1px] rounded-lg bg-gradient-to-r opacity-0 group-hover:opacity-100 transition-opacity duration-700" 
-                      style={{backgroundImage: `linear-gradient(to right, ${method.color}, ${method.color}60, ${method.color})`}}
-                    />
-                    
                     <div className="relative p-5 z-10">
                       <div className="flex items-center gap-4">
                         <motion.div 
-                          className="h-14 w-14 rounded-full bg-[#21262d] flex items-center justify-center shadow-lg relative neural-node"
-                          style={{ animationDelay: `${index * 0.3}s` }}
+                          className="h-12 w-12 rounded-full bg-[#21262d] flex items-center justify-center shadow-lg"
                           whileHover={{ scale: 1.1, rotate: [0, 10, -10, 0] }}
                           transition={{ duration: 0.5 }}
                         >
@@ -303,26 +282,6 @@ const Contact = () => {
                   </Card>
                 </motion.a>
               ))}
-
-              {/* SVG Connection Lines */}
-              <svg className="absolute top-0 left-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
-                {contactMethods.slice(0, -1).map((_, i) => (
-                  <motion.line
-                    key={i}
-                    initial={{ pathLength: 0, opacity: 0 }}
-                    animate={isInView ? { pathLength: 1, opacity: 0.2 } : { pathLength: 0, opacity: 0 }}
-                    transition={{ delay: 0.5 + i * 0.3, duration: 1.5 }}
-                    x1="34"
-                    y1={90 + i * 95}
-                    x2="34"
-                    y2={160 + i * 95}
-                    stroke={contactMethods[i].color}
-                    strokeWidth="2"
-                    strokeDasharray="5,5"
-                    className="connection-line"
-                  />
-                ))}
-              </svg>
 
               {/* Social Media Links */}
               <motion.div variants={itemVariants} className="pt-8">
@@ -384,146 +343,121 @@ const Contact = () => {
             animate={isInView ? "visible" : "hidden"}
             key={isInView ? "visible-form" : "hidden-form"}
           >
-            <Card className="repo-card overflow-hidden relative card-3d group">
-              {/* Animated 3D effect */}
-              <div className="card-3d-face">
-                {/* Animated border and spotlight */}
-                <div className="absolute inset-0 p-[1px] rounded-lg bg-gradient-to-r from-[#238636] via-[#1f6feb] to-[#8957e5] opacity-0 group-hover:opacity-50 transition-opacity duration-700"></div>
-                <div 
-                  className="absolute -inset-[150px] opacity-0 group-hover:opacity-30 transition-all duration-700 z-0"
-                  style={{
-                    background: `radial-gradient(circle, #1f6feb50 0%, transparent 70%)`,
-                    transform: 'translateZ(0)',
-                  }}
-                ></div>
-                
-                <CardHeader className="bg-gradient-to-b from-[#161b22] to-[#161b22]/90 relative z-10">
-                  <div className="flex items-center gap-3 mb-1">
-                    <MessageSquare className="h-5 w-5 text-[#1f6feb]" />
-                    <CardTitle className="text-white">
-                      <span className="bg-gradient-to-r from-[#1f6feb] to-[#58a6ff] text-transparent bg-clip-text">Send Me a Message</span>
-                    </CardTitle>
-                  </div>
-                  <CardDescription className="text-[#8b949e]">
-                    Fill out the form below and I'll get back to you as soon as possible.
-                  </CardDescription>
-                </CardHeader>
-                
-                <form onSubmit={handleSubmit} className="relative z-10">
-                  <CardContent className="space-y-4 bg-[#161b22]/90">
-                    <motion.div
-                      custom={0}
-                      variants={inputVariants}
-                    >
-                      <label htmlFor="name" className="text-sm font-medium block mb-1 text-[#c9d1d9]">Name</label>
-                      <div className="relative group">
-                        <Input
-                          id="name"
-                          name="name"
-                          placeholder="Your name"
-                          value={formData.name}
-                          onChange={handleChange}
-                          required
-                          className="bg-[#0d1117] border-[#30363d] text-white focus:border-[#1f6feb] focus:ring-[#1f6feb] pl-10 transition-all duration-300 group-hover:border-[#8b949e]"
-                        />
-                        <User className="absolute top-1/2 left-3 transform -translate-y-1/2 h-4 w-4 text-[#8b949e] group-hover:text-[#1f6feb] transition-colors" />
-                      </div>
-                    </motion.div>
-                    
-                    <motion.div
-                      custom={1}
-                      variants={inputVariants}
-                    >
-                      <label htmlFor="email" className="text-sm font-medium block mb-1 text-[#c9d1d9]">Email</label>
-                      <div className="relative group">
-                        <Input
-                          id="email"
-                          name="email"
-                          type="email"
-                          placeholder="Your email"
-                          value={formData.email}
-                          onChange={handleChange}
-                          required
-                          className="bg-[#0d1117] border-[#30363d] text-white focus:border-[#1f6feb] focus:ring-[#1f6feb] pl-10 transition-all duration-300 group-hover:border-[#8b949e]"
-                        />
-                        <Mail className="absolute top-1/2 left-3 transform -translate-y-1/2 h-4 w-4 text-[#8b949e] group-hover:text-[#1f6feb] transition-colors" />
-                      </div>
-                    </motion.div>
-                    
-                    <motion.div
-                      custom={2}
-                      variants={inputVariants}
-                    >
-                      <label htmlFor="message" className="text-sm font-medium block mb-1 text-[#c9d1d9]">Message</label>
-                      <div className="relative group">
-                        <Textarea
-                          id="message"
-                          name="message"
-                          placeholder="Your message"
-                          rows={5}
-                          value={formData.message}
-                          onChange={handleChange}
-                          required
-                          className="bg-[#0d1117] border-[#30363d] text-white focus:border-[#1f6feb] focus:ring-[#1f6feb] resize-none transition-all duration-300 group-hover:border-[#8b949e]"
-                        />
-                        <motion.div 
-                          className="absolute top-3 right-3 w-5 h-5"
-                          initial={{ opacity: 0.5 }}
-                          animate={{ 
-                            opacity: [0.3, 0.5, 0.3],
-                          }}
-                          transition={{ 
-                            duration: 4,
-                            repeat: Infinity 
-                          }}
-                        >
-                          <svg width="20" height="20" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-[#8b949e]">
-                            <path d="M20 20 L80 20 L80 80 L20 80 Z" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="10 5" />
-                          </svg>
-                        </motion.div>
-                      </div>
-                    </motion.div>
-                  </CardContent>
+            <Card className="repo-card overflow-hidden relative group">
+              {/* Animated border and spotlight */}
+              <div className="absolute inset-0 p-[1px] rounded-lg bg-gradient-to-r from-[#238636] via-[#1f6feb] to-[#8957e5] opacity-0 group-hover:opacity-50 transition-opacity duration-700"></div>
+              
+              <CardHeader className="bg-[#161b22] relative z-10">
+                <div className="flex items-center gap-3 mb-1">
+                  <MessageSquare className="h-5 w-5 text-[#1f6feb]" />
+                  <CardTitle className="text-white">
+                    <span className="bg-gradient-to-r from-[#1f6feb] to-[#58a6ff] text-transparent bg-clip-text">Send Me a Message</span>
+                  </CardTitle>
+                </div>
+                <CardDescription className="text-[#8b949e]">
+                  Fill out the form below and I'll get back to you as soon as possible.
+                </CardDescription>
+              </CardHeader>
+              
+              <form onSubmit={handleSubmit} className="relative z-10">
+                <CardContent className="space-y-4 bg-[#161b22]">
+                  <motion.div
+                    custom={0}
+                    variants={inputVariants}
+                  >
+                    <label htmlFor="name" className="text-sm font-medium block mb-1 text-[#c9d1d9]">Name</label>
+                    <div className="relative group">
+                      <Input
+                        id="name"
+                        name="name"
+                        placeholder="Your name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                        className="bg-[#0d1117] border-[#30363d] text-white focus:border-[#1f6feb] focus:ring-[#1f6feb] pl-10 transition-all duration-300 group-hover:border-[#8b949e]"
+                      />
+                      <User className="absolute top-1/2 left-3 transform -translate-y-1/2 h-4 w-4 text-[#8b949e] group-hover:text-[#1f6feb] transition-colors" />
+                    </div>
+                  </motion.div>
                   
-                  <CardFooter className="bg-[#161b22]/90">
-                    <motion.div
-                      custom={3}
-                      variants={inputVariants}
-                      className="w-full"
+                  <motion.div
+                    custom={1}
+                    variants={inputVariants}
+                  >
+                    <label htmlFor="email" className="text-sm font-medium block mb-1 text-[#c9d1d9]">Email</label>
+                    <div className="relative group">
+                      <Input
+                        id="email"
+                        name="email"
+                        type="email"
+                        placeholder="Your email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                        className="bg-[#0d1117] border-[#30363d] text-white focus:border-[#1f6feb] focus:ring-[#1f6feb] pl-10 transition-all duration-300 group-hover:border-[#8b949e]"
+                      />
+                      <Mail className="absolute top-1/2 left-3 transform -translate-y-1/2 h-4 w-4 text-[#8b949e] group-hover:text-[#1f6feb] transition-colors" />
+                    </div>
+                  </motion.div>
+                  
+                  <motion.div
+                    custom={2}
+                    variants={inputVariants}
+                  >
+                    <label htmlFor="message" className="text-sm font-medium block mb-1 text-[#c9d1d9]">Message</label>
+                    <div className="relative group">
+                      <Textarea
+                        id="message"
+                        name="message"
+                        placeholder="Your message"
+                        rows={5}
+                        value={formData.message}
+                        onChange={handleChange}
+                        required
+                        className="bg-[#0d1117] border-[#30363d] text-white focus:border-[#1f6feb] focus:ring-[#1f6feb] resize-none transition-all duration-300 group-hover:border-[#8b949e]"
+                      />
+                    </div>
+                  </motion.div>
+                </CardContent>
+                
+                <CardFooter className="bg-[#161b22]">
+                  <motion.div
+                    custom={3}
+                    variants={inputVariants}
+                    className="w-full"
+                  >
+                    <Button 
+                      type="submit" 
+                      className="gh-button-primary w-full group relative overflow-hidden" 
+                      disabled={isSubmitting}
                     >
-                      <Button 
-                        type="submit" 
-                        className="gh-button-primary w-full group relative overflow-hidden" 
-                        disabled={isSubmitting}
-                      >
-                        <motion.div 
-                          className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#238636] to-[#3fb950] opacity-0 group-hover:opacity-100 transition-opacity"
-                          initial={{ x: "-100%" }}
-                          whileHover={{ x: "0%" }}
-                          transition={{ duration: 0.5 }}
-                        />
-                        
-                        <span className="relative z-10 flex items-center justify-center">
-                          {isSubmitting ? (
-                            <span className="flex items-center">
-                              <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                              </svg>
-                              <span>Sending...</span>
-                            </span>
-                          ) : (
-                            <span className="flex items-center">
-                              <Send className="mr-2 h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                              <span>Send Message</span>
-                            </span>
-                          )}
-                        </span>
-                      </Button>
-                    </motion.div>
-                  </CardFooter>
-                </form>
-              </div>
+                      <motion.div 
+                        className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#238636] to-[#3fb950] opacity-0 group-hover:opacity-100 transition-opacity"
+                        initial={{ x: "-100%" }}
+                        whileHover={{ x: "0%" }}
+                        transition={{ duration: 0.5 }}
+                      />
+                      
+                      <span className="relative z-10 flex items-center justify-center">
+                        {isSubmitting ? (
+                          <span className="flex items-center">
+                            <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            <span>Sending...</span>
+                          </span>
+                        ) : (
+                          <span className="flex items-center">
+                            <Send className="mr-2 h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                            <span>Send Message</span>
+                          </span>
+                        )}
+                      </span>
+                    </Button>
+                  </motion.div>
+                </CardFooter>
+              </form>
             </Card>
           </motion.div>
         </div>

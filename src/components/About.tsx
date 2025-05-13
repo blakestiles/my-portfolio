@@ -112,7 +112,7 @@ const About = () => {
   return (
     <section 
       id="about" 
-      className="py-20 dark:bg-[#161b22] light:bg-[#f6f8fa]"
+      className="py-20 bg-[#161b22]"
       ref={sectionRef}
     >
       <div className="section-container">
@@ -130,17 +130,24 @@ const About = () => {
             variants={imageVariants}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
+            className="perspective-1000"
           >
-            <div className="relative">
-              <div className="p-1 rounded-lg bg-gradient-to-r from-[#1f6feb] to-[#238636] shadow-xl">
+            <div className="relative transform-3d hover:rotate-y-15 transition-all duration-700">
+              <motion.div 
+                className="p-1 rounded-lg bg-gradient-to-r from-[#1f6feb] to-[#238636] shadow-xl"
+                whileHover={{ 
+                  boxShadow: "0 0 25px rgba(31, 111, 235, 0.6), 0 0 25px rgba(35, 134, 54, 0.6)"
+                }}
+                transition={{ duration: 0.3 }}
+              >
                 <div className="aspect-square bg-cover bg-center rounded-lg border border-[#30363d] overflow-hidden">
                   <img 
-                    src="/lovable-uploads/6957552e-bed6-435e-bb53-990b43a9fd42.png" 
+                    src="/lovable-uploads/52b0acc4-5c41-4817-9737-874d9163cf63.png" 
                     alt="Profile" 
                     className="w-full h-full object-cover"
                   />
                 </div>
-              </div>
+              </motion.div>
               
               {/* Animated orbs and particles */}
               <motion.div 
@@ -185,7 +192,7 @@ const About = () => {
           
           <div className="space-y-5">
             <motion.h3 
-              className="text-2xl font-bold dark:text-white light:text-[#24292f]"
+              className="text-2xl font-bold text-white"
               variants={textVariants}
               initial="hidden"
               animate={isInView ? "visible" : "hidden"}
@@ -194,7 +201,7 @@ const About = () => {
             </motion.h3>
             
             <motion.p 
-              className="dark:text-[#8b949e] light:text-[#57606a] leading-relaxed"
+              className="text-[#8b949e] leading-relaxed"
               variants={textVariants}
               initial="hidden"
               animate={isInView ? "visible" : "hidden"}
@@ -217,7 +224,7 @@ const About = () => {
                       <span className="text-3xl font-bold text-[#238636]">1</span>
                       <span className="text-xl font-bold text-[#238636]">+</span>
                     </div>
-                    <div className="font-medium dark:text-white light:text-[#24292f] mt-1">Years of Experience</div>
+                    <div className="font-medium text-white mt-1">Years of Experience</div>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -235,7 +242,7 @@ const About = () => {
                       <span className="text-3xl font-bold text-[#1f6feb]">5</span>
                       <span className="text-xl font-bold text-[#1f6feb]">+</span>
                     </div>
-                    <div className="font-medium dark:text-white light:text-[#24292f] mt-1">Completed Projects</div>
+                    <div className="font-medium text-white mt-1">Completed Projects</div>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -251,7 +258,7 @@ const About = () => {
           transition={{ duration: 0.7 }}
         >
           <motion.h3 
-            className="text-2xl font-bold mb-8 text-center dark:text-white light:text-[#24292f]"
+            className="text-2xl font-bold mb-8 text-center text-white"
             variants={textVariants}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
@@ -273,7 +280,7 @@ const About = () => {
                   whileHover={{ y: -8, transition: { duration: 0.3 } }}
                   className="group"
                 >
-                  <Card className="repo-card h-full dark:bg-[#0d1117] light:bg-white border-l-4 overflow-hidden relative hover:shadow-xl transition-all duration-500"
+                  <Card className="repo-card h-full bg-[#0d1117] border-l-4 overflow-hidden relative hover:shadow-xl transition-all duration-500"
                          style={{ borderLeftColor: colors.start }}>
                     {/* Animated spotlight effect */}
                     <div 
@@ -296,11 +303,11 @@ const About = () => {
                               style={{backgroundImage: `linear-gradient(to right, ${colors.start}, ${colors.end})`}}>
                             {edu.degree}
                           </h4>
-                          <p className="dark:text-[#8b949e] light:text-[#57606a]">{edu.institution}</p>
+                          <p className="text-[#8b949e]">{edu.institution}</p>
                         </div>
                       </div>
                       
-                      <div className="flex items-center mb-3 text-sm dark:text-[#8b949e] light:text-[#57606a]">
+                      <div className="flex items-center mb-3 text-sm text-[#8b949e]">
                         <Calendar className="h-4 w-4 mr-2 inline" />
                         {edu.period}
                       </div>
@@ -314,11 +321,11 @@ const About = () => {
                             className="flex items-start"
                           >
                             {i === 0 ? (
-                              <Award className="h-4 w-4 mr-2 dark:text-[#8b949e] light:text-[#57606a] mt-1 shrink-0" />
+                              <Award className="h-4 w-4 mr-2 text-[#8b949e] mt-1 shrink-0" />
                             ) : (
-                              <BookOpen className="h-4 w-4 mr-2 dark:text-[#8b949e] light:text-[#57606a] mt-1 shrink-0" />
+                              <BookOpen className="h-4 w-4 mr-2 text-[#8b949e] mt-1 shrink-0" />
                             )}
-                            <p className="dark:text-[#8b949e] light:text-[#57606a]">{detail}</p>
+                            <p className="text-[#8b949e]">{detail}</p>
                           </motion.div>
                         ))}
                       </div>
