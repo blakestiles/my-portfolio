@@ -7,7 +7,7 @@ const Footer = () => {
 
   const socials = [
     { icon: Github, href: 'https://github.com/blakestiles', label: 'GitHub' },
-    { icon: Linkedin, href: 'https://linkedin.com/in/sainath-gandhe', label: 'LinkedIn' },
+    { icon: Linkedin, href: 'https://www.linkedin.com/in/sainathgandhe/', label: 'LinkedIn' },
     { icon: Mail, href: 'mailto:gandhe.sainath@csu.fullerton.edu', label: 'Email' },
   ];
 

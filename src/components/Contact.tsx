@@ -301,24 +301,6 @@ const Contact = () => {
                 </span>
               </motion.div>
             )}
-
-            {/* Available for tags */}
-            <motion.div
-              variants={itemVariants}
-              className="mt-4 p-4 bg-[#161b22] border border-[#30363d] rounded-lg"
-            >
-              <p className="text-xs text-[#8b949e] uppercase tracking-widest mb-3">Available for</p>
-              <div className="flex flex-wrap gap-2">
-                {['Full-time Roles', 'AI Projects', 'Internships', 'Collaborations'].map(tag => (
-                  <span
-                    key={tag}
-                    className="text-xs px-3 py-1 rounded-full bg-[#238636]/10 text-[#3fb950] border border-[#238636]/30 hover:bg-[#238636]/20 transition-colors cursor-default"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </motion.div>
           </motion.div>
 
           {/* Contact Form Section */}

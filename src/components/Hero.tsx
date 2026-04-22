@@ -16,11 +16,13 @@ const BlurWord = ({ children, delay }: { children: React.ReactNode; delay: numbe
 
 const yearsExp = (Math.floor((Date.now() - new Date('2023-08-01').getTime()) / (1000 * 60 * 60 * 24 * 36.5)) / 10).toFixed(1);
 
-// Syntax-highlighted code lines — no TypeAnimation dependency
 const codeLines = [
+  [{ t: '// developer.js — Sainath Gandhe', c: '#8b949e' }],
+  [],
   [{ t: 'const ', c: '#ff7b72' }, { t: 'profile', c: '#e3b341' }, { t: ' = {', c: '#c9d1d9' }],
   [{ t: "  name", c: '#79c0ff' }, { t: ': ', c: '#c9d1d9' }, { t: "'Sainath Gandhe'", c: '#a5d6ff' }, { t: ',', c: '#c9d1d9' }],
-  [{ t: "  title", c: '#79c0ff' }, { t: ': ', c: '#c9d1d9' }, { t: "'Full Stack Engineer'", c: '#a5d6ff' }, { t: ',', c: '#c9d1d9' }],
+  [{ t: "  role", c: '#79c0ff' }, { t: ': ', c: '#c9d1d9' }, { t: "'Full Stack Engineer'", c: '#a5d6ff' }, { t: ',', c: '#c9d1d9' }],
+  [{ t: "  location", c: '#79c0ff' }, { t: ': ', c: '#c9d1d9' }, { t: "'Fullerton, CA'", c: '#a5d6ff' }, { t: ',', c: '#c9d1d9' }],
   [{ t: "  skills", c: '#79c0ff' }, { t: ': [', c: '#c9d1d9' }],
   [{ t: "    ", c: '#c9d1d9' }, { t: "'Java'", c: '#a5d6ff' }, { t: ', ', c: '#c9d1d9' }, { t: "'Python'", c: '#a5d6ff' }, { t: ', ', c: '#c9d1d9' }, { t: "'TypeScript'", c: '#a5d6ff' }, { t: ',', c: '#c9d1d9' }],
   [{ t: "    ", c: '#c9d1d9' }, { t: "'React'", c: '#a5d6ff' }, { t: ', ', c: '#c9d1d9' }, { t: "'Node.js'", c: '#a5d6ff' }, { t: ', ', c: '#c9d1d9' }, { t: "'AWS'", c: '#a5d6ff' }],
@@ -30,6 +32,17 @@ const codeLines = [
   [{ t: "    problemSolver", c: '#79c0ff' }, { t: ': ', c: '#c9d1d9' }, { t: 'true', c: '#ff7b72' }, { t: ',', c: '#c9d1d9' }],
   [{ t: "    yearsExp", c: '#79c0ff' }, { t: ': ', c: '#c9d1d9' }, { t: yearsExp, c: '#79c0ff' }],
   [{ t: "  }", c: '#c9d1d9' }],
+  [{ t: '};', c: '#c9d1d9' }],
+  [],
+  [{ t: 'const ', c: '#ff7b72' }, { t: 'stack', c: '#e3b341' }, { t: ' = {', c: '#c9d1d9' }],
+  [{ t: "  frontend", c: '#79c0ff' }, { t: ': [', c: '#c9d1d9' }, { t: "'React'", c: '#a5d6ff' }, { t: ', ', c: '#c9d1d9' }, { t: "'Next.js'", c: '#a5d6ff' }, { t: ', ', c: '#c9d1d9' }, { t: "'Vue'", c: '#a5d6ff' }, { t: '],', c: '#c9d1d9' }],
+  [{ t: "  backend", c: '#79c0ff' }, { t: ': [', c: '#c9d1d9' }, { t: "'FastAPI'", c: '#a5d6ff' }, { t: ', ', c: '#c9d1d9' }, { t: "'Express'", c: '#a5d6ff' }, { t: ', ', c: '#c9d1d9' }, { t: "'Spring'", c: '#a5d6ff' }, { t: '],', c: '#c9d1d9' }],
+  [{ t: "  ai", c: '#79c0ff' }, { t: ': [', c: '#c9d1d9' }, { t: "'LangChain'", c: '#a5d6ff' }, { t: ', ', c: '#c9d1d9' }, { t: "'OpenAI'", c: '#a5d6ff' }, { t: ', ', c: '#c9d1d9' }, { t: "'LangGraph'", c: '#a5d6ff' }, { t: '],', c: '#c9d1d9' }],
+  [{ t: '};', c: '#c9d1d9' }],
+  [],
+  [{ t: 'const ', c: '#ff7b72' }, { t: 'hire', c: '#e3b341' }, { t: ' = (', c: '#c9d1d9' }, { t: 'dev', c: '#ffa657' }, { t: ') => {', c: '#c9d1d9' }],
+  [{ t: '  ', c: '#c9d1d9' }, { t: 'return ', c: '#ff7b72' }, { t: 'dev', c: '#ffa657' }, { t: '.attributes.hardworker', c: '#c9d1d9' }],
+  [{ t: '    ? ', c: '#c9d1d9' }, { t: '"hired"', c: '#a5d6ff' }, { t: ' : ', c: '#c9d1d9' }, { t: '"pass"', c: '#a5d6ff' }, { t: ';', c: '#c9d1d9' }],
   [{ t: '};', c: '#c9d1d9' }],
 ];
 
@@ -143,12 +156,7 @@ const Hero = () => {
               variants={itemVariants}
               className="text-[#8b949e] text-sm mb-4 text-center lg:text-left leading-relaxed max-w-sm"
             >
-              Building scalable AI systems & full-stack products.{' '}
-              <span className="text-[#c9d1d9]">Ex-Boeing</span>
-              {' · '}
-              <span className="text-[#c9d1d9]">YC Alumnus</span>
-              {' · '}
-              <span className="text-[#c9d1d9]">CS Grad @ CSUF</span>
+              Building scalable AI systems & full-stack products.
             </motion.p>
 
             {/* 2+1 button layout */}
@@ -174,7 +182,7 @@ const Hero = () => {
               <div className="flex gap-3 flex-wrap justify-center lg:justify-start">
                 <Button size="lg" variant="outline" asChild
                   className="gh-button transition-all duration-300 hover:scale-105 group">
-                  <a href="https://linkedin.com/in/sainath-gandhe" target="_blank" rel="noopener noreferrer">
+                  <a href="https://www.linkedin.com/in/sainathgandhe/" target="_blank" rel="noopener noreferrer">
                     <Linkedin className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform" />
                     LinkedIn
                   </a>
@@ -211,7 +219,6 @@ const Hero = () => {
                 <div className="flex">
                   {/* Line numbers gutter */}
                   <div className="select-none pr-4 text-right shrink-0" style={{ minWidth: '2rem' }}>
-                    <div className="text-[#8b949e]/30 leading-6 mb-2">0</div>
                     {codeLines.map((_, lineIdx) => (
                       lineIdx <= typingPos.line ? (
                         <div key={lineIdx} className="text-[#8b949e]/30 leading-6">
@@ -228,9 +235,6 @@ const Hero = () => {
                   </div>
                   {/* Code content */}
                   <div className="flex-1 overflow-hidden">
-                    <div className="mb-2">
-                      <span className="text-[#8b949e]">{'// Welcome to my portfolio'}</span>
-                    </div>
                     {codeLines.map((_, lineIdx) => (
                       lineIdx <= typingPos.line ? (
                         <div key={lineIdx} className="leading-6">

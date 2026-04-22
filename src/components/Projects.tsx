@@ -58,6 +58,7 @@ const projects = [
     tech: ["Python", "LSTM", "TensorFlow", "Pandas", "NumPy", "Matplotlib"],
     liveDemo: "https://ijsrem.com/download/stock-price-prediction-using-machine-learning-an-unprecedented-approach/",
     github: "https://github.com/blakestiles",
+    noCode: true,
     languageColor: "#DA5B0B",
     stars: 56,
     yc: false,
@@ -72,6 +73,7 @@ const projects = [
     tech: ["Python", "Flask", "Gmail API", "Email Automation", "Cron Jobs"],
     liveDemo: "https://www.irjmets.com/uploadedfiles/paper//issue_6_june_2023/42238/final/fin_irjmets1687027562.pdf",
     github: "https://github.com/blakestiles",
+    noCode: true,
     languageColor: "#2b7489",
     stars: 19,
     yc: false,
@@ -193,12 +195,14 @@ const ProjectCard = ({ project, index, large = false }: { project: typeof projec
       </CardContent>
 
       <CardFooter className="pt-0 pb-4 px-6 flex gap-2">
-        <Button size="sm" variant="outline" asChild
-          className="flex-1 border-[#30363d] text-[#c9d1d9] hover:border-[#1f6feb] hover:text-white hover:bg-[#1f6feb]/10 transition-all">
-          <a href={project.github} target="_blank" rel="noopener noreferrer">
-            <Github className="mr-1.5 h-3.5 w-3.5" />Code
-          </a>
-        </Button>
+        {!(project as any).noCode && (
+          <Button size="sm" variant="outline" asChild
+            className="flex-1 border-[#30363d] text-[#c9d1d9] hover:border-[#1f6feb] hover:text-white hover:bg-[#1f6feb]/10 transition-all">
+            <a href={project.github} target="_blank" rel="noopener noreferrer">
+              <Github className="mr-1.5 h-3.5 w-3.5" />Code
+            </a>
+          </Button>
+        )}
         {project.liveDemo && project.liveDemo !== '#' && (
           <Button size="sm" variant="outline" asChild
             className="flex-1 border-[#30363d] text-[#c9d1d9] hover:border-[#238636] hover:text-white hover:bg-[#238636]/10 transition-all">
