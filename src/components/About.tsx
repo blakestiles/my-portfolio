@@ -144,7 +144,7 @@ const About = () => {
             variants={imageVariants}
             initial="hidden"
             animate={isInView ? 'visible' : 'hidden'}
-            className="perspective-1000"
+            className="perspective-1000 flex justify-center"
           >
             <motion.div
               className="relative"
@@ -152,13 +152,15 @@ const About = () => {
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
             >
-              <div className="aspect-[3/4] rounded-lg border border-[#30363d] overflow-hidden">
+              <div className="absolute inset-[-4px] rounded-2xl bg-gradient-to-r from-[#238636] to-[#1f6feb] opacity-40 blur-sm" />
+              <div className="relative w-60 h-60 md:w-72 md:h-72 rounded-2xl border border-[#30363d] overflow-hidden bg-[#161b22]">
                 <img
                   src="/images/Headshot.jpeg"
                   alt="Profile"
                   className="w-full h-full object-cover object-top"
                 />
               </div>
+              <div className="absolute -bottom-3 -right-3 w-6 h-6 rounded-full bg-gradient-to-r from-[#238636] to-[#1f6feb] opacity-60" />
             </motion.div>
           </motion.div>
 

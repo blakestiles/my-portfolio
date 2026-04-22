@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowDown, Github, Linkedin, Terminal, FileText } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -36,6 +36,39 @@ const codeLines = [
 const Hero = () => {
   const scrollToContact = () => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
   const scrollToAbout = () => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
+
+  const [typingPos, setTypingPos] = useState<{ line: number; char: number }>({ line: 0, char: 0 });
+  const [typingDone, setTypingDone] = useState(false);
+
+  useEffect(() => {
+    if (typingPos.line >= codeLines.length) {
+      setTypingDone(true);
+      return;
+    }
+    const line = codeLines[typingPos.line];
+    const lineLength = line.reduce((sum, t) => sum + t.t.length, 0);
+    if (typingPos.char >= lineLength) {
+      const id = setTimeout(() => setTypingPos(p => ({ line: p.line + 1, char: 0 })), 40);
+      return () => clearTimeout(id);
+    } else {
+      const id = setTimeout(() => setTypingPos(p => ({ line: p.line, char: p.char + 1 })), 18);
+      return () => clearTimeout(id);
+    }
+  }, [typingPos]);
+
+  const getLineTokens = (lineIdx: number): { t: string; c: string }[] => {
+    if (lineIdx < typingPos.line) return codeLines[lineIdx];
+    if (lineIdx > typingPos.line) return [];
+    const tokens: { t: string; c: string }[] = [];
+    let charsLeft = typingPos.char;
+    for (const token of codeLines[lineIdx]) {
+      if (charsLeft <= 0) break;
+      const visible = token.t.slice(0, Math.max(0, charsLeft));
+      if (visible.length > 0) tokens.push({ t: visible, c: token.c });
+      charsLeft -= token.t.length;
+    }
+    return tokens;
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -180,76 +213,58 @@ const Hero = () => {
                   <div className="select-none pr-4 text-right shrink-0" style={{ minWidth: '2rem' }}>
                     <div className="text-[#8b949e]/30 leading-6 mb-2">0</div>
                     {codeLines.map((_, lineIdx) => (
-                      <motion.div
-                        key={lineIdx}
-                        className="text-[#8b949e]/30 leading-6"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.8 + lineIdx * 0.07, duration: 0.25 }}
-                      >
-                        {lineIdx + 1}
-                      </motion.div>
+                      lineIdx <= typingPos.line ? (
+                        <div key={lineIdx} className="text-[#8b949e]/30 leading-6">
+                          {lineIdx + 1}
+                        </div>
+                      ) : null
                     ))}
-                    <motion.div
-                      className="text-[#8b949e]/30 leading-6"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.8 + codeLines.length * 0.07 + 0.2 }}
-                    >
-                      {codeLines.length + 1}
-                    </motion.div>
-                    <motion.div
-                      className="text-[#8b949e]/30 leading-6"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.8 + codeLines.length * 0.07 + 0.5 }}
-                    >
-                      {codeLines.length + 2}
-                    </motion.div>
+                    {typingDone && (
+                      <>
+                        <div className="text-[#8b949e]/30 leading-6">{codeLines.length + 1}</div>
+                        <div className="text-[#8b949e]/30 leading-6">{codeLines.length + 2}</div>
+                      </>
+                    )}
                   </div>
                   {/* Code content */}
                   <div className="flex-1 overflow-hidden">
                     <div className="mb-2">
                       <span className="text-[#8b949e]">{'// Welcome to my portfolio'}</span>
                     </div>
-                    {codeLines.map((line, lineIdx) => (
-                      <motion.div
-                        key={lineIdx}
-                        initial={{ opacity: 0, x: -8 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.8 + lineIdx * 0.07, duration: 0.25 }}
-                        className="leading-6"
-                      >
-                        {line.map((token, ti) => (
-                          <span key={ti} style={{ color: token.c }}>{token.t}</span>
-                        ))}
-                      </motion.div>
+                    {codeLines.map((_, lineIdx) => (
+                      lineIdx <= typingPos.line ? (
+                        <div key={lineIdx} className="leading-6">
+                          {getLineTokens(lineIdx).map((token, ti) => (
+                            <span key={ti} style={{ color: token.c }}>{token.t}</span>
+                          ))}
+                          {lineIdx === typingPos.line && !typingDone && (
+                            <span
+                              className="inline-block w-[2px] h-[14px] bg-[#c9d1d9] align-middle ml-[1px]"
+                              style={{ animation: 'blink 0.8s step-end infinite' }}
+                            />
+                          )}
+                        </div>
+                      ) : null
                     ))}
-                    <motion.div
-                      className="mt-4"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.8 + codeLines.length * 0.07 + 0.2 }}
-                    >
-                      <span className="text-[#1f6feb]">console</span>
-                      <span className="text-white">.</span>
-                      <span className="text-[#d2a8ff]">log</span>
-                      <span className="text-white">(</span>
-                      <span className="text-[#a5d6ff]">'Ready to collaborate?'</span>
-                      <span className="text-white">);</span>
-                    </motion.div>
-                    <motion.div
-                      className="mt-1 flex items-center"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.8 + codeLines.length * 0.07 + 0.5 }}
-                    >
-                      <span className="text-[#c9d1d9] mr-1">{'>'}</span>
-                      <span
-                        className="inline-block w-2 h-4 bg-[#c9d1d9] align-middle"
-                        style={{ animation: 'blink 0.8s step-end infinite' }}
-                      />
-                    </motion.div>
+                    {typingDone && (
+                      <>
+                        <div className="mt-4">
+                          <span className="text-[#1f6feb]">console</span>
+                          <span className="text-white">.</span>
+                          <span className="text-[#d2a8ff]">log</span>
+                          <span className="text-white">(</span>
+                          <span className="text-[#a5d6ff]">'Ready to collaborate?'</span>
+                          <span className="text-white">);</span>
+                        </div>
+                        <div className="mt-1 flex items-center">
+                          <span className="text-[#c9d1d9] mr-1">{'>'}</span>
+                          <span
+                            className="inline-block w-2 h-4 bg-[#c9d1d9] align-middle"
+                            style={{ animation: 'blink 0.8s step-end infinite' }}
+                          />
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

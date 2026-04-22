@@ -330,11 +330,11 @@ const Contact = () => {
           >
             <div className="relative flex flex-col h-full rounded-xl overflow-hidden border border-[#30363d] bg-[#0d1117] group">
               {/* Animated gradient border on hover */}
-              <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+              <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-[0]"
                 style={{ background: 'linear-gradient(#0d1117, #0d1117) padding-box, linear-gradient(135deg, #238636, #1f6feb, #8957e5) border-box', border: '1px solid transparent' }} />
 
               {/* Header */}
-              <div className="px-6 pt-6 pb-4 border-b border-[#30363d] bg-[#161b22]">
+              <div className="px-6 pt-6 pb-4 border-b border-[#30363d] bg-[#161b22] relative z-[1]">
                 <div className="flex items-center gap-3 mb-1">
                   <div className="h-8 w-8 rounded-lg bg-[#1f6feb]/15 border border-[#1f6feb]/30 flex items-center justify-center">
                     <MessageSquare className="h-4 w-4 text-[#1f6feb]" />
@@ -349,7 +349,7 @@ const Contact = () => {
               </div>
 
               {/* Form body */}
-              <form onSubmit={handleSubmit} className="flex flex-col flex-1 p-6 gap-5">
+              <form onSubmit={handleSubmit} className="flex flex-col flex-1 p-6 gap-5 relative z-[1]">
                 {/* Name field */}
                 <motion.div custom={0} variants={inputVariants} className="space-y-1.5">
                   <label htmlFor="name" className="text-xs font-semibold uppercase tracking-wider text-[#8b949e] flex items-center gap-1.5">
