@@ -157,7 +157,7 @@ const About = () => {
                 <img
                   src="/images/Headshot.jpeg"
                   alt="Profile"
-                  className="w-full h-full object-cover object-top"
+                  className="w-full h-full object-contain"
                 />
               </div>
               <div className="absolute -bottom-3 -right-3 w-6 h-6 rounded-full bg-gradient-to-r from-[#238636] to-[#1f6feb] opacity-60" />

@@ -120,7 +120,7 @@ const Hero = () => {
                   <img
                     src="/images/profile-photo.png"
                     alt="Profile"
-                    className="w-full h-full object-cover rounded-full"
+                    className="w-full h-full object-cover object-top rounded-full"
                     loading="eager"
                   />
                 </div>
