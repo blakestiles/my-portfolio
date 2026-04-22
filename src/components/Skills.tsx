@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import SkillLogos from './SkillLogos';
@@ -93,6 +93,20 @@ const Skills = () => {
     }
   ];
 
+  const particlePositions = useMemo(() =>
+    skillCategories.map(() =>
+      Array.from({ length: 5 }, () => ({
+        width: Math.random() * 8 + 4,
+        height: Math.random() * 8 + 4,
+        left: Math.random() * 100,
+        duration: Math.random() * 3 + 2,
+        delay: Math.random() * 2,
+        opacity: Math.random() * 0.5 + 0.3,
+      }))
+    ),
+    []
+  );
+
   const containerVariants = {
     hidden: { opacity: 0 },
     show: {
@@ -103,7 +117,7 @@ const Skills = () => {
     }
   };
 
-  const extractColors = (colorString) => {
+  const extractColors = (colorString: string) => {
     if (!colorString) return { start: '#8957E5', end: '#D2A8FF' };
     
     try {
@@ -121,9 +135,9 @@ const Skills = () => {
   };
 
   return (
-    <section 
-      id="skills" 
-      className="py-20 bg-[#161b22]"
+    <section
+      id="skills"
+      className="py-20 bg-[#0d1117]"
       ref={sectionRef}
     >
       <div className="section-container">
@@ -234,19 +248,13 @@ const Skills = () => {
                               transition: { duration: 0.3 } 
                             }}
                           >
-                            <Badge 
-                              className="bg-[#21262d] text-white border border-[#30363d] transition-all duration-300 group-hover:shadow-md flex items-center gap-1.5 px-3 py-1.5"
+                            <Badge
+                              className="skill-badge bg-[#21262d] text-white border border-[#30363d] transition-all duration-300 flex items-center gap-1.5 px-3 py-1.5 hover:text-white"
                               style={{
-                                '--glow-color': colors.start
+                                '--skill-from': colors.start,
+                                '--skill-to': colors.end,
+                                '--skill-glow': colors.start,
                               } as React.CSSProperties}
-                              onMouseOver={(e) => {
-                                e.currentTarget.style.backgroundImage = `linear-gradient(to right, ${colors.start}, ${colors.end})`;
-                                e.currentTarget.style.boxShadow = `0 0 10px ${colors.start}`;
-                              }}
-                              onMouseOut={(e) => {
-                                e.currentTarget.style.backgroundImage = '';
-                                e.currentTarget.style.boxShadow = '';
-                              }}
                             >
                               {/* Icon for the skill */}
                               {skill.icon && (
@@ -268,19 +276,19 @@ const Skills = () => {
                       {/* Interactive particle background */}
                       <div className="absolute bottom-0 left-0 w-full h-16 overflow-hidden opacity-30 pointer-events-none z-0">
                         <div className="absolute w-full h-full">
-                          {Array.from({length: 5}).map((_, i) => (
-                            <div 
-                              key={i} 
-                              className="absolute rounded-full" 
+                          {particlePositions[index].map((p, i) => (
+                            <div
+                              key={i}
+                              className="absolute rounded-full"
                               style={{
-                                width: `${Math.random() * 8 + 4}px`,
-                                height: `${Math.random() * 8 + 4}px`,
-                                left: `${Math.random() * 100}%`,
+                                width: `${p.width}px`,
+                                height: `${p.height}px`,
+                                left: `${p.left}%`,
                                 bottom: `-20px`,
                                 background: `linear-gradient(to top, ${colors.start}, transparent)`,
-                                animation: `floatParticle ${Math.random() * 3 + 2}s linear infinite`,
-                                animationDelay: `${Math.random() * 2}s`,
-                                opacity: Math.random() * 0.5 + 0.3
+                                animation: `floatParticle ${p.duration}s linear infinite`,
+                                animationDelay: `${p.delay}s`,
+                                opacity: p.opacity
                               }}
                             />
                           ))}

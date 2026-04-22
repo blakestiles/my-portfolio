@@ -4,149 +4,178 @@ import { Menu, X, FileText } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 
+const NAV_LINKS = [
+  { name: 'About', href: '#about', num: '01' },
+  { name: 'Skills', href: '#skills', num: '02' },
+  { name: 'Experience', href: '#experience', num: '03' },
+  { name: 'Projects', href: '#projects', num: '04' },
+  { name: 'Contact', href: '#contact', num: '05' },
+];
+
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('');
   const isMobile = useIsMobile();
 
-  // Check if the page is scrolled
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 10);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile menu when switching to desktop
+  // Scroll-spy: track which section is in view
   useEffect(() => {
-    if (!isMobile && mobileMenuOpen) {
-      setMobileMenuOpen(false);
-    }
+    const sectionIds = NAV_LINKS.map(l => l.href.slice(1));
+    const observers: IntersectionObserver[] = [];
+
+    sectionIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const obs = new IntersectionObserver(
+        ([entry]) => { if (entry.isIntersecting) setActiveSection(id); },
+        { rootMargin: '-40% 0px -55% 0px', threshold: 0 }
+      );
+      obs.observe(el);
+      observers.push(obs);
+    });
+
+    return () => observers.forEach(o => o.disconnect());
+  }, []);
+
+  useEffect(() => {
+    if (!isMobile && mobileMenuOpen) setMobileMenuOpen(false);
   }, [isMobile, mobileMenuOpen]);
 
-  const navLinks = [
-    { name: 'About', href: '#about' },
-    { name: 'Experience', href: '#experience' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Contact', href: '#contact' },
-  ];
-
-  const openResume = () => {
-    // In a real environment, this would point to a PDF file
-    window.open('/resume.pdf', '_blank');
-  };
+  const openResume = () => window.open('/resume.pdf', '_blank');
 
   return (
-    <header
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-[#0d1117]/90 backdrop-blur-md shadow-md' : 'bg-transparent'
-      }`}
-    >
-      <nav className="container mx-auto px-6 py-4 flex justify-between items-center">
-        <a href="/" className="text-white font-bold text-xl relative group">
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#1f6feb] to-[#58a6ff] py-1">Portfolio</span>
-          <motion.span
-            className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#1f6feb] to-[#58a6ff]"
-            animate={{ width: ['0%', '100%', '0%'] }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              repeatDelay: 3
-            }}
-          />
-        </a>
+    <header className="fixed top-0 w-full z-50 transition-all duration-500">
+      {/* Desktop: floating pill on scroll, full-width transparent when at top */}
+      <div className={`transition-all duration-500 ${
+        isScrolled
+          ? 'mx-auto mt-3 max-w-3xl px-2'
+          : 'mx-0 mt-0 px-0'
+      }`}>
+        <nav className={`flex justify-between items-center px-6 transition-all duration-500 ${
+          isScrolled
+            ? 'py-2.5 bg-[#0d1117]/95 backdrop-blur-xl border border-[#30363d] rounded-full shadow-2xl shadow-black/40'
+            : 'py-4 bg-transparent'
+        }`}>
+          <a href="/" className="text-white font-bold text-xl relative group shrink-0">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#1f6feb] to-[#58a6ff]">
+              Sainath G.
+            </span>
+            <motion.span
+              className="absolute -bottom-0.5 left-0 h-0.5 bg-gradient-to-r from-[#1f6feb] to-[#58a6ff]"
+              initial={{ width: '0%' }}
+              whileHover={{ width: '100%' }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+            />
+          </a>
 
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-1">
-          <ul className="flex space-x-1">
-            {navLinks.map((link) => (
-              <li key={link.name}>
-                <a
-                  href={link.href}
-                  className="px-3 py-2 text-[#c9d1d9] hover:text-white transition-colors relative group"
-                >
-                  {link.name}
-                  <span className="absolute left-0 bottom-0 w-full h-0.5 bg-[#1f6feb] transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
-                </a>
-              </li>
-            ))}
-          </ul>
-          
-          <Button 
-            variant="outline" 
-            onClick={openResume} 
-            className="ml-2 border-[#30363d] hover:bg-[#1f6feb]/10 hover:text-white hover:border-[#1f6feb]"
-          >
-            <FileText className="mr-2 h-4 w-4" />
-            Resume
-          </Button>
-        </div>
+          {/* Desktop links */}
+          <div className="hidden md:flex items-center gap-1">
+            <ul className="flex gap-1">
+              {NAV_LINKS.map(link => {
+                const isActive = activeSection === link.href.slice(1);
+                return (
+                  <li key={link.name}>
+                    <a
+                      href={link.href}
+                      className={`group relative px-3 py-1.5 text-sm rounded-full transition-all duration-200 ${
+                        isActive
+                          ? 'text-white bg-[#1f6feb]/15'
+                          : 'text-[#8b949e] hover:text-white hover:bg-[#21262d]'
+                      }`}
+                    >
+                      <span className="font-mono text-[10px] text-[#30363d] mr-1 group-hover:text-[#8b949e] transition-colors">{link.num}</span>{link.name}
+                      {isActive && (
+                        <motion.span
+                          layoutId="activeNav"
+                          className="absolute inset-0 rounded-full bg-[#1f6feb]/15 border border-[#1f6feb]/30"
+                          transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                        />
+                      )}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
 
-        {/* Mobile Menu Button */}
-        <div className="md:hidden flex items-center">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="ml-2 text-white"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
-          >
-            {mobileMenuOpen ? <X /> : <Menu />}
-          </Button>
-        </div>
-      </nav>
+            <Button
+              variant="outline"
+              onClick={openResume}
+              className="ml-2 h-8 text-sm border-[#30363d] text-[#c9d1d9] hover:bg-[#1f6feb]/10 hover:text-white hover:border-[#1f6feb]"
+            >
+              <FileText className="mr-1.5 h-3.5 w-3.5" />
+              Resume
+            </Button>
+          </div>
 
-      {/* Mobile Menu */}
+          {/* Mobile burger */}
+          <div className="md:hidden">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-white h-8 w-8"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+            >
+              {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            </Button>
+          </div>
+        </nav>
+      </div>
+
+      {/* Mobile menu */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-[#0d1117] border-t border-[#30363d]"
+            className="md:hidden bg-[#0d1117]/98 backdrop-blur-xl border-t border-[#30363d]"
           >
-            <div className="container mx-auto px-6 py-4">
-              <ul className="space-y-3">
-                {navLinks.map((link) => (
-                  <motion.li
+            <div className="px-6 py-4 space-y-1">
+              {NAV_LINKS.map((link, i) => {
+                const isActive = activeSection === link.href.slice(1);
+                return (
+                  <motion.div
                     key={link.name}
-                    initial={{ opacity: 0, x: -20 }}
+                    initial={{ opacity: 0, x: -16 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.2 }}
+                    transition={{ delay: i * 0.05 }}
                   >
                     <a
                       href={link.href}
-                      className="block py-2 text-[#c9d1d9] hover:text-white transition-colors"
                       onClick={() => setMobileMenuOpen(false)}
+                      className={`block py-2.5 px-3 rounded-lg text-sm transition-colors ${
+                        isActive
+                          ? 'text-white bg-[#1f6feb]/15 border border-[#1f6feb]/20'
+                          : 'text-[#c9d1d9] hover:text-white hover:bg-[#21262d]'
+                      }`}
                     >
                       {link.name}
                     </a>
-                  </motion.li>
-                ))}
-                <motion.li
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.2, delay: 0.6 }}
+                  </motion.div>
+                );
+              })}
+              <motion.div
+                initial={{ opacity: 0, x: -16 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: NAV_LINKS.length * 0.05 }}
+                className="pt-2"
+              >
+                <Button
+                  variant="outline"
+                  onClick={openResume}
+                  className="w-full border-[#30363d] hover:bg-[#1f6feb]/10 hover:text-white hover:border-[#1f6feb]"
                 >
-                  <Button 
-                    variant="outline" 
-                    onClick={openResume} 
-                    className="w-full mt-2 border-[#30363d] hover:bg-[#1f6feb]/10 hover:text-white hover:border-[#1f6feb]"
-                  >
-                    <FileText className="mr-2 h-4 w-4" />
-                    Resume
-                  </Button>
-                </motion.li>
-              </ul>
+                  <FileText className="mr-2 h-4 w-4" />
+                  Resume
+                </Button>
+              </motion.div>
             </div>
           </motion.div>
         )}

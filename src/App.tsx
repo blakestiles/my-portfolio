@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -6,63 +6,37 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import LoadingScreen from "./components/LoadingScreen";
 
-// Create QueryClient instance
 const queryClient = new QueryClient();
 
 const App = () => {
-  const [loading, setLoading] = useState(true);
-
-  // Handle smooth scrolling for hash links
+  // Smooth scroll for hash links
   useEffect(() => {
-    // Function to handle smooth scrolling
-    const handleSmoothScroll = (event: any) => {
-      // Check if the clicked element is an anchor tag with a hash
-      const target = event.target as HTMLElement;
-      const anchor = target.closest('a[href^="#"]');
-      
-      if (anchor) {
-        const targetId = anchor.getAttribute('href');
-        if (targetId && targetId.startsWith('#')) {
-          const targetElement = document.getElementById(targetId.substring(1));
-          
-          if (targetElement) {
-            event.preventDefault();
-            window.scrollTo({
-              top: targetElement.offsetTop - 70, // Adjust for header height
-              behavior: 'smooth'
-            });
-            
-            // Update URL without page reload
-            window.history.pushState(null, '', targetId);
-          }
-        }
-      }
+    const handleSmoothScroll = (event: MouseEvent) => {
+      const anchor = (event.target as HTMLElement).closest('a[href^="#"]');
+      if (!anchor) return;
+      const targetId = anchor.getAttribute('href');
+      if (!targetId?.startsWith('#')) return;
+      const el = document.getElementById(targetId.substring(1));
+      if (!el) return;
+      event.preventDefault();
+      window.scrollTo({ top: el.offsetTop - 70, behavior: 'smooth' });
+      window.history.pushState(null, '', targetId);
     };
-
-    // Add event listener to the document
     document.addEventListener('click', handleSmoothScroll);
-
-    return () => {
-      document.removeEventListener('click', handleSmoothScroll);
-    };
+    return () => document.removeEventListener('click', handleSmoothScroll);
   }, []);
-
-  const handleLoadingFinished = () => {
-    setLoading(false);
-  };
 
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        {loading && <LoadingScreen onFinished={handleLoadingFinished} />}
+        {/* BrowserRouter wraps LoadingScreen so the router initialises immediately,
+            improving TTI — LoadingScreen is now rendered inside Index */}
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

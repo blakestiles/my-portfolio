@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { Mail, Phone, Send, Github, Linkedin, ExternalLink, MessageSquare } from 'lucide-react';
+import { Mail, Phone, Send, ExternalLink, MessageSquare, MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 
@@ -23,6 +23,27 @@ const Contact = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const [localTime, setLocalTime] = useState('');
+  const [isAvailable, setIsAvailable] = useState(true);
+
+  useEffect(() => {
+    const update = () => {
+      const now = new Date();
+      const time = now.toLocaleTimeString('en-US', {
+        timeZone: 'America/Los_Angeles',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+      });
+      setLocalTime(time);
+      const hour = parseInt(new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles', hour: 'numeric', hour12: false }));
+      setIsAvailable(hour >= 9 && hour < 22);
+    };
+    update();
+    const id = setInterval(update, 60000);
+    return () => clearInterval(id);
+  }, []);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
@@ -30,24 +51,30 @@ const Contact = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate form submission with slight delay for better UX
-    setTimeout(() => {
+    try {
+      const res = await fetch("https://formspree.io/f/xqaqyovq", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      if (!res.ok) throw new Error(`Submission failed: ${res.status}`);
       toast({
         title: "Message sent!",
         description: "Thank you for your message. I'll get back to you soon.",
       });
-      
-      setFormData({
-        name: '',
-        email: '',
-        message: ''
+      setFormData({ name: '', email: '', message: '' });
+    } catch {
+      toast({
+        title: "Failed to send",
+        description: "Something went wrong. Please try emailing me directly.",
+        variant: "destructive",
       });
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
   };
 
   const containerVariants = {
@@ -106,40 +133,12 @@ const Contact = () => {
       gradient: "from-[#238636] to-[#3fb950]"
     },
     {
-      icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#8b949e]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>,
+      icon: <MapPin className="h-6 w-6 text-[#8b949e]" />,
       title: "Location",
       value: "Fullerton, CA",
       link: "https://maps.google.com/?q=Fullerton,CA",
       color: "#8b949e",
       gradient: "from-[#8b949e] to-[#c9d1d9]"
-    }
-  ];
-
-  // Social media links
-  const socialLinks = [
-    { 
-      name: "GitHub", 
-      icon: <Github />, 
-      url: "https://github.com/blakestiles", 
-      color: "#8b949e",
-      gradient: "from-[#8b949e] to-[#c9d1d9]",
-      delay: 0
-    },
-    { 
-      name: "LinkedIn", 
-      icon: <Linkedin />, 
-      url: "https://linkedin.com/in/sainath-gandhe", 
-      color: "#1f6feb",
-      gradient: "from-[#1f6feb] to-[#58a6ff]",
-      delay: 0.1
-    },
-    { 
-      name: "Email", 
-      icon: <Mail />, 
-      url: "mailto:gandhe.sainath@csu.fullerton.edu", 
-      color: "#238636",
-      gradient: "from-[#238636] to-[#3fb950]",
-      delay: 0.2
     }
   ];
 
@@ -195,88 +194,44 @@ const Contact = () => {
             variants={containerVariants}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
-            key={isInView ? "visible" : "hidden"}
             className="relative"
           >
             <motion.div className="mb-8" variants={itemVariants}>
-              <motion.div 
-                className="p-6 bg-[#161b22] border border-[#30363d] rounded-lg shadow-lg transition-all mb-6"
+              <motion.div
+                className="p-6 bg-[#161b22] border border-[#30363d] rounded-lg shadow-lg mb-6"
                 whileHover={{ y: -5, boxShadow: "0 10px 25px rgba(0,0,0,0.5)" }}
               >
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="h-16 w-16 rounded-full bg-gradient-to-r from-[#238636] to-[#1f6feb] p-0.5">
-                    <div className="h-full w-full rounded-full overflow-hidden border-2 border-[#0d1117] bg-[#161b22]">
-                      <img 
-                        src="/lovable-uploads/a03692e5-c82d-4a3d-9867-8ccfcc8d132f.png" 
-                        alt="Profile" 
-                        className="h-full w-full object-cover"
-                      />
+                <p className="text-xs text-[#8b949e] uppercase tracking-widest mb-4">Quick Facts</p>
+                <div className="space-y-3">
+                  {[
+                    { label: 'Response Time', value: 'Within 24 hours', icon: '⚡' },
+                    { label: 'Preferred Contact', value: 'Email or LinkedIn', icon: '✉️' },
+                    { label: 'Open To', value: 'Full-time · Internships · Contracts', icon: '🎯' },
+                    { label: 'Time Zone', value: 'PST (UTC−8)', icon: '🌐' },
+                    { label: 'Status', value: 'Actively interviewing', icon: '🟢' },
+                  ].map((fact) => (
+                    <div key={fact.label} className="flex items-start gap-3">
+                      <span className="text-base shrink-0 mt-0.5">{fact.icon}</span>
+                      <div>
+                        <p className="text-[10px] text-[#8b949e] uppercase tracking-wider">{fact.label}</p>
+                        <p className="text-sm text-[#c9d1d9] font-medium">{fact.value}</p>
+                      </div>
                     </div>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-white">Sainath Gandhe</h3>
-                    <p className="text-[#1f6feb]">Software Developer</p>
-                  </div>
+                  ))}
                 </div>
-                <p className="text-[#8b949e] mb-6">
-                  I'm currently looking for new opportunities. Whether you have a question, project idea, or just want to say hi, feel free to reach out!
-                </p>
               </motion.div>
             </motion.div>
             
             {/* Contact Cards */}
-            <motion.div 
+            <motion.div
               className="space-y-4"
               variants={containerVariants}
             >
               {contactMethods.map((method, index) => (
-                method.title === "Email" ? (
-                  <motion.div
-                    key={index}
-                    className="block transform transition-all duration-300 hover:-translate-y-2 relative z-10"
-                    variants={itemVariants}
-                    whileHover={{ scale: 1.03 }}
-                  >
-                    <Card className="bg-[#161b22]/80 backdrop-blur-md border border-[#30363d] hover:border-[#8b949e]/50 overflow-hidden group">
-                      <div className="relative p-5 z-10">
-                        <div className="flex items-center gap-4">
-                          <motion.div 
-                            className="h-12 w-12 rounded-full bg-[#21262d] flex items-center justify-center shadow-lg"
-                            whileHover={{ scale: 1.1, rotate: [0, 10, -10, 0] }}
-                            transition={{ duration: 0.5 }}
-                          >
-                            <motion.div
-                              className="absolute inset-0 rounded-full"
-                              animate={{
-                                boxShadow: [
-                                  `0 0 0 0px ${method.color}00`,
-                                  `0 0 0 4px ${method.color}30`,
-                                  `0 0 0 8px ${method.color}00`
-                                ]
-                              }}
-                              transition={{
-                                duration: 2,
-                                repeat: Infinity,
-                                repeatDelay: 1
-                              }}
-                            />
-                            {method.icon}
-                          </motion.div>
-                          <div className="space-y-1">
-                            <p className="text-sm text-[#8b949e]">{method.title}</p>
-                            <p className="font-medium text-white text-lg flex items-center gap-1">
-                              {method.value}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </Card>
-                  </motion.div>
-                ) : (
                   <motion.a
                     key={index}
                     href={method.link}
-                    target={method.title !== "Phone" ? "_blank" : undefined}
+                    target={method.title === "Location" ? "_blank" : undefined}
                     rel="noopener noreferrer"
                     className="block transform transition-all duration-300 hover:-translate-y-2 relative z-10"
                     variants={itemVariants}
@@ -311,7 +266,7 @@ const Contact = () => {
                             <p className="text-sm text-[#8b949e]">{method.title}</p>
                             <p className="font-medium text-white text-lg flex items-center gap-1">
                               {method.value}
-                              {method.title !== "Phone" && (
+                              {method.title === "Location" && (
                                 <ExternalLink className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-[#8b949e]" />
                               )}
                             </p>
@@ -320,17 +275,57 @@ const Contact = () => {
                       </div>
                     </Card>
                   </motion.a>
-                )
               ))}
             </motion.div>
+
+            {/* Live timezone indicator */}
+            {localTime && (
+              <motion.div
+                variants={itemVariants}
+                className="mt-4 flex items-center gap-2 px-3 py-2 rounded-lg bg-[#161b22] border border-[#30363d] w-fit"
+              >
+                <span
+                  className="w-2 h-2 rounded-full shrink-0"
+                  style={{
+                    backgroundColor: isAvailable ? '#3fb950' : '#e3b341',
+                    boxShadow: isAvailable ? '0 0 6px #3fb95080' : '0 0 6px #e3b34180',
+                    animation: 'pulse 2s ease-in-out infinite',
+                  }}
+                />
+                <span className="text-xs text-[#8b949e] font-mono">
+                  {localTime} PST
+                </span>
+                <span className="text-[10px] text-[#30363d]">·</span>
+                <span className={`text-xs font-medium ${isAvailable ? 'text-[#3fb950]' : 'text-[#e3b341]'}`}>
+                  {isAvailable ? 'Available' : 'Away'}
+                </span>
+              </motion.div>
+            )}
+
+            {/* Available for tags */}
+            <motion.div
+              variants={itemVariants}
+              className="mt-4 p-4 bg-[#161b22] border border-[#30363d] rounded-lg"
+            >
+              <p className="text-xs text-[#8b949e] uppercase tracking-widest mb-3">Available for</p>
+              <div className="flex flex-wrap gap-2">
+                {['Full-time Roles', 'AI Projects', 'Internships', 'Collaborations'].map(tag => (
+                  <span
+                    key={tag}
+                    className="text-xs px-3 py-1 rounded-full bg-[#238636]/10 text-[#3fb950] border border-[#238636]/30 hover:bg-[#238636]/20 transition-colors cursor-default"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
           </motion.div>
-          
+
           {/* Contact Form Section */}
           <motion.div
             variants={formVariants}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
-            key={isInView ? "visible-form" : "hidden-form"}
             className="flex flex-col h-full"
           >
             <Card className="bg-[#0d1117] border-[#30363d] overflow-hidden relative group flex flex-col h-full">
@@ -350,8 +345,7 @@ const Contact = () => {
               </CardHeader>
               
               <form
-                action="https://formspree.io/f/xqaqyovq"
-                method="POST"
+                onSubmit={handleSubmit}
                 className="relative z-10"
               >
                 <CardContent className="space-y-4 bg-[#161b22]">
@@ -410,17 +404,17 @@ const Contact = () => {
                       />
                     </div>
                   </motion.div>
-                  <input type="hidden" name="_subject" value="New message from portfolio contact form" />
                 </CardContent>
                 
                 <CardFooter className="bg-[#161b22]">
                   <Button
                     type="submit"
-                    className="bg-[#238636] text-white border border-[#238636] hover:bg-[#2ea043] hover:border-[#3fb950] w-full group relative overflow-hidden"
+                    disabled={isSubmitting}
+                    className="bg-[#238636] text-white border border-[#238636] hover:bg-[#2ea043] hover:border-[#3fb950] w-full group relative overflow-hidden disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     <span className="relative z-10 flex items-center justify-center">
                       <Send className="mr-2 h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                      <span>Send Message</span>
+                      <span>{isSubmitting ? 'Sending...' : 'Send Message'}</span>
                     </span>
                   </Button>
                 </CardFooter>

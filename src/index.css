@@ -206,6 +206,13 @@
     }
   }
 
+  /* Skill badge CSS hover — no inline JS DOM mutation */
+  .skill-badge:hover {
+    background-image: linear-gradient(to right, var(--skill-from), var(--skill-to)) !important;
+    box-shadow: 0 0 10px var(--skill-glow);
+    border-color: var(--skill-from);
+  }
+
   /* 3D perspective */
   .perspective-1000 {
     perspective: 1000px;
@@ -259,6 +266,17 @@
   .connection-line {
     stroke-dasharray: 100;
     animation: line-draw 2s forwards;
+  }
+
+  /* Spin for rotating dashed ring in Hero */
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Blinking caret in Hero code editor */
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
   }
 }
 
@@ -487,5 +505,27 @@
   .backface-visibility-visible {
     -webkit-backface-visibility: visible;
     backface-visibility: visible;
+  }
+
+  /* Marquee scroll for SkillLogos carousel */
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .animate-marquee {
+    animation: marquee 30s linear infinite;
+    will-change: transform;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

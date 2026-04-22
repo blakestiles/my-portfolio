@@ -7,6 +7,8 @@ import Skills from '@/components/Skills';
 import Experience from '@/components/Experience';
 import Projects from '@/components/Projects';
 import Contact from '@/components/Contact';
+import Footer from '@/components/Footer';
+import ScrollToTop from '@/components/ScrollToTop';
 
 const Index = () => {
   const controls = useAnimationControls();
@@ -62,17 +64,19 @@ const Index = () => {
         <About />
       </motion.div>
       <motion.div variants={sectionVariants}>
+        <Skills />
+      </motion.div>
+      <motion.div variants={sectionVariants}>
         <Experience />
       </motion.div>
       <motion.div variants={sectionVariants}>
         <Projects />
       </motion.div>
       <motion.div variants={sectionVariants}>
-        <Skills />
-      </motion.div>
-      <motion.div variants={sectionVariants}>
         <Contact />
       </motion.div>
+      <Footer />
+      <ScrollToTop />
     </motion.div>
   );
 };
