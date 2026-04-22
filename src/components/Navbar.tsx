@@ -1,29 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { Button } from './ui/button';
-import { Menu, X, FileText, Code2 } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { User, Cpu, Briefcase, FolderOpen, Mail, FileText, Home } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const NAV_LINKS = [
-  { name: 'About',      href: '#about',      num: '01' },
-  { name: 'Skills',     href: '#skills',     num: '02' },
-  { name: 'Experience', href: '#experience', num: '03' },
-  { name: 'Projects',   href: '#projects',   num: '04' },
-  { name: 'Contact',    href: '#contact',    num: '05' },
+  { name: 'About',      href: '#about',      icon: User },
+  { name: 'Skills',     href: '#skills',     icon: Cpu },
+  { name: 'Experience', href: '#experience', icon: Briefcase },
+  { name: 'Projects',   href: '#projects',   icon: FolderOpen },
+  { name: 'Contact',    href: '#contact',    icon: Mail },
 ];
 
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const [visible, setVisible] = useState(true);
+  const lastScrollY = useRef(0);
   const isMobile = useIsMobile();
 
+  // Hide on scroll down, show on scroll up
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 10);
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+      if (currentY < 80) { setVisible(true); return; }
+      setVisible(currentY < lastScrollY.current);
+      lastScrollY.current = currentY;
+    };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Scroll-spy
   useEffect(() => {
     const sectionIds = NAV_LINKS.map(l => l.href.slice(1));
     const observers: IntersectionObserver[] = [];
@@ -40,172 +47,145 @@ const Navbar = () => {
     return () => observers.forEach(o => o.disconnect());
   }, []);
 
-  useEffect(() => {
-    if (!isMobile && mobileMenuOpen) setMobileMenuOpen(false);
-  }, [isMobile, mobileMenuOpen]);
-
   const openResume = () => window.open('/resume.pdf', '_blank');
 
+  const displayLabel = hoveredItem ?? activeSection;
+
   return (
-    <header className="fixed top-0 w-full z-50">
-      <div className={`transition-all duration-500 ${
-        isScrolled ? 'mx-auto mt-4 max-w-2xl px-3' : 'mx-0 mt-0 px-0'
-      }`}>
-        <nav className={`flex justify-between items-center transition-all duration-500 ${
-          isScrolled
-            ? 'px-5 py-2 rounded-2xl bg-[#0d1117]/80 backdrop-blur-2xl shadow-2xl shadow-black/50'
-            : 'px-6 py-5 bg-transparent'
-        }`}
-          style={isScrolled ? {
-            border: '1px solid rgba(48, 54, 61, 0.8)',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.03)',
-          } : undefined}
+    <AnimatePresence>
+      {visible && (
+        <motion.div
+          initial={{ y: 80, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 80, opacity: 0 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 28 }}
+          className="fixed bottom-6 left-1/2 z-50"
+          style={{ translateX: '-50%' }}
         >
-          {/* Logo */}
-          <a href="/" className="flex items-center gap-2 group shrink-0">
-            <motion.div
-              className="flex items-center justify-center w-7 h-7 rounded-md bg-gradient-to-br from-[#1f6feb] to-[#238636] shadow-lg shadow-[#1f6feb]/20"
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              transition={{ duration: 0.2 }}
-            >
-              <Code2 className="h-3.5 w-3.5 text-white" />
-            </motion.div>
-            <span className="font-bold text-base bg-clip-text text-transparent bg-gradient-to-r from-white to-[#8b949e] group-hover:to-white transition-all duration-300">
-              Sainath G.
-            </span>
-          </a>
-
-          {/* Desktop links */}
-          <div className="hidden md:flex items-center gap-1">
-            <ul className="flex items-center">
-              {NAV_LINKS.map(link => {
-                const isActive = activeSection === link.href.slice(1);
-                return (
-                  <li key={link.name}>
-                    <a
-                      href={link.href}
-                      className={`relative flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 ${
-                        isActive ? 'text-white' : 'text-[#8b949e] hover:text-[#c9d1d9]'
-                      }`}
-                    >
-                      <span className={`font-mono text-[9px] transition-colors duration-200 ${
-                        isActive ? 'text-[#1f6feb]' : 'text-[#30363d] group-hover:text-[#8b949e]'
-                      }`}>{link.num}</span>
-                      {link.name}
-                      {isActive && (
-                        <motion.span
-                          layoutId="activeNav"
-                          className="absolute inset-0 rounded-lg bg-[#1f6feb]/10 border border-[#1f6feb]/20"
-                          transition={{ type: 'spring', stiffness: 400, damping: 35 }}
-                        />
-                      )}
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
-
-            <div className="w-px h-4 bg-[#30363d] mx-2" />
-
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-              <Button
-                variant="outline"
-                onClick={openResume}
-                className="h-8 px-3 text-sm font-medium border-[#30363d] bg-transparent text-[#c9d1d9] hover:bg-[#1f6feb]/10 hover:text-white hover:border-[#1f6feb]/60 transition-all duration-200 gap-1.5"
+          {/* Floating label above active item */}
+          <AnimatePresence mode="wait">
+            {displayLabel && (
+              <motion.div
+                key={displayLabel}
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 4 }}
+                transition={{ duration: 0.15 }}
+                className="flex justify-center mb-2"
               >
-                <FileText className="h-3.5 w-3.5" />
-                Resume
-              </Button>
-            </motion.div>
-          </div>
+                <span className="text-[10px] font-medium text-[#8b949e] bg-[#161b22] border border-[#30363d] px-2 py-0.5 rounded-full tracking-wide">
+                  {hoveredItem
+                    ? NAV_LINKS.find(l => l.href.slice(1) === hoveredItem)?.name ?? 'Resume'
+                    : NAV_LINKS.find(l => l.href.slice(1) === activeSection)?.name ?? ''}
+                </span>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-          {/* Mobile burger */}
-          <div className="md:hidden">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-[#8b949e] hover:text-white h-8 w-8 hover:bg-[#21262d]"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
-            >
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.div
-                  key={mobileMenuOpen ? 'close' : 'open'}
-                  initial={{ opacity: 0, rotate: -90 }}
-                  animate={{ opacity: 1, rotate: 0 }}
-                  exit={{ opacity: 0, rotate: 90 }}
-                  transition={{ duration: 0.15 }}
-                >
-                  {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-                </motion.div>
-              </AnimatePresence>
-            </Button>
-          </div>
-        </nav>
-      </div>
-
-      {/* Mobile menu */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.2, ease: 'easeOut' }}
-            className="md:hidden mx-3 mt-1 rounded-2xl overflow-hidden"
+          {/* Nav pill */}
+          <div
+            className="flex items-center gap-1 px-2 py-2 rounded-2xl"
             style={{
-              background: 'rgba(13,17,23,0.95)',
-              border: '1px solid rgba(48,54,61,0.8)',
+              background: 'rgba(13, 17, 23, 0.85)',
               backdropFilter: 'blur(24px)',
-              boxShadow: '0 16px 48px rgba(0,0,0,0.5)',
+              WebkitBackdropFilter: 'blur(24px)',
+              border: '1px solid rgba(48, 54, 61, 0.9)',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.04)',
             }}
           >
-            <div className="px-4 py-3 space-y-0.5">
-              {NAV_LINKS.map((link, i) => {
-                const isActive = activeSection === link.href.slice(1);
-                return (
-                  <motion.div
-                    key={link.name}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.04, duration: 0.2 }}
-                  >
-                    <a
-                      href={link.href}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className={`flex items-center gap-3 py-2.5 px-3 rounded-lg text-sm font-medium transition-colors ${
-                        isActive
-                          ? 'text-white bg-[#1f6feb]/10 border border-[#1f6feb]/20'
-                          : 'text-[#8b949e] hover:text-white hover:bg-[#21262d]'
-                      }`}
-                    >
-                      <span className={`font-mono text-[9px] w-4 ${isActive ? 'text-[#1f6feb]' : 'text-[#30363d]'}`}>{link.num}</span>
-                      {link.name}
-                    </a>
-                  </motion.div>
-                );
-              })}
+            {/* Home / Logo button */}
+            <motion.a
+              href="#hero"
+              className="relative flex items-center justify-center w-9 h-9 rounded-xl text-[#8b949e] hover:text-white transition-colors duration-200"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.92 }}
+              onHoverStart={() => setHoveredItem('hero')}
+              onHoverEnd={() => setHoveredItem(null)}
+              aria-label="Home"
+            >
+              <Home className="h-4 w-4" />
+            </motion.a>
 
-              <motion.div
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: NAV_LINKS.length * 0.04, duration: 0.2 }}
-                className="pt-2 pb-1"
-              >
-                <Button
-                  variant="outline"
-                  onClick={openResume}
-                  className="w-full border-[#30363d] bg-transparent text-[#c9d1d9] hover:bg-[#1f6feb]/10 hover:text-white hover:border-[#1f6feb]/60 gap-2 transition-all duration-200"
+            {/* Divider */}
+            <div className="w-px h-5 bg-[#30363d]/60 mx-0.5" />
+
+            {/* Nav items */}
+            {NAV_LINKS.map(link => {
+              const isActive = activeSection === link.href.slice(1);
+              const Icon = link.icon;
+              const id = link.href.slice(1);
+              return (
+                <motion.a
+                  key={link.name}
+                  href={link.href}
+                  className="relative flex items-center justify-center w-10 h-9 rounded-xl transition-colors duration-200"
+                  style={{ color: isActive ? '#fff' : '#8b949e' }}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.92 }}
+                  onHoverStart={() => setHoveredItem(id)}
+                  onHoverEnd={() => setHoveredItem(null)}
+                  aria-label={link.name}
                 >
-                  <FileText className="h-4 w-4" />
-                  Resume
-                </Button>
-              </motion.div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </header>
+                  {/* Active background bubble */}
+                  {isActive && (
+                    <motion.span
+                      layoutId="navBubble"
+                      className="absolute inset-0 rounded-xl"
+                      style={{ background: 'rgba(31, 111, 235, 0.15)', border: '1px solid rgba(31, 111, 235, 0.3)' }}
+                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                  {/* Hover background */}
+                  {!isActive && hoveredItem === id && (
+                    <motion.span
+                      layoutId="navHover"
+                      className="absolute inset-0 rounded-xl bg-[#21262d]"
+                      transition={{ type: 'spring', stiffness: 400, damping: 35 }}
+                    />
+                  )}
+                  <Icon
+                    className="relative z-10 h-4 w-4 transition-colors duration-200"
+                    style={{ color: isActive ? '#58a6ff' : hoveredItem === id ? '#c9d1d9' : '#8b949e' }}
+                  />
+                  {/* Active dot indicator */}
+                  {isActive && (
+                    <motion.span
+                      className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#1f6feb]"
+                      layoutId="navDot"
+                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                </motion.a>
+              );
+            })}
+
+            {/* Divider */}
+            <div className="w-px h-5 bg-[#30363d]/60 mx-0.5" />
+
+            {/* Resume button */}
+            <motion.button
+              onClick={openResume}
+              className="flex items-center gap-1.5 px-3 h-9 rounded-xl text-xs font-semibold text-white transition-all duration-200"
+              style={{
+                background: 'linear-gradient(135deg, #238636, #2ea043)',
+                boxShadow: '0 2px 8px rgba(35,134,54,0.3)',
+              }}
+              whileHover={{
+                scale: 1.05,
+                boxShadow: '0 4px 16px rgba(35,134,54,0.45)',
+              }}
+              whileTap={{ scale: 0.95 }}
+              onHoverStart={() => setHoveredItem('resume')}
+              onHoverEnd={() => setHoveredItem(null)}
+              aria-label="Open Resume"
+            >
+              <FileText className="h-3.5 w-3.5" />
+              {!isMobile && <span>Resume</span>}
+            </motion.button>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 
