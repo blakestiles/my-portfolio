@@ -154,7 +154,7 @@ const About = () => {
             >
               <div className="aspect-[3/4] rounded-lg border border-[#30363d] overflow-hidden">
                 <img
-                  src="/images/about-photo.png"
+                  src="/images/Headshot.jpeg"
                   alt="Profile"
                   className="w-full h-full object-cover object-top"
                 />

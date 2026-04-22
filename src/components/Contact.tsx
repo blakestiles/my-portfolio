@@ -328,98 +328,118 @@ const Contact = () => {
             animate={isInView ? "visible" : "hidden"}
             className="flex flex-col h-full"
           >
-            <Card className="bg-[#0d1117] border-[#30363d] overflow-hidden relative group flex flex-col h-full">
-              {/* Animated border and spotlight */}
-              <div className="absolute inset-0 p-[1px] rounded-lg bg-gradient-to-r from-[#238636] via-[#1f6feb] to-[#8957e5] opacity-0 group-hover:opacity-50 transition-opacity duration-700"></div>
-              
-              <CardHeader className="bg-[#161b22] relative z-10">
+            <div className="relative flex flex-col h-full rounded-xl overflow-hidden border border-[#30363d] bg-[#0d1117] group">
+              {/* Animated gradient border on hover */}
+              <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+                style={{ background: 'linear-gradient(#0d1117, #0d1117) padding-box, linear-gradient(135deg, #238636, #1f6feb, #8957e5) border-box', border: '1px solid transparent' }} />
+
+              {/* Header */}
+              <div className="px-6 pt-6 pb-4 border-b border-[#30363d] bg-[#161b22]">
                 <div className="flex items-center gap-3 mb-1">
-                  <MessageSquare className="h-5 w-5 text-[#1f6feb] align-middle" />
-                  <CardTitle className="text-white flex items-center">
-                    <span className="bg-gradient-to-r from-[#1f6feb] to-[#58a6ff] text-transparent bg-clip-text">Send Me a Message</span>
-                  </CardTitle>
+                  <div className="h-8 w-8 rounded-lg bg-[#1f6feb]/15 border border-[#1f6feb]/30 flex items-center justify-center">
+                    <MessageSquare className="h-4 w-4 text-[#1f6feb]" />
+                  </div>
+                  <div>
+                    <h3 className="text-white font-semibold text-lg bg-gradient-to-r from-[#1f6feb] to-[#58a6ff] bg-clip-text text-transparent">
+                      Send Me a Message
+                    </h3>
+                    <p className="text-[#8b949e] text-xs">Typically replies within 24 hours</p>
+                  </div>
                 </div>
-                <CardDescription className="text-[#8b949e]">
-                  Fill out the form below and I'll get back to you as soon as possible.
-                </CardDescription>
-              </CardHeader>
-              
-              <form
-                onSubmit={handleSubmit}
-                className="relative z-10"
-              >
-                <CardContent className="space-y-4 bg-[#161b22]">
-                  <motion.div
-                    custom={0}
-                    variants={inputVariants}
-                  >
-                    <label htmlFor="name" className="text-sm font-medium block mb-1 text-[#c9d1d9]">Name</label>
-                    <div className="relative group">
-                      <Input
-                        id="name"
-                        name="name"
-                        placeholder="Your name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                        className="bg-[#0d1117] border-[#30363d] text-white focus:border-[#1f6feb] focus:ring-[#1f6feb] pl-4 transition-all duration-300 group-hover:border-[#8b949e] placeholder:text-[#8b949e] placeholder:pl-0"
-                      />
-                    </div>
-                  </motion.div>
-                  
-                  <motion.div
-                    custom={1}
-                    variants={inputVariants}
-                  >
-                    <label htmlFor="email" className="text-sm font-medium block mb-1 text-[#c9d1d9]">Email</label>
-                    <div className="relative group">
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        placeholder="Your email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        className="bg-[#0d1117] border-[#30363d] text-white focus:border-[#1f6feb] focus:ring-[#1f6feb] pl-4 transition-all duration-300 group-hover:border-[#8b949e] placeholder:text-[#8b949e] placeholder:pl-0"
-                      />
-                    </div>
-                  </motion.div>
-                  
-                  <motion.div
-                    custom={2}
-                    variants={inputVariants}
-                  >
-                    <label htmlFor="message" className="text-sm font-medium block mb-1 text-[#c9d1d9]">Message</label>
-                    <div className="relative group">
-                      <Textarea
-                        id="message"
-                        name="message"
-                        placeholder="Your message"
-                        rows={5}
-                        value={formData.message}
-                        onChange={handleChange}
-                        required
-                        className="bg-[#0d1117] border-[#30363d] text-white focus:border-[#1f6feb] focus:ring-[#1f6feb] resize-none transition-all duration-300 group-hover:border-[#8b949e] placeholder:text-[#8b949e] placeholder:pl-0"
-                      />
-                    </div>
-                  </motion.div>
-                </CardContent>
-                
-                <CardFooter className="bg-[#161b22]">
+              </div>
+
+              {/* Form body */}
+              <form onSubmit={handleSubmit} className="flex flex-col flex-1 p-6 gap-5">
+                {/* Name field */}
+                <motion.div custom={0} variants={inputVariants} className="space-y-1.5">
+                  <label htmlFor="name" className="text-xs font-semibold uppercase tracking-wider text-[#8b949e] flex items-center gap-1.5">
+                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#1f6feb]" />
+                    Full Name
+                  </label>
+                  <div className="relative">
+                    <Input
+                      id="name"
+                      name="name"
+                      placeholder="e.g. Jane Smith"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                      className="bg-[#161b22] border-[#30363d] text-white h-11 pl-4 pr-4 focus:border-[#1f6feb] focus:ring-1 focus:ring-[#1f6feb]/30 hover:border-[#8b949e]/50 placeholder:text-[#8b949e]/50 transition-all duration-200 rounded-lg"
+                    />
+                  </div>
+                </motion.div>
+
+                {/* Email field */}
+                <motion.div custom={1} variants={inputVariants} className="space-y-1.5">
+                  <label htmlFor="email" className="text-xs font-semibold uppercase tracking-wider text-[#8b949e] flex items-center gap-1.5">
+                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#238636]" />
+                    Email Address
+                  </label>
+                  <div className="relative">
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      placeholder="e.g. jane@company.com"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                      className="bg-[#161b22] border-[#30363d] text-white h-11 pl-4 pr-4 focus:border-[#238636] focus:ring-1 focus:ring-[#238636]/30 hover:border-[#8b949e]/50 placeholder:text-[#8b949e]/50 transition-all duration-200 rounded-lg"
+                    />
+                  </div>
+                </motion.div>
+
+                {/* Message field */}
+                <motion.div custom={2} variants={inputVariants} className="space-y-1.5 flex-1">
+                  <label htmlFor="message" className="text-xs font-semibold uppercase tracking-wider text-[#8b949e] flex items-center gap-1.5">
+                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#8957e5]" />
+                    Message
+                  </label>
+                  <Textarea
+                    id="message"
+                    name="message"
+                    placeholder="What's on your mind? A project idea, job opportunity, or just saying hi..."
+                    rows={5}
+                    value={formData.message}
+                    onChange={handleChange}
+                    required
+                    className="bg-[#161b22] border-[#30363d] text-white focus:border-[#8957e5] focus:ring-1 focus:ring-[#8957e5]/30 hover:border-[#8b949e]/50 resize-none placeholder:text-[#8b949e]/50 transition-all duration-200 rounded-lg w-full"
+                  />
+                </motion.div>
+
+                {/* Submit */}
+                <motion.div custom={3} variants={inputVariants}>
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="bg-[#238636] text-white border border-[#238636] hover:bg-[#2ea043] hover:border-[#3fb950] w-full group relative overflow-hidden disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="w-full h-11 bg-gradient-to-r from-[#238636] to-[#2ea043] text-white border-0 hover:from-[#2ea043] hover:to-[#3fb950] disabled:opacity-50 disabled:cursor-not-allowed font-semibold tracking-wide transition-all duration-300 group rounded-lg shadow-lg shadow-[#238636]/20 hover:shadow-[#238636]/40"
                   >
-                    <span className="relative z-10 flex items-center justify-center">
-                      <Send className="mr-2 h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                      <span>{isSubmitting ? 'Sending...' : 'Send Message'}</span>
+                    <span className="flex items-center justify-center gap-2">
+                      {isSubmitting ? (
+                        <>
+                          <motion.span
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                            className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full"
+                          />
+                          Sending...
+                        </>
+                      ) : (
+                        <>
+                          <Send className="h-4 w-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
+                          Send Message
+                        </>
+                      )}
                     </span>
                   </Button>
-                </CardFooter>
+                </motion.div>
+
+                {/* Footer note */}
+                <p className="text-center text-[10px] text-[#8b949e]/50 -mt-2">
+                  🔒 Your information is never shared with third parties
+                </p>
               </form>
-            </Card>
+            </div>
           </motion.div>
         </div>
       </div>

@@ -10,11 +10,12 @@ const projects = [
   {
     title: "SafarAI – Competitive Intelligence Platform",
     category: "ai",
-    private: true,
+    private: false,
+    image: "https://opengraph.githubassets.com/1/blakestiles/SafarAI",
     description: "Shipped at Y Combinator, San Francisco. Engineered a competitive intelligence pipeline ingesting 50+ sources of tourism, partnerships, funding, and campaigns using web and PDF extraction. Built hash-based change detection and structured LLM classification to auto-generate executive briefings, reducing manual monitoring effort by 80%.",
     tech: ["FastAPI", "MongoDB", "LangChain", "Firecrawl", "Reducto", "Resend"],
     liveDemo: "#",
-    github: "https://github.com/blakestiles",
+    github: "https://github.com/blakestiles/SafarAI",
     languageColor: "#E34C26",
     stars: 63,
     yc: true,
@@ -23,11 +24,12 @@ const projects = [
   {
     title: "Synapse AI – AI Knowledge Mesh",
     category: "ai",
-    private: true,
+    private: false,
+    image: "https://opengraph.githubassets.com/1/blakestiles/YC-Vibecon-Synapse",
     description: "Shipped at Y Combinator, San Francisco. Selected from 2,000+ applicants (Top 5%) to build an AI-powered Organizational Intelligence Platform integrating Slack, GitHub, and Notion. Collaborated with mentors from Anthropic & AWS.",
     tech: ["Next.js", "OpenAI Embeddings", "MongoDB", "Vercel", "Slack API", "GitHub API"],
     liveDemo: "#",
-    github: "https://github.com/blakestiles",
+    github: "https://github.com/blakestiles/YC-Vibecon-Synapse",
     languageColor: "#A371F7",
     stars: 71,
     yc: true,
@@ -36,11 +38,12 @@ const projects = [
   {
     title: "Cloud Document Summarizer",
     category: "fullstack",
-    private: true,
+    private: false,
+    image: "https://opengraph.githubassets.com/1/blakestiles/StudySphere_v1.0",
     description: "AI summarizer for PDFs, Word docs, and Slides across Google Drive, OneDrive, and AWS S3, condensing 500+ pages with semantic Q&A search. Fault-tolerant SaaS on AWS Lambda + Kubernetes, reducing response delay by 40%.",
     tech: ["React", "Node.js", "AWS Lambda", "GraphQL", "LangChain", "Kubernetes"],
     liveDemo: "#",
-    github: "https://github.com/blakestiles",
+    github: "https://github.com/blakestiles/StudySphere_v1.0",
     languageColor: "#f1e05a",
     stars: 38,
     yc: false,
@@ -50,6 +53,7 @@ const projects = [
     title: "Stock Price Prediction using ML",
     category: "research",
     private: false,
+    image: undefined,
     description: "LSTM-based model that outperformed ARIMA by 10% accuracy, leveraging 1.2M+ historical market records spanning five years. Integrated economic indicators for improved financial forecasting.",
     tech: ["Python", "LSTM", "TensorFlow", "Pandas", "NumPy", "Matplotlib"],
     liveDemo: "https://ijsrem.com/download/stock-price-prediction-using-machine-learning-an-unprecedented-approach/",
@@ -63,6 +67,7 @@ const projects = [
     title: "G-Notify – Personalized Mass Emailer",
     category: "fullstack",
     private: false,
+    image: undefined,
     description: "Automated delivery of 10,000+ personalized emails daily with a 98% success rate using Gmail API and Cron Jobs. Boosted client campaign reach through segmented, template-driven communication.",
     tech: ["Python", "Flask", "Gmail API", "Email Automation", "Cron Jobs"],
     liveDemo: "https://www.irjmets.com/uploadedfiles/paper//issue_6_june_2023/42238/final/fin_irjmets1687027562.pdf",
@@ -103,6 +108,27 @@ const GradientThumbnail = ({ color, title }: { color: string; title: string }) =
   </div>
 );
 
+const ProjectThumbnail = ({ image, color, title }: { image?: string; color: string; title: string }) => {
+  const [imgError, setImgError] = useState(false);
+
+  if (image && !imgError) {
+    return (
+      <div className="w-full h-full relative overflow-hidden">
+        <img
+          src={image}
+          alt={title}
+          className="w-full h-full object-cover object-top"
+          onError={() => setImgError(true)}
+          loading="lazy"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117]/70 via-transparent to-transparent" />
+      </div>
+    );
+  }
+
+  return <GradientThumbnail color={color} title={title} />;
+};
+
 const ProjectCard = ({ project, index, large = false }: { project: typeof projects[0]; index: number; large?: boolean }) => (
   <motion.div
     initial={{ opacity: 0, y: 30 }}
@@ -121,7 +147,7 @@ const ProjectCard = ({ project, index, large = false }: { project: typeof projec
       />
 
       <div className={`overflow-hidden relative ${large ? 'h-56' : 'h-40'}`}>
-        <GradientThumbnail color={project.languageColor} title={project.title} />
+        <ProjectThumbnail image={project.image} color={project.languageColor} title={project.title} />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117]/80 to-transparent" />
       </div>
 
@@ -133,11 +159,6 @@ const ProjectCard = ({ project, index, large = false }: { project: typeof projec
             {project.yc && (
               <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#e8701a]/15 text-[#e8701a] border border-[#e8701a]/25 font-medium">
                 🔶 YC
-              </span>
-            )}
-            {project.private && (
-              <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#30363d]/60 text-[#8b949e] border border-[#30363d] font-medium">
-                🔒 Private
               </span>
             )}
           </div>

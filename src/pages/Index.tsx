@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
-import { motion, useAnimationControls } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { motion, useAnimationControls, AnimatePresence } from 'framer-motion';
+import LoadingScreen from '@/components/LoadingScreen';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import About from '@/components/About';
@@ -12,6 +13,7 @@ import ScrollToTop from '@/components/ScrollToTop';
 
 const Index = () => {
   const controls = useAnimationControls();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Scroll to top on page load
@@ -50,34 +52,42 @@ const Index = () => {
   };
 
   return (
-    <motion.div 
-      className="min-h-screen"
-      initial="hidden"
-      animate={controls}
-      variants={containerVariants}
-    >
-      <Navbar />
-      <motion.div variants={sectionVariants}>
-        <Hero />
+    <>
+      <AnimatePresence mode="wait">
+        {isLoading && (
+          <LoadingScreen onFinished={() => setIsLoading(false)} />
+        )}
+      </AnimatePresence>
+
+      <motion.div
+        className="min-h-screen"
+        initial="hidden"
+        animate={controls}
+        variants={containerVariants}
+      >
+        <Navbar />
+        <motion.div variants={sectionVariants}>
+          <Hero />
+        </motion.div>
+        <motion.div variants={sectionVariants}>
+          <About />
+        </motion.div>
+        <motion.div variants={sectionVariants}>
+          <Skills />
+        </motion.div>
+        <motion.div variants={sectionVariants}>
+          <Experience />
+        </motion.div>
+        <motion.div variants={sectionVariants}>
+          <Projects />
+        </motion.div>
+        <motion.div variants={sectionVariants}>
+          <Contact />
+        </motion.div>
+        <Footer />
+        <ScrollToTop />
       </motion.div>
-      <motion.div variants={sectionVariants}>
-        <About />
-      </motion.div>
-      <motion.div variants={sectionVariants}>
-        <Skills />
-      </motion.div>
-      <motion.div variants={sectionVariants}>
-        <Experience />
-      </motion.div>
-      <motion.div variants={sectionVariants}>
-        <Projects />
-      </motion.div>
-      <motion.div variants={sectionVariants}>
-        <Contact />
-      </motion.div>
-      <Footer />
-      <ScrollToTop />
-    </motion.div>
+    </>
   );
 };
 
